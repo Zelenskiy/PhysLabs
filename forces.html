@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruchoomyi Pryamokutnyk</title>
+    <style>
+        
+    </style>
+    <script defer src="./js/forces/script.js"></script>
+    <link rel="stylesheet" href="./css/forces/style.css">
+</head>
+<body>
+    <canvas id="myCanvas" width="600" height="490">
+        
+
+    </canvas>
+    <div class="panel">
+        
+        <img class="fon" src="./img/forces/gstil.png" alt="">
+        <img id="draggable" class="metr" src="./img/forces/metrr.png" alt="">
+        <img id="kol" class="rol" src="./img/forces/gkol.png" alt="">
+        <div class="pk">
+            <div class="mas_select">            
+                <div class="pk_list">
+                    <label for="mass_1">Маса бруска</label>            
+                    <select id="mass_1">
+                        <option value="0.10">0.10 кг</option>
+                        <option value="0.15">0.15 кг</option>
+                        <option value="0.20">0.20 кг</option>
+                        <option value="0.25">0.25 кг</option>
+                        <option value="0.30">0.30 кг</option>
+                        <option value="0.35" selected>0.35 кг</option>
+                    </select>
+                </div>
+                <div class="pk_list">
+                    <label for="mass_2">Маса важка</label>
+                    <select id="mass_2">
+                        <option value="0.05" >0.05 кг</option>
+                        <option value="0.10" selected>0.10 кг</option>
+                        <option value="0.15">0.15 кг</option>
+                    </select>
+                </div>
+            </div>    
+            <div class="btn_block">    
+                <div class="pk_list">
+                    <!-- <label for="started">Пуск</label> -->
+
+                    <button id="started" >Пуск</button>
+                </div>
+                <div class="pk_list">
+                    <button id="reset">Перевстановити</button>
+                </div>
+
+            </div>
+            
+            
+            
+            <div class="timer">t = <span id="seconds">00.00</span> 
+                υ = <span id="speed">0.00</span>
+                a = <span id="accel">0.00</span>
+
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

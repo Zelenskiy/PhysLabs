@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/gravity/style.css">
+    <script src="./js/gravity/script.js" defer></script>
+</head>
+<body>
+    <h1>Лабораторна робота №2. Вивчення руху тіла по колу</h1>
+    <div>Мета: визначити характеристики рівномірного руху тіла по колу: період обертання, обертову частоту, лінійну швидкість, доцентрове прискорення й модуль рівнодійної сил, які надають кульці цього прискорення. </div>
+    <div>Обладнання: комп'ютер або смартфон, комп'ютерна програма для моделювання руху штучного супутника Землі</div>
+    <div>
+        <div class="student">
+            <h2 >Впишіть ваш клас</h2>
+            <div ><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+        </div>    
+        <div class="student">
+            <h2 >Впишіть своє прізвище та ім'я</h2>
+            <div ><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>    
+        </div>        
+    </div>
+
+    
+
+    <iframe class="virt_lab" src="https://phet.colorado.edu/sims/html/gravity-and-orbits/latest/gravity-and-orbits_en.html"
+        allowfullscreen>
+    </iframe>
+
+    <h2>Експеримент</h2>
+    <div>Суворо дотримуйтесь інструкції з безпеки. Результати вимірювань відразу заносьте до таблиці.</div>
+    <div>Відкрийте програму та натисніть кнопку Масштабувати</div>
+    <div>Оберіть модель Земля та супутник (остання у списку, див. мал. чи відео)</div>
+    <div><img src="./img/gravity/2023-10-05_191020.png" alt=""></div>    
+    <div>Виміряйте радіус траєкторії руху штучного супутника навколо Землі використовуючи інструмент Мірна стрічка. Час запишіть у метрах. Для визначення центру Землі зручно увімкнути Сітку.</div>
+    <div><img width="800" src="./img/gravity/2023-10-05_191531.png" alt=""></div>
+    <div>Запишіть радіус орбіти до таблиці, перевівши його в метри.</div>
+    <div>Запустіть програму на виконання, почавши відлік зі слова "нуль", коли супутний пройде точку,
+        з якої почав рухатися, рахуємо "один" і т.д. Коли тіло пройде п'ятий оберт, 
+        зупиняємо імітацію натиснувши відповідну кнопку й записуємо до таблиці отримане значення у секундах.
+    </div>
+    <div>Далі розраховуємо й записуємо до таблиці:</div>
+    <ul>
+        <li>період у секундах</li>
+        <li>обертову частоту у 1/c</li>
+        <li>лінійну швидкість у м/с</li>
+        <li>доцентрове прискорення у м/с²</li>
+    </ul>
+    <div>
+        формули для розрахунку:
+    </div><div>
+        <img style="margin: 5px 25px" src="./img/gravity/2023-10-05_193031.png" alt="">
+        <img style="margin: 5px 25px" src="./img/gravity/2023-10-05_193100.png" alt="">
+        <img style="margin: 5px 25px" src="./img/gravity/2023-10-05_193127.png" alt="">
+        <img style="margin: 5px 25px" src="./img/gravity/2023-10-05_193206.png" alt="">
+    </div>
+    <div>Повторіть дослід ще двічі, щоразу трохи збільшуючи радіус орбіти</div>
+    <div></div>
+    <table border="1"> 
+        <tbody>
+            <tr style="height: 73.625px;">
+            <td class="td_h" id="h1" ><strong>№</strong></td>
+            <td class="td_h" id="h2" style="width: 50px;" ><strong>Радіус кола</strong><br><strong><span style="font-size: 14pt;"><span class="symb">r</span></span>, м</strong></td>
+            <td class="td_h" id="h3" ><strong>К-ть обертів</strong><br><strong>N</strong></td>
+            <td class="td_h" id="h4" ><strong>Час руху</strong><br><strong><span style="font-size: 14pt;"><span class="symb">t</span></span>, с</strong></td>
+            <td class="td_h" id="h5" ><strong>Період обертання</strong><br><strong>T, с</strong></td>
+            <td class="td_h" id="h6" ><strong>Обертова частота</strong><br><strong>n, 1/с</strong></td>
+            <td class="td_h" id="h7" ><strong>Лінійна швидкість</strong><br><strong><span style="font-size: 14pt;"><span class="symb">&upsilon;</span></span>, м/с</strong></td>
+            <td class="td_h" id="h8" ><strong>Доцентрове прискорення</strong><br><strong><span style="font-size: 14pt;"><span class="symb">a</span></span><sub>дц</sub>, м/с&sup2;</strong></td>
+            </tr>
+            <tr style="height: 22px;">
+            <td id="r1">1</td>
+            <td ><input class="cell" id="r1c2" type="text"></td>
+            <td ><input class="cell" id="r1c3" type="text" value="5"> </td>
+            <td ><input class="cell" id="r1c4" type="text" ></td>
+            <td ><input class="cell" id="r1c5" type="text"></td>
+            <td ><input class="cell" id="r1c6" type="text"></td>
+            <td ><input class="cell" id="r1c7" type="text"></td>
+            <td ><input class="cell" id="r1c8" type="text"></td>
+            </tr>
+            <tr style="height: 22px;">
+            <td id="r2" >2</td>
+            <td ><input class="cell" id="r2c2" type="text"></td>
+            <td ><input class="cell" id="r2c3" type="text" value="5"></td>
+            <td ><input class="cell" id="r2c4" type="text" ></td>
+            <td ><input class="cell" id="r2c5" type="text"></td>
+            <td ><input class="cell" id="r2c6" type="text"></td>
+            <td ><input class="cell" id="r2c7" type="text"></td>
+            <td ><input class="cell" id="r2c8" type="text"></td>
+            </tr>
+            <tr style="height: 22px;">
+            <td id="r3" >3</td>
+            <td ><input class="cell" id="r3c2" type="text"></td>
+            <td ><input class="cell" id="r3c3" type="text" value="5"></td>
+            <td ><input class="cell" id="r3c4" type="text"></td>
+            <td ><input class="cell" id="r3c5" type="text"></td>
+            <td ><input class="cell" id="r3c6" type="text"></td>
+            <td ><input class="cell" id="r3c7" type="text"></td>
+            <td ><input class="cell" id="r3c8" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>Аналіз експерименту та його результатів</h2>
+        <div>            
+            Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте: 
+        </div>
+        <div>1) фізичні величини, які ви визначали; </div>
+        <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
+        <div>2) точність проведеного експерименту та причини похибки.</div>
+        <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
+        
+
+        
+        
+        <div class="submit_block">
+            <button id="submin_button">Відправити</button>
+        </div>
+
+    
+    
+    
+
+</body>
+</html>

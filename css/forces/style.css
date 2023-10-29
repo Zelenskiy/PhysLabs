@@ -1,0 +1,91 @@
+/* body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+} */
+
+canvas {
+
+    border: 1px solid black;
+}
+.fon{
+    width: 600px;
+    position: absolute;
+    left: 8px;
+    top: 72px;
+}
+.metr{
+    width: 47px;
+    /* width: 450px; */
+    position: absolute;
+    left: 550px;
+    top: 16px;
+    cursor: pointer;
+}
+.pk{
+    border: solid 1px;
+    border-radius: 5px;
+    background: rgb(240, 158, 226);
+    padding: 15px;
+    width: 400px;
+    height: 150px;
+    margin: 5px;
+    position: absolute;
+    left: 20px;
+    top: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+.mas_select{
+  display: flex;
+  justify-content: flex-start;
+  gap: 32px;
+}
+
+.rol{
+    position: absolute;
+    left: 510px;
+    top: 72px;
+    width: 20px;
+    height: 20px;
+
+}
+
+
+.timer{
+  display: none;
+  font-size: 20px;
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .rotate-img {
+    /* Встановлюємо анімацію 'rotate' з тривалістю 2 секунди та безкінечним повторенням */
+    animation: rotate 2s infinite linear;
+  }
+
+  .pk_list{
+    margin-top: 12px;
+  }
+
+  #started, #reset {
+    width: 120px;
+    height: 32px;
+  }
+
+  .btn_block{
+    text-align: right;
+  }
+
+ 
