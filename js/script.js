@@ -39,8 +39,11 @@ submin_button.addEventListener('click', ()=>{
     if (klas === "") mess +='Ви не вписали свій клас';
     if (mess === "")
         sendText(data);
-    else
-        alert(mess)
+    else {
+            alert(mess + "\nЗаповніть ці поля перед відправкою.");
+            window.scrollTo(0, 0);
+
+        }
 
 })
 
