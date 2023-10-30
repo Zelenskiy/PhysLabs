@@ -80,6 +80,14 @@ button:hover{
 .virt_lab{
     width: 800px;
     height: 600px;
+
+    
+}
+
+.vstavka{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .symb{
