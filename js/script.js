@@ -6,6 +6,9 @@ const idTable = '';
 const sheetName = document.getElementById('sheetName').value;
 
 const submin_button = document.querySelector("#submin_button");
+const textInputs = document.querySelectorAll('textarea, input');
+
+
 submin_button.addEventListener('click', ()=>{
     const name = document.querySelector(`#name`).value;
     const klas = document.querySelector(`#klas`).value;    
@@ -50,7 +53,8 @@ submin_button.addEventListener('click', ()=>{
   
 
 function sendText(data) {
-
+    submin_button.disabled = true;
+    submin_button.classList.add('disabl')
     // URL серверу, на який ви хочете відправити дані
     const serverUrl = server + 'add_lab/';
     // Об'єкт з налаштуваннями запиту
@@ -73,6 +77,8 @@ function sendText(data) {
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
+                submin_button.disabled = false;
+                submin_button.classList.remove('disabl')
             }
             return response.json();
         })
@@ -84,7 +90,25 @@ function sendText(data) {
         .catch(error => {
             console.error('Сталася помилка під час відправлення запиту:', error);
             alert('Сталася помилка під час відправлення. Спробуйте ще.')
+            submin_button.disabled = false;
+            submin_button.classList.remove('disabl')
         });
     // alert('Роботу відправлено на перевірку.')
 }
+
+// Отримуємо всі textarea та input на сторінці
+
+
+// Функція, яка викликається при зміні поля вводу
+function handleInputChange(event) {
+    // Ваш код для обробки події тут
+    submin_button.disabled = false;
+    submin_button.classList.remove('disabl')
+}
+
+// Додаємо обробник подій для кожного textarea та input
+textInputs.forEach(function (input) {
+    input.addEventListener('input', handleInputChange);    
+});
+
 

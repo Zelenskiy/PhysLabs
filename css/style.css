@@ -99,11 +99,18 @@ button:hover{
 }
 
 .img_1 img {
-    width: 90%;
+    width: 50%;
     
 }
 
 .f_center {
     height: 6vw;
 
+}
+.disabl {
+    background-color: rgb(128, 128, 128);
+}
+
+.disabl:hover{
+    background-color: rgb(128, 128, 128);
 }
