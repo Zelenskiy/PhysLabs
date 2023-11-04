@@ -42,6 +42,7 @@ class MovingBody {
     seconds.innerText = "00.00";
     speed.innerText = "0.00";
     accel.innerText = "0.00";
+    started.innerText = "Пуск"
     this.m1 = parseFloat(mass_1.value);
     this.m2 = parseFloat(mass_2.value);
     this.ax = g * (this.m2 - this.μ * this.m1)/(this.m1+this.m2);

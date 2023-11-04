@@ -1,6 +1,6 @@
 
 body {
-    font-size: 3vh;
+    font-size: 2vw;
 }
 table{
     border-collapse: collapse; 
@@ -16,7 +16,7 @@ td {
     border-color: rgb(0, 0, 0);
     width: 25px;
     padding: 5px;
-    font-size: 4vh;
+    
 
 }
 .td_h {
@@ -27,7 +27,7 @@ td {
     border: none;
     height: 100%;
     text-align: center;
-    font-size: 4vh;
+    /* font-size: 4vw; */
     width: 100%;
 }
 
@@ -41,24 +41,24 @@ img, iframe{
 .txt_inp, .txt_ar{
     /* background: #eee;  */
     height: 24px; 
-    width: 40vh; 
+    width: 40vw; 
     margin-left: 20px ;
-    font-size: 3vh;
+    font-size: 2vw;
 }
 
 .txt_ar {
-    height: 30vh; 
+    height: 30vw; 
     width: 90%;
     margin-top: 24px;
     margin-bottom: 24px;
 }
 button{
-    font-size: 3vh;
-    border-radius: 0.5vh;
+    font-size: 3vw;
+    border-radius: 0.5vw;
     background-color: green;
     color: aliceblue;
-    height: 6vh;
-    width: 24vh;
+    height: 6vw;
+    width: 24vw;
     border: none;
     transition: box-shadow 0.3s, transform 0.3s;
 }
@@ -79,9 +79,7 @@ button:hover{
 
 .virt_lab{
     width: 800px;
-    height: 600px;
-
-    
+    height: 600px;    
 }
 
 .vstavka{
@@ -91,7 +89,7 @@ button:hover{
 }
 
 .symb{
-    font-size: 4vh;
+    font-size: 4vw;
     font-style:italic;
 }
 
@@ -103,4 +101,9 @@ button:hover{
 .img_1 img {
     width: 90%;
     
+}
+
+.f_center {
+    height: 6vw;
+
 }

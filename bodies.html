@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дослідження руху зв’язаних тіл</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js" defer></script>
+</head>
+
+<body>
+    <h1>Лабораторна робота №3 </h1>
+    <h2> Дослідження руху зв’язаних тіл</h2>
+        <input type="text" id="sheetName" hidden value="Дослідження руху зв’язаних тіл">
+    <div><strong>Мета: </strong>визначити коефіцієнт тертя ковзання дерева по дереву </div>
+    <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання, секундомір</div>
+    <div>
+        <div class="student">
+            <h2>Впишіть ваш клас</h2>
+            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+        </div>
+        <div class="student">
+            <h2>Впишіть ваше прізвище та ім'я</h2>
+            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+        </div>
+    </div>
+
+    
+
+   
+
+    <h2>Підготовка до експерименту</h2>
+
+    <div>
+        <div>1. Запишіть другий та третій закони Ньютона</div>
+        <div><textarea class="txt_ar" id="qw_1" cols="70" rows="10"></textarea></div>
+    </div>
+
+    <h2>Експеримент</h2>
+    <div>1. Відкрийте симуляцію за покликанням:</div>
+    <a
+        href="/forces.html"
+        target="_blank"
+        >/forces.html</a>
+    <div>або скористайтеся вставкою:</div>
+    <div class="vstavka">
+        <iframe 
+        class="virt_lab" 
+        style=" width: 650px;
+                height: 550px;" 
+        src="/forces.html"
+        allowfullscreen>
+    </iframe>
+    </div>
+     
+    <div>2. Ознайомтеся з установкою для проведення експерименту.</div>
+    <div>3. Запишіть до таблиці значення мас бруска m<sub>1</sub> та тягарця m<sub>2</sub></div>
+    <div>4. Виміряйте висоту, на яку опуститься тягарець після запуску імітації. Для цього використайте "лінійку", яку можна перетягувати. Запишіть отримане значення H до таблиці.</div>
+    <div class="img_1"><img src="./img/bodies/imgexp.png" alt=""></div>
+    <div>5. Запустіть імітацію кнопкою Пуск, одночасно увімкнувши секундомір. Після того, як брусок перестане рухатися, вимкніть секундомір. Запишіть отримане значення часу руху до таблиці</div>
+    <div>6. Повторіть дослід ще 2 рази, щоразу записуючи до таблиці значення часу t.</div>    
+    
+
+    <div></div>
+    <table border="1" >
+        <tbody>
+            <tr style="height: 73.625px;">
+                <td class="td_h" id="h1"><strong>№</strong></td>
+                <td class="td_h" id="h2"><strong>Маса бруска<br><i>m</i><sub>1</sub>, кг</strong></td>
+                <td class="td_h" id="h3"><strong>Маса тягарця<br><i>m</i><sub>2</sub>, кг</strong></td>
+                <td class="td_h" id="h4"><strong>Висота падіння тягарця<br><i>H</i>, м</strong></td>
+                <td class="td_h" id="h5"><strong>Час падіння<br><i>t</i>, с</strong></td>
+                <td class="td_h" id="h6"><strong>Час падіння<br><i>t</i><sub>сер</sub>, с</strong></td>
+                <td class="td_h" id="h7"><strong>Прискорення тягарця<br><i>a</i><sub>сер</sub>, м/с<sup>2</sup></strong></td>
+                <td class="td_h" id="h8"><strong>Коефіцієнт тертя ковзання<br><i>μ</i><sub>сер</sub></strong></td>
+                <td class="td_h" id="h9"><strong>Відносна похибка<br><i>ε</i><sub>μ</sub>, % </strong></td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r1">1</td>
+                <td rowspan="3"><input class="cell" id="r1c2" type="text"></td>
+                <td rowspan="3"><input class="cell" id="r1c3" type="text"> </td>
+                <td rowspan="3"><input class="cell" id="r1c4" type="text"> </td>
+                <td><input class="cell" id="r1c5" type="text"> </td>
+                <td rowspan="3"><input class="cell" id="r1c6" type="text"> </td>
+                <td rowspan="3"><input class="cell" id="r1c7" type="text"> </td>
+                <td rowspan="3"><input class="cell" id="r1c8" type="text"> </td>
+                <td rowspan="3"><input class="cell" id="r1c9" type="text"> </td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r2">2</td>
+                <td><input class="cell" id="r2c5" type="text"> </td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r3">3</td>
+                <td><input class="cell" id="r3c5" type="text"> </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Опрацювання результатів експерименту</h2>
+    <div>1. Визначте середнє значення часу t<sub>сер</sub></div>
+    <div>2. Визначте середнє значення прискорення тіла a<sub>сер</sub> використавши формулу: </div>
+    <div><img class="f_center" src="./img/bodies/formula_a.png" alt=""></div>
+    <div>3. Визначте середнє значення коефіцієнта тертя ковзання µ<sub>сер</sub> використавши формулу: </div>
+    <div><img class="f_center" src="./img/bodies/formula_u.png" alt=""></div>
+    <div>та запишіть отримане значення до таблиці. </div>
+    <div>4. Визначте відносну похибку обчислення коефіцієнта тертя ковзання ε використавши формулу: </div>
+    <div><img class="f_center" src="./img/bodies/formula_e.png" alt=""></div>
+    <div>та запишіть отримане значення до таблиці. </div>
+
+
+    <h2>Аналіз експерименту та його результатів</h2>
+    <div>
+        Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:
+    </div>
+    <div>1) величину, яку ви вимірювали; </div>
+    <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
+    <div>2) результат вимірювання; </div>
+    <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
+    <div>2) причини похибки. </div>
+    <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
+
+
+    <h2>Творче завдання</h2>
+    <div>Запишіть план проведення експерименту щодо визначення прискорення вільного падіння з використанням установки, зображеної на рис. За можливості проведіть експеримент.</div>
+    <div class="img_2"><img src="./img/bodies/tvorche.png" alt=""></div>
+    <div><textarea class="txt_ar" id="tvorche1" cols="70" rows="10"></textarea></div>
+   
+    <div class="submit_block">
+        <button id="submin_button">Відправити</button>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

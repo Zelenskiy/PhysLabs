@@ -58,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="25.3068"
-     inkscape:cy="1825.069"
+     inkscape:zoom="0.5"
+     inkscape:cx="212.19217"
+     inkscape:cy="1983.4935"
      inkscape:document-units="mm"
      inkscape:current-layer="g960"
      inkscape:document-rotation="0"
@@ -93,10 +93,10 @@
        transform="matrix(4.1498349,0,0,3.707397,-426.78687,125.2887)"
        style="stroke:none">
       <g
-         id="g1020"
+         id="g994"
+         inkscape:export-filename="E:\Projects\PhysLabs\img\forces\gstil.png"
          inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96"
-         inkscape:export-filename="E:\Projects\PhysLabs\img\forces\all.png">
+         inkscape:export-ydpi="96">
         <rect
            style="fill:#d38d5f;stroke:none;stroke-width:0.317654;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect841"
@@ -105,10 +105,10 @@
            x="55.439034"
            y="66.551537" />
         <rect
-           style="fill:#deaa87;stroke:none;stroke-width:0.330172;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#deaa87;stroke:none;stroke-width:0.337638;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect843"
            width="3.5585728"
-           height="62.887852"
+           height="65.764275"
            x="129.64462"
            y="70.711647" />
         <rect
@@ -136,18 +136,18 @@
            inkscape:export-xdpi="96"
            inkscape:export-ydpi="96" />
         <rect
-           style="fill:#0b0a1c;fill-opacity:1;stroke:none;stroke-width:0.251512;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#0b0a1c;fill-opacity:1;stroke:none;stroke-width:0.0995688;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect862"
            width="96.145264"
-           height="2.9104166"
+           height="0.45612538"
            x="54.636459"
-           y="134.01147"
+           y="136.46576"
            inkscape:export-xdpi="96.300003"
            inkscape:export-ydpi="96.300003" />
       </g>
       <g
          id="g1617"
-         transform="translate(3.9636515,13.491735)"
+         transform="translate(138.67285,-0.4362238)"
          inkscape:export-filename="E:\Projects\PhysLabs\img\forces\metr.png"
          inkscape:export-xdpi="96"
          inkscape:export-ydpi="96">
