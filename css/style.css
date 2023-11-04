@@ -1,4 +1,3 @@
-
 body {
     font-size: 2vw;
 }
@@ -40,10 +39,10 @@ img, iframe{
 
 .txt_inp, .txt_ar{
     /* background: #eee;  */
-    height: 24px; 
+    height: 4wh; 
     width: 40vw; 
     margin-left: 20px ;
-    font-size: 2vw;
+    font-size: 3vw;
 }
 
 .txt_ar {
@@ -113,4 +112,8 @@ button:hover{
 
 .disabl:hover{
     background-color: rgb(128, 128, 128);
+}
+
+td input{
+    font-size: 3vw;
 }
