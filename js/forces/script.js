@@ -145,8 +145,33 @@ function drawLine(x1, y1, x2, y2) {
       left: box.left + pageXOffset
     };
   }
-  
-  
+
+  var draggable = document.getElementById('draggable');
+  var offsetX, offsetY;
+  var isDragging = false;
+
+  draggable.addEventListener('touchstart', function(e) {
+    var touch = e.touches[0];
+    offsetX = touch.clientX - draggable.getBoundingClientRect().left;
+    offsetY = touch.clientY - draggable.getBoundingClientRect().top;
+    isDragging = true;
+  });
+
+  draggable.addEventListener('touchmove', function(e) {
+    if (!isDragging) return;
+    var touch = e.touches[0];
+    var left = touch.clientX - offsetX;
+    var top = touch.clientY - offsetY;
+
+    draggable.style.left = left + 'px';
+    draggable.style.top = top + 'px';
+
+    e.preventDefault(); // Забороняємо прокрутку сторінки під час перетягування
+  });
+
+  draggable.addEventListener('touchend', function() {
+    isDragging = false;
+  });
 
 
 
