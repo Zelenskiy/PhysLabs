@@ -31,7 +31,7 @@ canvas {
 .pk{
     border: solid 1px;
     border-radius: 5px;
-    background: rgb(240, 158, 226);
+    background: rgb(154, 196, 87);
     padding: 15px;
     width: 420px;
     height: 180px;
@@ -51,8 +51,9 @@ canvas {
 }
 .mas_select{
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-tart;
   gap: 24px;
+  
 }
 
 .rol{
@@ -70,7 +71,7 @@ canvas {
   font-size: 20px;
 }
 
-select, button {
+select {
   padding: 5px;
   border-radius: 5px;
   min-width: 90px;
@@ -79,11 +80,23 @@ select, button {
   border: none;
   font-weight: 300;
   margin-top: 5px;
-  background-color: #BBDFA9;
+  
 }
 
 button {
-  background-color: #BBDFA9;
+  padding: 5px;
+  border-radius: 5px;
+  min-width: 90px;
+  font-size: 18px;
+  height: 36px;
+  border: none;
+  font-weight: 300;
+  margin-top: 5px;
+  background-color: #d189c5;
+}
+
+button {
+  background-color: #bbf0a1;
   padding: 7px;
   color: rgb(59, 50, 50);
 }
@@ -94,7 +107,7 @@ button {
 
 button:hover{
   box-shadow: 2px 2px 2px gray;
-  background-color: rgb(100, 208, 103);  
+  background-color: #c7e2ba;;  
 }
 select:hover{
   box-shadow: 2px 2px 2px gray;
