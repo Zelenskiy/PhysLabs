@@ -117,3 +117,6 @@ button:hover{
 td input{
     font-size: 3vw;
 }
+button:active {  
+    transform: translate(0.05em, 0.05em);
+  }
