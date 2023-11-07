@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дослідження заломлення світла</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js" defer></script>
+</head>
+
+<body>
+    <h1>Лабораторна робота №4. </h1>
+    <h2> Дослідження заломлення світла</h2>
+        <input type="text" id="sheetName" hidden value="Дослідження відбивання світла">
+    <div><strong>Мета: </strong>визначити показник заломлення скла відносно повітря. </div>
+    <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання</div>
+    <div>
+        <div class="student">
+            <h2>Впишіть ваш клас</h2>
+            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+        </div>
+        <div class="student">
+            <h2>Впишіть ваше прізвище та ім'я</h2>
+            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+        </div>
+    </div>
+
+    
+
+   
+
+    <h2>Підготовка до експерименту</h2>
+
+    <div>
+        <div>1. Запишіть закони заломлення світла</div>
+        <div><textarea class="txt_ar" id="qw_1" cols="70" rows="10"></textarea></div>
+    </div>
+
+    <h2>Експеримент</h2>
+    <div>Відкрийте симуляцію заломлення світла за посиланням:</div>
+    <a
+        href="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_uk.html">https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_uk.html</a>
+    <div>або скористайтеся вставкою:</div>
+    <div class="vstavka">
+        <iframe 
+        class="virt_lab" 
+        src="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_uk.html"
+        allowfullscreen>
+    </iframe>
+    </div>
+     
+    <div>3. Натисніть кнопку «Початок». Встановіть наступні параметри:</div>
+    <div>Середовище 1 – Повітня А, Середовище 2 – Скло.</div>
+    
+
+    <div>4. За допомогою транспортира виміряйте кут падіння та кут заломлення.</div>
+    <div>5. Повторіть дії ще кілька разів, установлюючи джерело світла під різними кутами до перпендикуляру у точку падіння.</div>
+
+
+
+    <div>Далі розраховуємо й записуємо до таблиці:</div>
+    <div></div>
+    <table border="1">
+        <tbody>
+            <tr style="height: 73.625px;">
+                <td class="td_h" id="h1"><strong>№</strong></td>
+                <td class="td_h" id="h2" style="width: 50px;"><strong>Кут падіння α, градус</strong></td>
+                <td class="td_h" id="h3"><strong>Кут заломлення γ, градус</td>
+                <td class="td_h" id="h4"><strong>Значення sin α</td>
+                <td class="td_h" id="h5"><strong>Значення sin γ</td>
+                <td class="td_h" id="h6"><strong>Показник заломлення n<sub>21</sub></td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r1">1</td>
+                <td><input class="cell" id="r1c2" type="text"></td>
+                <td><input class="cell" id="r1c3" type="text"> </td>
+                <td><input class="cell" id="r1c4" type="text"> </td>
+                <td><input class="cell" id="r1c5" type="text"> </td>
+                <td><input class="cell" id="r1c6" type="text"> </td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r2">2</td>
+                <td><input class="cell" id="r2c2" type="text"></td>
+                <td><input class="cell" id="r2c3" type="text"></td>
+                <td><input class="cell" id="r2c4" type="text"></td>
+                <td><input class="cell" id="r2c5" type="text"></td>
+                <td><input class="cell" id="r2c6" type="text"></td>
+            </tr>
+            <tr style="height: 22px;">
+                <td id="r3">3</td>
+                <td><input class="cell" id="r3c2" type="text"></td>
+                <td><input class="cell" id="r3c3" type="text"></td>
+                <td><input class="cell" id="r3c4" type="text"></td>
+                <td><input class="cell" id="r3c5" type="text"></td>
+                <td><input class="cell" id="r3c6" type="text"></td>
+            </tr>
+            
+        </tbody>
+    </table>
+    <div>Для визначення значень синусів кутів можна скористатися <a href="https://fin-calc.org.ua/ua/calculator/trigonometric/view/" target="_blank">калькулятором</a> </div>
+    <h2>Аналіз експерименту та його результатів</h2>
+    <div>
+        Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:
+    </div>
+    <div>1) яку фізичну величину ви визначали;  </div>
+    <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
+    <div>2) який результат отримали; </div>
+    <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
+    <div>3) чи залежить значення отриманої величини від кута падіння світла;</div>
+    <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
+    <div>4) у чому причини можливої похибки експерименту.</div>
+    <div><textarea class="txt_ar" id="v4" cols="70" rows="10"></textarea></div>
+
+
+    <h2>Творче завдання</h2>
+    <div>Скориставшись рисунком, продумайте та запишіть план проведення експерименту з визначення показника заломлення води відносно повітря. У разі можливості проведіть експеримент.</div>
+    <div class="img_2"><img src="./img/refract/2023-11-07_154633.png" alt=""></div>
+    <div><textarea class="txt_ar" id="tvorche1" cols="70" rows="10"></textarea></div>
+    <h2>Завдання «із зірочкою»</h2>
+    <div>Для кожного досліду оцініть відносну похибку експерименту за формулою:</div>
+    <div class="img_3"><img src="./img/refract/2023-11-07_154930.png" alt=""></div>
+    <div>де n<sub>вим</sub> – отримане під час експерименту значення показника заломлення скла; </div>
+    <div>n<sub>табл</sub> –  табличне значення показника заломлення скла, з якого виготовлена пластинка.</div>
+    <div><textarea class="txt_ar" id="problem_star" cols="70" rows="10"></textarea></div>
+    <div class="submit_block">
+        <button id="submin_button">Відправити</button>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
