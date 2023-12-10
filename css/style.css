@@ -70,6 +70,11 @@ img, iframe{
     margin-top: 24px;
     margin-bottom: 24px;
 }
+
+/* .border td {
+    border: 1px soled black;
+} */
+
 button{
     font-size: 3vw;
     border-radius: 0.5vw;
