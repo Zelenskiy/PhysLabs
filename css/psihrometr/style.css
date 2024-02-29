@@ -1,20 +1,51 @@
-.td_h {
-    padding: 5px;
-}
-.td_c {
-    width: 20px;
-}
-
-table {
-    /* background-size: 100px; */
+.panel {
+  font-size: 1rem;
+  position: fixed;
+  top: 50px;
+  right: 10px;
 }
 
-.term1 {
-    right: 84px;
-    height: 530px;
+.result_table {
+    width: 80%;
 }
-.term2 {
-    right: -7px;
-    height: 530x;
+
+
+.result_table .cell{
+    width: 90%;
 }
+
+button {
+  font-size: 3vw;
+  border-radius: 0.5vw;
+  background-color: green;
+  color: aliceblue;
+  height: 6vw;
+  width: 24vw;
+  border: none;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+button:active {
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
+  transform: translateY(2px);
+}
+
+button:focus {
+  outline: none; /* Відключаємо обводку при фокусі (для відключення некоректного відображення у певних браузерах) */
+}
+
+button:hover {
+  background-color: rgb(35, 134, 35);
+}
+
+button:active {
+  transform: translate(0.05em, 0.05em);
+}
+
+
+
+input {
+  background-color: inherit;
+}
+
 
