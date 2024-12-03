@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вимірювання індуктивності котушки</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/treskoef.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/script.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Експериментальна робота № 4 </h1>
+    <h2> Вимірювання індуктивності котушки.</h2>
+        <input type="text" id="sheetName" hidden value="Індуктивність котушки">
+    <div><strong>Мета: </strong>експериментально визначити індуктивність котушки та порівняти із
+        номінальним значенням.</div>
+    <div><strong>Обладнання:</strong> інтерактивна симуляція PhET (регульоване джерело змінної
+        напруги, вольтметр і амперметр змінного струму, котушка змінної індуктивності,
+        осцилографи, ключ, з'єднувальні дроти).</div>
+    <div>
+        <div class="student">
+            <h2>Впишіть ваш клас</h2>
+            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+        </div>
+        <div class="student">
+            <h2>Впишіть ваше прізвище та ім'я</h2>
+            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+        </div>
+    </div>
+
+    <h2>Хід роботи</h2>
+    <h2>Теоретичні відомості</h2>
+    <div>Повний опір кола, яке містить активний, індуктивний
+        опори і ємнісний опори, обчислюють за формулою:</div>
+    <div><img src="./img/inductance/f1.jpg" /></div>
+    <div style="float: right;"><img src="./img/inductance/cxema.jpg" /></div>
+    <div>Якщо ємнісний опір X<sub>C</sub> відсутній, а активний опір R
+        набагато менший за індуктивний опір котушки X<sub>L</sub>, то
+        ємнісним і активним опором можна знехтувати. Тоді повний опір кола дорівнює:</div>
+        <div><img src="./img/inductance/f2.jpg" /></div>
+    <div>Для визначення <strong>повного опору</strong> Z можна використовувати формулу закону Ома для
+        ділянки кола, вимірявши амплітудне значення змінної напруги на кінцях котушки
+        U <sub>max</sub> і амплітудне значення сили струму I <sub>max</sub> в ній: </div>
+        <div><img src="./img/inductance/f3.jpg" /></div>
+   
+        <div></div>
+    <div>Враховуючи вираз <img class="in-line" src="./img/inductance/f4.jpg" />, індуктивність котушки можна визначити за
+        формулою:</div>
+    <div><img src="./img/inductance/f4.jpg" /></div>
+
+ 
+    
+
+    <h2>Підготовка до експерименту</h2>
+     <div>1. Перейдіть за посиланням або QR-кодом та налаштуйте
+        параметри як показано на рисунку:
+        <a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-ac-virtual-lab/latest/circuit-construction-kit-ac-virtual-lab_en.html" target="_blank">
+        https://phet.colorado.edu/sims/html/circuit-construction-kit-ac-
+        virtual-lab/latest/circuit-construction-kit-ac-virtual-lab_en.html</a></div>
+        <div style="float: right;"><img src="./img/inductance/qrcode_1733238325802.png" /></div>
+    <div>2. Натисніть кнопку Advanced<img class="in-line" src="./img/inductance/pp1.jpg" /> та за допомогою повзунка
+        <img src="./img/inductance/pp.jpg" /> </div><div>
+        встановіть опір джерела змінної напруги 1 Ом (Source Resistance).</div>
+    <div>3. Складіть електричне коло (рис. 1), з’єднавши між
+        собою, такі елементи кола: регульоване джерело
+        змінної напруги <img class="in-line" src="./img/inductance/ac.jpg" />; дріт (всі елементи
+        з’єднуємо дротом); амперметр ; ключ ;
+        котушка змінної індуктивності (за рахунок зміни
+        
+        кількості витків котушки) ; вольтметр .</div>
+    <div style="text-align: center;"><img src="./img/inductance/p3.jpg" /> </div>   
+    <div style="text-align: center;">Рисунок 1</div>   
+    <div></div>
+    <div>4. Для візуального сприймання інформації
+        підключіть до котушки осцилограф для
+        спостерігання змінної електричної
+        напруги та в будь-яку точку кола
+        осцилограф для спостерігання змінної
+        сили струму (рис. 2).</div>   
+    <div style="text-align: center;"><img src="./img/inductance/p4.jpg" /> </div>   
+    <div style="text-align: center;">Рисунок 2</div>  
+    <div></div>
+    <h2>Експеримент</h2>
+    <h2>Результати вимірювань і обчислень відразу заносьте до таблиць</h2>
+    <div>1. Визначте частоту зміни напруги в мережі. Для цього в електричному колі
+        натисніть на регульоване джерело змінної напруги та в меню, що з’явилося
+        знизу зніміть покази частоти зміни напруги в мережі
+        <img class="in-line" src="./img/inductance/pp4p.jpg" />
+        . Результат занесіть до
+        таблиці. При проведенні всіх дослідів залишайте частоту незмінною.</div>   
+    <div>2. Замкніть ключ . Впродовж 5-10 секунд спостерігайте за зміною показів
+        усіх приладів. Натисніть на кнопку паузи <img class="in-line" src="./img/inductance/pp4.jpg" /></div>   
+    <div>3. Зніміть покази вольтметра. Натискайте на кнопку вперед  <img class="in-line" src="./img/inductance/pp5.jpg" /> і спостерігайте,
+        як точка на графіку рухається доти, доки не досягне найвищого положення, яке буде
+        відповідати амплітудному (максимальному) значенню напруги Umax (рис. 3).
+        Результат занесіть до таблиці.</div>   
+    <div style="text-align: center;"><img src="./img/inductance/p5.jpg" /> </div>  
+    <div style="text-align: center;">Рисунок 3</div>  
+    <div></div>
+    <div>4. Аналогічно пункту третьому зніміть покази амперметра. Натискайте на кнопку
+        вперед і спостерігайте, як точка на графіку рухається доти, доки не досягне
+        найвищого положення, яке буде відповідати амплітудному (максимальному)
+        значенню струму I max (рис. 4). Результат занесіть до таблиці.</div>   
+    <div style="text-align: center;"><img src="./img/inductance/p6.jpg" /> </div>   
+    <div style="text-align: center;">Рисунок 4</div>   
+    <div>5. Збільшіть напругу на регульованому джерелі змінної напруги та зніміть
+        покази амперметра та вольтметра як описано в пунктах 2-4. Для цього в
+        електричному колі натисніть на регульоване джерело змінної напруги та в
+        меню, що з’явилося знизу за допомогою повзунка збільште значення напруги на
+        10 – 30 В  . Натисніть на
+        кнопку плей та повторіть дії описані в пунктах 2-4. Щоб правильно
+        відображалися графіки напруги та сили струму можете змінювати їх масштаб за
+        допомогою кнопок <img class="in-line" src="./img/inductance/pp7.jpg" /></div>   
+    <div>6. Ще двічі змініть в сторону збільшення напругу на джерелі струму і зніміть
+        покази амперметра і вольтметра відповідно пунктів 2-4. Результати занесіть до
+        таблиці.</div>   
+    <div></div>   
+    <div></div>   
+
+    <div style="margin-top: 14px; text-align: right;">Таблиця 1</div>
+    <table border="1" >
+        <tbody>
+            <tr style="height: 73.625px;">
+                <td class="td_h"><strong>№ досліду</strong></td>
+                <td class="td_h"><strong>Частота
+                    зміни
+                    напруги
+                    в мережі
+                    <i>ν</i>, Гц</strong></td>
+                <td class="td_h"><strong>Амплітудне
+                    значення
+                    змінної
+                    напруги
+                    U<sub>max</sub>, В</strong></td>
+                <td class="td_h"><strong>Амплі-
+                    тудне
+                    значення
+                    сили
+                    струму
+                    I<sub>max</sub>, А</strong></td>
+                <td class="td_h"><strong>Повний
+                    опір
+                    Z, Ом</strong></td>
+                <td class="td_h"><strong>Індукти-
+                    вність
+                    котушки
+                    L, Гн (H)</strong></td>
+                <td class="td_h"><strong>Середнє
+                    значення
+                    індукти-
+                    вності
+                    котушки
+                    L<sub>сер</sub>, Гн</strong></td>
+                <td class="td_h"><strong>Відносна
+                    похибка
+                    вимірювання
+                    індуктивності
+                    ε, %</strong>
+                </td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>1</td>
+                <td rowspan="4"><input class="cell" id="freq" type="text"></td>
+                <td><input class="cell" id="U_1" type="text"></td>
+                <td><input class="cell" id="I_1" type="text"></td>
+                <td><input class="cell" id="Z_1" type="text"></td>
+                <td><input class="cell" id="L_1" type="text"></td>
+                <td rowspan="4"><input class="cell" id="L_ser" type="text"></td>
+                <td rowspan="4"><input class="cell" id="ε" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>2</td>
+                <td><input class="cell" id="U_2" type="text"></td>
+                <td><input class="cell" id="I_2" type="text"></td>
+                <td><input class="cell" id="Z_2" type="text"></td>
+                <td><input class="cell" id="L_2" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>3</td>
+                <td><input class="cell" id="U_3" type="text"></td>
+                <td><input class="cell" id="I_3" type="text"></td>
+                <td><input class="cell" id="Z_3" type="text"></td>
+                <td><input class="cell" id="L_3" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>4</td>
+                <td><input class="cell" id="U_4" type="text"></td>
+                <td><input class="cell" id="I_4" type="text"></td>
+                <td><input class="cell" id="Z_4" type="text"></td>
+                <td><input class="cell" id="L_4" type="text"></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    <h2>Опрацювання результатів експерименту</h2>
+    <div>1. Для кожного досліду обчисліть повний опір і запишіть ці значення у таблицю:</div>
+    <div><img src="./img/inductance/f6.jpg" /></div></div>
+
+    <div>2. За результатами обчислень повного опору Z розрахуйте для кожного досліду
+        індуктивність котушки і запишіть ці значення у таблицю:</div>
+    
+    
+    <div><img src="./img/inductance/f8.jpg" /></div></div>
+<div>4. Визначте номінальне значення індуктивності котушки L<sub>ном</sub>. Для цього в
+    електричному колі натисніть на котушку <img class="in-line" src="./img/inductance/pp61.jpg" /> 
+    зніміть покази індуктивності котушки L<sub>ном</sub><img class="in-line" src="./img/inductance/pp71.jpg" /></div>
+<div>5. Обчисліть відносну похибку вимірювань індуктивності котушки і запишіть це
+    значення у таблицю:</div>
+<div><img src="./img/inductance/f9.jpg" /></div></div>
+
+
+
+    <h2>Аналіз експерименту та його результатів</h2>
+    <div>
+        Проаналізуйте експеримент і його результати. За результатами експерименту сформулюйте і запишіть висновок, у якому зазначте: 
+    </div>
+    <div>1) яку фізичну величину ви вимірювали;</div>
+    <div><textarea class="txt_ar" id="v1" cols="70" rows="5"></textarea></div>
+    <div>2) яким є результат вимірювання; </div>
+    <div><textarea class="txt_ar" id="v2" cols="70" rows="5"></textarea></div>
+    <div>3) чи залежить індуктивність котушки від
+        поданої напруги;</div>
+    <div><textarea class="txt_ar" id="v3" cols="70" rows="5"></textarea></div>
+    <div>4) причини похибки.</div>
+    <div><textarea class="txt_ar" id="v4" cols="70" rows="5"></textarea></div>
+
+
+    <div class="submit_block">
+        <button id="submin_button">Відправити</button>
+    </div>
+
+</body>
+
+</html>
