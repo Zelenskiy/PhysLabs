@@ -1,169 +1,345 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Перевірка законів послідовного і паралельного з’єднань провідників</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Вимірювання ЕРС і внутрішнього опору джерела струму</title>
+    <link rel="stylesheet" href="./css/n-style.css">
     <script src="./js/script.js" defer></script>
+    <style>
+        /* Додаткові стилі специфічні для цієї роботи */
+        .img_1, .img_2, .img_3, .img_4 {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img_1 img, .img_2 img, .img_3 img, .img_4 img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 13px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        textarea.cell {
+            font-size: 16px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .td_h {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 12px 8px;
+        }
+
+        table td {
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            padding: 10px 5px;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .link-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .instruction-step {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+        }
+
+        .formula-box img {
+            display: block;
+            margin: 15px auto;
+            max-width: 100%;
+        }
+
+        .txt_ar {
+            width: 100%;
+        }
+
+        sub, sup {
+            font-size: 0.75em;
+        }
+
+        .table-title {
+            text-align: right;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            font-size: 1.1em;
+            color: #667eea;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 11px;
+            }
+
+            .cell {
+                font-size: 11px;
+                padding: 5px;
+            }
+
+            .td_h {
+                padding: 8px 4px;
+            }
+
+            textarea.cell {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Експериментальна робота № 2 </h1>
-    <h2> Вимірювання EPC і внутрішнього опору джерела струму.</h2>
-        <input type="text" id="sheetName" hidden value="Електрорушійна сила">
-    <div><strong>Мета: </strong>визначити ЕРС і внутрішній опір батареї гальванічних елементів на основі 
-        результатів вимірювань сили струму в колі та напруги на зовнішній ділянці кола.  </div>
-    <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання</div>
-    <div>
-        <div class="student">
-            <h2>Впишіть ваш клас</h2>
-            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Експериментальна робота № 2</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Вимірювання ЕРС і внутрішнього опору джерела струму</h2>
         </div>
-        <div class="student">
-            <h2>Впишіть ваше прізвище та ім'я</h2>
-            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Електрорушійна сила">
+
+            <div class="info-box">
+                <div><strong>Мета:</strong> визначити ЕРС і внутрішній опір батареї гальванічних елементів на основі результатів вимірювань сили струму в колі та напруги на зовнішній ділянці кола.</div>
+            </div>
+
+            <div class="info-box">
+                <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання</div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="link-section">
+                <p style="margin-bottom: 10px;"><span class="step-number">1</span> Відкрийте симуляцію за покликанням:</p>
+                <p style="text-align: center; font-size: 1.1em;">
+                    <a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc-virtual-lab/latest/circuit-construction-kit-dc-virtual-lab_all.html" target="_blank">phet.colorado.edu - Circuit Construction Kit</a>
+                </p>
+            </div>
+
+            <div class="instruction-step">
+                <p style="margin-bottom: 10px;"><span class="step-number">2</span><strong>Ознайомтеся з середовищем для моделювання</strong></p>
+                <p style="margin-left: 45px;">
+                    <a href="https://youtu.be/2QioKPyE7QI" target="_blank">Відео про роботу з середовищем для моделювання</a>
+                </p>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">3</span><strong>Складіть електричне коло за накресленою вами схемою 1</strong></p>
+                <div class="img_1">
+                    <img src="./img/elmforce/pict1.png" alt="Схема електричного кола">
+                </div>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">4</span><strong>Встановіть внутрішній опір джерела струму на одну поділку регулятором 2 (див. мал.)</strong></p>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">5</span><strong>Для забезпечення реалістичності експерименту встановіть опір з'єднувальних провідників, трохи посунувши регулятор 1 (див. мал.)</strong></p>
+                <div class="img_2">
+                    <img src="./img/elmforce/pict2.png" alt="Регулятори опору">
+                </div>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">6</span><strong>Встановіть опір резистора на 44 Ом</strong></p>
+                <p style="margin-left: 45px; margin-top: 10px;">Щоб змінити опір резистора, клікніть його мишкою.</p>
+                <div class="img_3">
+                    <img src="./img/elmforce/pict3.png" alt="Налаштування резистора">
+                </div>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">7</span><strong>Виміряйте напругу на клемах джерела струму у випадку, коли ключ розімкнено</strong></p>
+                <p style="margin-left: 45px; margin-top: 10px;">(отримане значення відповідатиме ЕРС джерела струму – ε<sub>вим</sub>). Отримане значення запишіть до таблиці.</p>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">8</span><strong>Замкніть ключ і виміряйте силу струму I в колі та напругу U на зовнішній ділянці кола</strong></p>
+                <p style="margin-left: 45px; margin-top: 10px;">Отримані значення запишіть до таблиці.</p>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">9</span><strong>Змініть значення опору резистора та виміряйте силу струму I в колі та напругу U на зовнішній ділянці кола</strong></p>
+                <p style="margin-left: 45px; margin-top: 10px;">Отримані значення запишіть до таблиці в рядок № 2.</p>
+            </div>
+
+            <div class="instruction-step">
+                <p><span class="step-number">10</span><strong>Повторіть п.9, щоразу записуючи отримані значення до таблиці в рядки 3, 4, 5</strong></p>
+            </div>
+
+            <div class="table-title">Таблиця 1</div>
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <td class="td_h"><strong>№ досліду</strong></td>
+                        <td class="td_h"><strong>ЕРС<br>ε<sub>вим</sub></strong></td>
+                        <td class="td_h"><strong>Сила струму<br>I, А</strong></td>
+                        <td class="td_h"><strong>Напруга<br>U, В</strong></td>
+                        <td class="td_h"><strong>Внутрішній опір<br>r, Ом</strong></td>
+                        <td class="td_h"><strong>Середнє значення<br>r<sub>сер</sub>, Ом</strong></td>
+                        <td class="td_h"><strong>Результати вимірювань:<br>r = r<sub>сер</sub> ± ∆r, Ом<br>ε = ε<sub>вим</sub> ± ∆ε, В</strong></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td rowspan="5"><input class="cell" id="r1c2" type="text"></td>
+                        <td><input class="cell" id="r1c3" type="text"></td>
+                        <td><input class="cell" id="r1c4" type="text"></td>
+                        <td><input class="cell" id="r1c5" type="text"></td>
+                        <td rowspan="5"><input class="cell" id="r1c6" type="text"></td>
+                        <td rowspan="5"><textarea class="cell" id="r1c7" rows="3"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input class="cell" id="r2c3" type="text"></td>
+                        <td><input class="cell" id="r2c4" type="text"></td>
+                        <td><input class="cell" id="r2c5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><input class="cell" id="r3c3" type="text"></td>
+                        <td><input class="cell" id="r3c4" type="text"></td>
+                        <td><input class="cell" id="r3c5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><input class="cell" id="r4c3" type="text"></td>
+                        <td><input class="cell" id="r4c4" type="text"></td>
+                        <td><input class="cell" id="r4c5" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><input class="cell" id="r5c3" type="text"></td>
+                        <td><input class="cell" id="r5c4" type="text"></td>
+                        <td><input class="cell" id="r5c5" type="text"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <div class="formula-box">
+                <p><strong>1.</strong> Скориставшись формулою, визначте внутрішній опір r джерела струму за результатом кожного досліду та середнє значення внутрішнього опору (r<sub>сер</sub>):</p>
+                <img src="./img/elmforce/f1.png" alt="Формула внутрішнього опору">
+                <img src="./img/elmforce/f2.png" alt="Формула середнього значення">
+                <p style="margin-top: 10px;">Результати занесіть до таблиці.</p>
+            </div>
+
+            <div class="formula-box">
+                <p><strong>2.</strong> Оцініть абсолютну похибку вимірювання ЕРС джерела струму:</p>
+                <p style="margin: 10px 0;">∆ε = ∆ε<sub>прил</sub> + ∆ε<sub>вип</sub>,</p>
+                <p style="margin-left: 20px;">де ∆ε<sub>прил</sub> – похибка вольтметра (див. Додаток 2);</p>
+                <p style="margin-left: 20px;">∆ε<sub>вип</sub> – випадкова похибка (похибка відліку), яка в даному випадку дорівнює половині ціни поділки шкали вольтметра.</p>
+                <p style="margin-top: 10px;"><strong>У нас вольтметр цифровий, тому візьміть значення:</strong></p>
+                <p style="margin-left: 20px; font-weight: 600;">∆ε<sub>прил</sub> = ∆ε<sub>вип</sub> = 0,01 В</p>
+                <p style="margin-top: 10px;">Результати занесіть до таблиці.</p>
+            </div>
+
+            <div class="formula-box">
+                <p><strong>3.</strong> Оцініть абсолютну (∆r) та відносну (ε<sub>r</sub>) похибки вимірювання внутрішнього опору джерела струму:</p>
+                <img src="./img/elmforce/f3.png" alt="Формули похибок">
+                <p style="margin-top: 10px;">Результати занесіть до таблиці.</p>
+            </div>
+
+            <div class="formula-box">
+                <p><strong>4.</strong> Округліть результати, скориставшись правилами округлення (абсолютну похибку завжди округлюють до однієї значущої цифри із завищенням, а результат вимірювання – до величини розряду, що залишився в абсолютній похибці після округлення), і подайте результати вимірювання ЕРС і внутрішнього опору у вигляді:</p>
+                <img src="./img/elmforce/f4.png" alt="Формат результатів">
+                <p style="margin-top: 10px;">Результати занесіть до таблиці.</p>
+            </div>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+
+            <p style="margin: 20px 0;">Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:</p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) які фізичні величини ви вимірювали; значення якої величини було встановлено шляхом прямих вимірювань, а якої – непрямих;</strong></p>
+                <textarea class="txt_ar" id="v1" rows="10"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) якими є результати вимірювань;</strong></p>
+                <textarea class="txt_ar" id="v2" rows="10"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>3) вимірювання якої величини дає найбільшу похибку.</strong></p>
+                <textarea class="txt_ar" id="v3" rows="10"></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submin_button">Відправити</button>
+            </div>
         </div>
     </div>
-
-    <h2>Експеримент</h2>
-    <div>1. Відкрийте симуляцію за покликанням:</div>
-    <a
-        href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc-virtual-lab/latest/circuit-construction-kit-dc-virtual-lab_all.html"
-        target="_blank"
-        >phet.colorado.edu</a>
-
-    <div>2. Ознайомтеся з середовищем для моделювання.</div>
-    <a
-    href="https://youtu.be/2QioKPyE7QI"
-    target="_blank"
-    >Відео про роботу з седеровищем для моделювання</a>
-    <div>3. Складіть електричне коло за накресленою вами схемою 1. </div>
-    <div class="img_1"><img src="./img/elmforce/pict1.png" alt=""></div>
-    <div>4. Встановіть внутрішній опір джерела струму на одну поділку регулятором 2 (див.мал) </div>
-    <div>5. Для забезпечення реалістичності експерименту
-        встановіть опір з'єднуваьних провідників трохи посунувши регулятор 1 (див.мал) </div>
-    <div class="img_2"><img src="./img/elmforce/pict2.png" alt=""></div>
-    <div>6. Встановіть опір резистора на 44 Ом. Щоб змінити опір резистора, клікніть його мишкою.</div>
-    <div class="img_3"><img src="./img/elmforce/pict3.png" alt=""></div>
-    <div>7. Виміряйте напругу на клемах джерела струму у випадку, коли ключ розімкнено 
-        (отримане значення відповідатиме ЕРС джерела струму – ε<sub>вим</sub>)
-        Отримане значення запишіть до таблиці.
-    </div>
-    <div>8. Замкніть ключ і виміряйте силу струму I в колі та напругу U на зовнішній ділянці кола. 
-        Отримані значення запишіть до таблиці.
-    </div>
-    <div>9. Змініть значення опору резистора та виміряйте силу струму I в колі та напругу U на зовнішній ділянці кола. 
-        Отримані значення запишіть до таблиці в рядок № 2.
-    </div>
-    <div>10. Повторіть п.9, щоразу записуючи отримані значення до таблиці в рядки 3, 4, 5.
-    </div>
-
-    <div style="margin-top: 14px; text-align: right;">Таблиця 1</div>
-    <table border="1" >
-        <tbody>
-            <tr style="height: 73.625px;">
-                <td class="td_h"><strong>№ досліду</strong></td>
-                <td class="td_h"><strong>ЕРС<br>ε<sub>вим</sub></strong></td>
-                <td class="td_h"><strong>Сила струму I, А</strong></td>
-                <td class="td_h"><strong>Напруга U, В</strong></td>
-                <td class="td_h"><strong>Внутрішній опір r, Ом</strong></td>
-                <td class="td_h"><strong>Середнє значення внутрішнього опору r<sub>сер</sub>,Ом</strong></td>
-                <td class="td_h"><strong>Результати вимірювань:</strong><br>
-                    <strong> r = r<sub>сер</sub> ± ∆r, Ом</strong><br>
-                    <strong> ε = ε<sub>вим</sub> ± ∆ε, В</strong><br>
-                </td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>1</td>
-                <td rowspan="5"><input class="cell" id="r1c2" type="text"></td>
-                <td><input class="cell" id="r1c3" type="text"></td>
-                <td><input class="cell" id="r1c4" type="text"></td>
-                <td><input class="cell" id="r1c5" type="text"></td>
-                <td rowspan="5"><input class="cell" id="r1c6" type="text"></td>
-                <td rowspan="5"><textarea style="font-size: 2vw;" class="cell" id="r1c7" cols="70" rows="2"></textarea></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>2</td>
-                <td><input class="cell" id="r2c3" type="text"></td>
-                <td><input class="cell" id="r2c4" type="text"></td>
-                <td><input class="cell" id="r2c5" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>3</td>
-                <td><input class="cell" id="r3c3" type="text"></td>
-                <td><input class="cell" id="r3c4" type="text"></td>
-                <td><input class="cell" id="r3c5" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>4</td>
-                <td><input class="cell" id="r4c3" type="text"></td>
-                <td><input class="cell" id="r4c4" type="text"></td>
-                <td><input class="cell" id="r4c5" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>5</td>
-                <td><input class="cell" id="r5c3" type="text"></td>
-                <td><input class="cell" id="r5c4" type="text"></td>
-                <td><input class="cell" id="r5c5" type="text"></td>
-            </tr>
-
-        </tbody>
-    </table>
-
-    <h2>Опрацювання результатів експерименту</h2>
-
-
-    <div>
-        1. Скориставшись формулою<br><img src="./img/elmforce/f1.png" />,<br> 
-        визначте внутрішній опір r джерела струму 
-        за результатом кожного досліду та середнє значення внутрішнього опору (r<sub>сер</sub>):<br>
-        <img src="./img/elmforce/f2.png" /><br>
-        Результати занесіть до таблиць.
-    </div>
-    <div>
-        2. Оцініть абсолютну похибку вимірювання ЕРС джерела струму: 
-            ∆ε = ∆ε<sub>прил</sub> + ∆ε<sub>вип</sub>, <br>
-            де ∆ε<sub>прил</sub> – похибка вольтметра (див. Додаток 2); <br>
-            ∆ε<sub>вип</sub> – випадкова похибка (похибка відліку),
-            яка в даному випадку дорівнює половині ціни поділки шкали вольтметра.<br>
-            У нас вольтметр цифровий, тому візьміть значення ∆ε<sub>прил</sub> = ∆ε<sub>вип</sub> = 0,01 В.<br>
-        Результати занесіть до таблиці.
-    </div>
-    <div>
-        3. Оцініть абсолютну (∆r) та відносну (ε<sub>r</sub>) 
-        похибки вимірювання внутрішнього опору джерела струму:<br>
-        <img class="img_3" src="./img/elmforce/f3.png" /><br>
-        Результати занесіть до таблиць.
-    </div>
-    <div>
-        4. Округліть результати, скориставшись правилами округлення 
-        (абсолютну похибку завжди округлюють до однієї значущої цифри із завищенням, 
-        а результат вимірювання – до величини розряду, що залишився в абсолютній похибці 
-        після округлення), 
-        і подайте результати вимірювання ЕРС і внутрішнього опору у вигляді: <br>
-        <img class="img_4" src="./img/elmforce/f4.png" /><br>
-        Результати занесіть до таблиць.
-    </div>
-
-    <h2>Аналіз експерименту та його результатів</h2>
-    <div>
-        Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:
-    </div>
-    <div>1) які фізичні величини ви вимірювали; значення якої величини було встановлено шляхом прямих вимірювань, а якої – непрямих;  </div>
-    <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
-    <div>2) якими є результати вимірювань; </div>
-    <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
-    <div>3) вимірювання якої величини дає найбільшу похибку.</div>
-    <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
-
-
-    <div class="submit_block">
-        <button id="submin_button">Відправити</button>
-    </div>
-
 </body>
-
 </html>

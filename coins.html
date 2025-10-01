@@ -1,110 +1,301 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <title></title>
-<script type="text/javascript">
-	var max =128;
-	var heads = 0;
-	var tails = 0;
-</script>
-<style type="text/css">
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Експериментальна робота №8 - Монети</title>
+    <link rel="stylesheet" href="../css/n-style.css">
+    <style>
+        /* Додаткові стилі для цієї роботи */
+        .experiment-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 30px 0;
+        }
 
-input {
-  font-size: 34px;
+        .input-group {
+            margin: 25px 0;
+        }
 
-}
+        .input-group label {
+            display: block;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
 
-label {
-  font-size: 42px;
-}
+        .input-group input {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            font-size: 1.5em;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
 
-legend {
-  font-size: 42px;
-}
+        .input-group input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+        }
 
-.my1 {
-  font-size: 34px;
+        .input-group input:read-only {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
 
-}
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
 
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
 
+        .result-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        }
 
-</style>
+        .result-box.heads {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
 
- </head>
- <body style="background: #f0f0f0">
-<SCRIPT>
+        .result-box.tails {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
 
-/*
-function getRandomIntOld(min, max){
-	var k;
-	k = 0;
-	var rn = Math.floor(Math.random() * (max - min + k)) + min;
-	
-  	return rn;
-}*/
+        .result-label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
 
-function getRandomInt(max){
-	var rn = 0;
-	for (let i=0; i<=max; i++){
-		if (Math.random()<0.5001) rn++;
-	}
-  	return rn;
-}
+        .result-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
 
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
 
+        .btn-experiment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.4em;
+            font-weight: 600;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
 
-function shake(){
-	document.getElementById('text_id').value = max;
-	heads = getRandomInt(max);
-	if (heads>max) heads = max;
-	tails = max - heads;
-	document.getElementById('lbl_1').value = heads;
-	document.getElementById('lbl_2').value = tails;
+        .btn-experiment:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
+        }
 
-	max = heads;
-}
+        .btn-experiment:active {
+            transform: translateY(-1px);
+        }
 
-function inputNum(){
-	max = parseInt(document.getElementById('text_id').value);
-}
+        .btn-reset {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
 
-</SCRIPT>
+        .instruction-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #1976d2;
+        }
 
+        .instruction-box h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
 
+        .instruction-box ul {
+            list-style-position: inside;
+        }
 
+        .instruction-box li {
+            margin: 10px 0;
+            color: #333;
+        }
 
-<div class="container-fluid">
-		<legend >Фізика 11. Експериментальна робота №8</legend>
-		<div  class="col-md-1 fix">
-			<label  class="">Всього:</label>
-			<input  type="text"  id="text_id" aria-describedby="emailHelp"  name="count" onchange="inputNum();" value="128">
-		</div>
-		
-		<div  class="col-md-1 fix">
-			<label >Орел:</label>
-			<input  type="text"  id="lbl_1">
-		</div>
-		
-		<div  class="col-md-1 fix">
-			<label >Решка:</label>
-			<input  type="text"  id="lbl_2">
-		</div><br>
-		<div >
-	        <label > </label>
-			<button  class="my1 btn btn-primary "  id="btn" onclick="shake();">Підкинути</button>
-			<button class="my1 btn btn-primary "  id="btn2" onclick="location.reload();">Оновити</button>
+        @media (max-width: 768px) {
+            .input-group input {
+                font-size: 1.2em;
+            }
+
+            .result-value {
+                font-size: 2em;
+            }
+
+            .btn-experiment {
+                font-size: 1.2em;
+                padding: 15px 35px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Експериментальна робота №8</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Моделювання випадкових процесів</h2>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <p><strong>Мета:</strong> Дослідити закономірності випадкових процесів на прикладі підкидання монет. Вивчити розподіл результатів при великій кількості випробувань.</p>
+            </div>
+
+            <div class="instruction-box">
+                <h3>📋 Інструкція до роботи:</h3>
+                <ul>
+                    <li>У полі "Всього" вкажіть кількість монет для експерименту (за замовчуванням 128)</li>
+                    <li>Натисніть кнопку "Підкинути" для виконання експерименту</li>
+                    <li>Програма випадковим чином визначить кількість "орлів" і "решок"</li>
+                    <li>Результат "Орел" стає новим значенням "Всього" для наступного кроку</li>
+                    <li>Повторюйте експеримент, спостерігаючи за зменшенням кількості монет</li>
+                    <li>Для початку нового експерименту натисніть "Оновити"</li>
+                </ul>
+            </div>
+
+            <div class="experiment-panel">
+                <div class="input-group">
+                    <label for="text_id">🪙 Всього монет:</label>
+                    <input type="number" id="text_id" value="128" min="1" max="1000">
+                </div>
+
+                <div class="results-container">
+                    <div class="result-box heads">
+                        <div class="result-label">Орел</div>
+                        <div class="result-value" id="lbl_1">0</div>
+                    </div>
+                    <div class="result-box tails">
+                        <div class="result-label">Решка</div>
+                        <div class="result-value" id="lbl_2">0</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-experiment" onclick="shake()">🎲 Підкинути</button>
+                    <button class="btn-experiment btn-reset" onclick="location.reload()">🔄 Оновити</button>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3 style="color: #667eea; margin-bottom: 15px;">💡 Фізичний зміст експерименту</h3>
+                <p>Цей експеримент демонструє:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Закон великих чисел:</strong> При великій кількості випробувань відносна частота події прямує до її ймовірності</li>
+                    <li><strong>Експоненційний розпад:</strong> Зменшення кількості "орлів" при кожному кроці нагадує радіоактивний розпад</li>
+                    <li><strong>Статистичні флуктуації:</strong> Випадкові відхилення від очікуваного значення 50/50</li>
+                </ul>
+            </div>
+
+            <div class="creative-task">
+                <h2>Завдання для аналізу</h2>
+                <ol style="margin-left: 30px; margin-top: 15px;">
+                    <li>Проведіть експеримент 5-7 разів, починаючи з 128 монет</li>
+                    <li>Запишіть послідовність результатів "Орел" після кожного кроку</li>
+                    <li>Побудуйте графік залежності кількості "орлів" від номера кроку</li>
+                    <li>Порівняйте отримані результати з очікуваним значенням (половина від попереднього)</li>
+                    <li>Поясніть, чому результати можуть відрізнятися від теоретичних</li>
+                </ol>
+            </div>
+        </div>
     </div>
 
-		
-</div>
+    <script>
+        var max = 128;
+        var heads = 0;
+        var tails = 0;
 
+        function getRandomInt(max) {
+            var rn = 0;
+            for (let i = 0; i <= max; i++) {
+                if (Math.random() < 0.5001) rn++;
+            }
+            return rn;
+        }
 
+        function shake() {
+            max = parseInt(document.getElementById('text_id').value);
+            if (isNaN(max) || max < 1) {
+                alert('Будь ласка, введіть коректне число монет (від 1)');
+                return;
+            }
+            
+            heads = getRandomInt(max);
+            if (heads > max) heads = max;
+            tails = max - heads;
+            
+            document.getElementById('lbl_1').textContent = heads;
+            document.getElementById('lbl_2').textContent = tails;
+            
+            // Оновлюємо значення для наступного кроку
+            max = heads;
+            document.getElementById('text_id').value = max;
+            
+            // Анімація результатів
+            animateResults();
+        }
 
+        function animateResults() {
+            const headsBox = document.querySelector('.result-box.heads');
+            const tailsBox = document.querySelector('.result-box.tails');
+            
+            headsBox.style.transform = 'scale(1.1)';
+            tailsBox.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                headsBox.style.transform = 'scale(1)';
+                tailsBox.style.transform = 'scale(1)';
+            }, 300);
+        }
 
-<P ><A class="  mr-3  ml-3 small" href="http://www.ho.ua/">Хостинг в Україні безкоштовно</A></P>
- </body>
+        function inputNum() {
+            max = parseInt(document.getElementById('text_id').value);
+            if (isNaN(max) || max < 1) {
+                document.getElementById('text_id').value = 1;
+                max = 1;
+            }
+        }
+
+        // Додаємо обробник для поля вводу
+        document.getElementById('text_id').addEventListener('change', inputNum);
+        document.getElementById('text_id').addEventListener('input', inputNum);
+    </script>
+</body>
 </html>
