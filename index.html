@@ -1,71 +1,471 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title></title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторні роботи з фізики</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
- </head>
- <body >
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
- <!-- Example split danger button -->
- <div class="btn-group">
-  <button type="button" class="btn btn-primary">9 клас</button>
-  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div class="dropdown-menu">
-   <a class="dropdown-item" href="./geiger/index.html">Дозиметр радіометр</a>
-<!--   <a class="dropdown-item" href="#">Another action</a>-->
-<!--   <a class="dropdown-item" href="#">Something else here</a>-->
-   <div class="dropdown-divider"></div>
-<!--   <a class="dropdown-item" href="#">Separated link</a>-->
-  </div>
- </div>
- <div class="btn-group">
-  <button type="button" class="btn btn-secondary">10 клас</button>
-  <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div class="dropdown-menu">
-   <a class="dropdown-item" href="./acceleration.html">Лабораторна робота № 1</a>
-   <a class="dropdown-item" href="./gravity.html">Лабораторна робота № 2</a>
-   <a class="dropdown-item" href="./bodies.html">Лабораторна робота № 3</a>
-   <a class="dropdown-item" href="https://docs.google.com/forms/d/e/1FAIpQLSfv-wVqpoAs5DO54gNGEFCJ7FFSb2s8IJyM1m9NllWyJx7O3Q/viewform?usp=sf_link">Лабораторна робота № 4</a>
-   <a class="dropdown-item" href="./pendulum.html">Лабораторна робота № 5</a>
-   <a class="dropdown-item" href="./focus.html">Лабораторна робота № 6</a>
-   <a class="dropdown-item" href="./psihrometr.html">Лабораторна робота № 7</a>
-   <div class="dropdown-divider"></div>
-  </div>
- </div>
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
 
- <div class="btn-group">
-  <button type="button" class="btn btn-success">11 клас</button>
-  <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-   <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div class="dropdown-menu">
-   <a class="dropdown-item" href="./circuits.html">Експериментальна робота №1</a>
-   <a class="dropdown-item" href="./elmforce.html">Експериментальна робота №2</a>
-   <a class="dropdown-item" href="./treskoef.html">Експериментальна робота №3</a>
-   <a class="dropdown-item" href="./inductance.html">Експериментальна робота №4</a>
-   <a class="dropdown-item" href="./coins/index.html">Експериментальна робота №8</a>
-   <a class="dropdown-item" href="./tracker/index.html">Експериментальна робота №9</a>
-<!--   <a class="dropdown-item" href="#">Another action</a>-->
-<!--   <a class="dropdown-item" href="#">Something else here</a>-->
-   <div class="dropdown-divider"></div>
-<!--   <a class="dropdown-item" href="#">Separated link</a>-->
-  </div>
- </div>
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 0.8s ease;
+        }
 
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease;
+        }
 
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            animation: fadeIn 1s ease;
+        }
 
+        .class-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
 
- <br><br>
- 
- </body>
+        .class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+        }
+
+        .class-card.grade-9::before {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .class-card.grade-10::before {
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .class-card.grade-11::before {
+            background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .class-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .class-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .grade-9 .class-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .grade-10 .class-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .grade-11 .class-icon {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .class-title {
+            flex: 1;
+        }
+
+        .class-title h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .class-title span {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .labs-list {
+            list-style: none;
+        }
+
+        .lab-item {
+            margin-bottom: 12px;
+        }
+
+        .lab-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 20%);
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .lab-link:hover::before {
+            left: 100%;
+        }
+
+        .lab-link:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .grade-9 .lab-link:hover {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .grade-10 .lab-link:hover {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .grade-11 .lab-link:hover {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .lab-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .grade-9 .lab-link:hover .lab-number {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .grade-10 .lab-link:hover .lab-number {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .grade-11 .lab-link:hover .lab-number {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .lab-text {
+            flex: 1;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .lab-link:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: white;
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .class-card {
+                padding: 20px;
+            }
+
+            .class-title h2 {
+                font-size: 1.6em;
+            }
+
+            .class-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚛️ Лабораторні роботи з фізики</h1>
+        <p>Виберіть ваш клас та лабораторну роботу</p>
+    </div>
+
+    <div class="container">
+        <!-- 9 клас -->
+        <div class="class-card grade-9">
+            <div class="class-header">
+                <div class="class-icon">9</div>
+                <div class="class-title">
+                    <h2>9 клас</h2>
+                    <span>2 лабораторні роботи</span>
+                </div>
+            </div>
+            <ul class="labs-list">
+                <li class="lab-item">
+                    <a href="./emi.html" class="lab-link">
+                        <span class="lab-number">2</span>
+                        <span class="lab-text">Спостереження явища електромагнітної індукції</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./geiger/index.html" class="lab-link">
+                        <span class="lab-number">📊</span>
+                        <span class="lab-text">Дозиметр радіометр</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 10 клас -->
+        <div class="class-card grade-10">
+            <div class="class-header">
+                <div class="class-icon">10</div>
+                <div class="class-title">
+                    <h2>10 клас</h2>
+                    <span>7 лабораторних робіт</span>
+                </div>
+            </div>
+            <ul class="labs-list">
+                <li class="lab-item">
+                    <a href="./acceleration.html" class="lab-link">
+                        <span class="lab-number">1</span>
+                        <span class="lab-text">Визначення прискорення тіла</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./gravity.html" class="lab-link">
+                        <span class="lab-number">2</span>
+                        <span class="lab-text">Вивчення руху тіла по колу</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./bodies.html" class="lab-link">
+                        <span class="lab-number">3</span>
+                        <span class="lab-text">Дослідження руху зв’язаних тіл</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfv-wVqpoAs5DO54gNGEFCJ7FFSb2s8IJyM1m9NllWyJx7O3Q/viewform?usp=sf_link" class="lab-link" target="_blank">
+                        <span class="lab-number">4</span>
+                        <span class="lab-text">Визначення центра мас плоскої фігури</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./pendulum.html" class="lab-link">
+                        <span class="lab-number">5</span>
+                        <span class="lab-text">Дослідження коливань маятника</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./focus.html" class="lab-link">
+                        <span class="lab-number">6</span>
+                        <span class="lab-text">Дослідження заломлення світла</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./psihrometr.html" class="lab-link">
+                        <span class="lab-number">7</span>
+                        <span class="lab-text">Робота з психрометром</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 11 клас -->
+        <div class="class-card grade-11">
+            <div class="class-header">
+                <div class="class-icon">11</div>
+                <div class="class-title">
+                    <h2>11 клас</h2>
+                    <span>6 експериментальних робіт</span>
+                </div>
+            </div>
+            <ul class="labs-list">
+                <li class="lab-item">
+                    <a href="./circuits.html" class="lab-link">
+                        <span class="lab-number">1</span>
+                        <span class="lab-text">Дослідження електричних кіл</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./elmforce.html" class="lab-link">
+                        <span class="lab-number">2</span>
+                        <span class="lab-text">Вимірювання ЕРС та внутрішнього опору</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./treskoef.html" class="lab-link">
+                        <span class="lab-number">3</span>
+                        <span class="lab-text">Визначення температурного коефіцієнта</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./inductance.html" class="lab-link">
+                        <span class="lab-number">4</span>
+                        <span class="lab-text">Дослідження індуктивності</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./coins/index.html" class="lab-link">
+                        <span class="lab-number">8</span>
+                        <span class="lab-text">Експеримент з монетами</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+                <li class="lab-item">
+                    <a href="./tracker/index.html" class="lab-link">
+                        <span class="lab-number">9</span>
+                        <span class="lab-text">Трекер руху</span>
+                        <span class="arrow">→</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Лабораторні роботи з фізики | Всі права захищені</p>
+    </div>
+</body>
 </html>

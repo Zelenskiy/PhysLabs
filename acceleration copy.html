@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визначення прискорення тіла в ході рівноприскореного прямолінійного руху</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/treskoef.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="./css/n-style.css">
+</head>
+
+<body>
+
+    <h1>Лабораторна робота № 1 </h1>
+    <h2> Визначення прискорення тіла в ході рівноприскореного прямолінійного руху.</h2>
+    <input type="text" id="sheetName" hidden value="Прискорення">
+    <p><strong>Мета: </strong>визначити прискорення руху кульки, яка скочується похилою поверхнею.</p>
+    <p><strong>Обладнання:</strong> похила поверхня, кулька, секундомір, вимірювальна стрічка</p>
+    <p>
+    <div class="student">
+        <h2>Впишіть ваш клас</h2>
+        <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+    </div>
+    <div class="student">
+        <h2>Впишіть ваше прізвище та ім'я</h2>
+        <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+    </div>
+    </p>
+
+    <h2>Підготовка до експерименту</h2>
+    <div>
+        <p>Підготуйте похилу поверхню. Це може бути стіл, під дві ніжки якого підкладіть невеликі предмети.</p>
+        <p>Підготуйте кульку невеликих розмірів. Це може бути кулька для настільного тенісу, металева кулька від
+            підшипника. Можна також використати предмет циліндричної форми, якщо ви не знайдете кульки.</p>
+        <p>Пустіть по поверхні стола кульку, переконайтеся, що кулька котиться по прямій траєкторій.</p>
+        <p>Підберіть кут нахилу таким, щоб кулька котилася не менш ніж 1 секунду. Штовхати кульку не потрібно.</p>
+        <p>Якщо кулька котиться не по прямій, можна покласти довгу планку, опираючись збоку на яку котитиметься ваша кулька.
+        </p>
+        <p>Відмітьте точку, від якої ви пускатимете кульку.</p>
+        <p>Відмітьте точку, до якої котитиметься кулька.</p>
+        <p>Підготуйте секундомір. Це може бути секундомір у вашому мобільному телефоні.</p>
+    </div>
+    <iframe width="552" height="360" src="https://www.youtube.com/embed/WLStaT3cTtI" title="схема установки" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <h2 style="font-weight:800; color: red;">ВАЖЛИВО!!!</h2>
+    <p style="font-weight:600; color: blue;">Сфотографуйте вашу установку та надішліть фото через nz.ua у Дистанційному
+        завданні до цього уроку.</h2>
+    <h2>Експеримент</h2>
+    <p><i>Суворо дотримуйтесь інструкції з безпеки.
+            Результати вимірювань відразу заносьте до таблиці.
+        </i></p>
+
+    <p>1. Виміряйте відстань s від позначки від якої ви відпускатимете кульку
+        до позначки, до якої котитиметься кулька (ця відстань дорівнює модулю переміщення кульки).</p>
+    <p>2. Розташуйте кульку навпроти позначки та виміряйте час t<sub>1</sub>, за який скочується кулька (до моменту її
+        перетину позначки завершення руху).</p>
+        <iframe width="552" height="360" src="https://www.youtube.com/embed/yZGDF5CEYR8" title="0001 0300" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+    <div style="margin-top: 14px; text-align: right;">Таблиця 1</div>
+    <table border="1">
+        <tbody>
+            <tr style="height: 73.625px;background-color: lightcyan;">
+                <td rowspan="2">№</td>
+                <td rowspan="2">Переміщення кульки s, м</td>
+                <td colspan="2">Час руху кульки</td>
+                <td rowspan="2">Прискорення кульки<br>a<sub>сер</sub>, м/с<sup>2</sup></td>
+                <td colspan="2">Похибка вимірювання прискорення</td>
+                <td style="width: 20%;" rowspan="2">Результат вимірювання прискорення<br>a = a<sub>сер</sub> ±
+                    ∆a,<br>м/с<sup>2</sup></td>
+            </tr>
+            <tr style="height: 73.625px;background-color: lightcyan;">
+                <td style="width: 10%;">t<sub>i</sub>, с</td>
+                <td style="width: 10%;">t<sub>сер</sub>, с</td>
+                <td>відносна<br>ε<sub>a</sub>, %</td>
+                <td>абсолютна<br>∆a, м/с<sup>2</sup></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>1</td>
+                <td rowspan="4"><input class="cell" id="S" type="text"></td>
+                <td><input class="cell" id="t1" type="text"></td>
+                <td rowspan="4"><input class="cell" id="t_ser" type="text"></td>
+                <td rowspan="4"><input class="cell" id="a_ser" type="text"></td>
+                <td rowspan="4"><input class="cell" id="e_a_ser" type="text"></td>
+                <td rowspan="4"><input class="cell" id="∆a_ser" type="text"></td>
+                <td rowspan="4"><input class="cell" id="res" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>2</td>
+                <td><input class="cell" id="t2" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>3</td>
+                <td><input class="cell" id="t3" type="text"></td>
+            </tr>
+            <tr style="height: 73.625px;">
+                <td>4</td>
+                <td><input class="cell" id="t4" type="text"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Опрацювання результатів експерименту</h2>
+    <p>1. Обчисліть середній час руху кульки:
+        t<sub>сер</sub> = (t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub> + t<sub>4</sub> ) / 4</p>
+    <p>t<sub>сер</sub> = <input style="font-size: 3vw;" id="f_t_ser" type="text"></p>
+    <p>2. Обчисліть середнє значення прискорення кульки:
+        a<sub>сер</sub> = 2s/t<sub>сер</sub><sup>2</sup></p>
+    <p>a<sub>сер</sub> = <input style="font-size: 3vw;" id="f_a_ser" type="text"></p>
+    <p>3. Обчисліть абсолютну та відносну похибки вимірювання (див. п. 4 § 2):</p>
+    <p style="display: flex;align-items: center;">1) часу:
+        <img src="./img/acceleration/f1.png" />
+    </p>
+    <p>∆t<sub>сер</sub> = <input style="font-size: 3vw;" id="f_t_ser" type="text"></p>
+    <p>ε<sub>t</sub> = <input style="font-size: 3vw;" id="f_et" type="text"></p>
+    <p style="display: flex;align-items: center;">2) модуля переміщення:
+        <img src="./img/acceleration/f2.png" />
+    </p>
+    <p>(Похибки приладів див. п. 4 § 2, якщо ви користуєтесь іншими приладами,
+        то вважайте, що похибка приладу дорівнює половині ціни поділки шкали цього приладу.</dpiv>
+    <p>Якщо вимірювання проводилися один раз, то випадкова похибка дорівнює половині
+        ціни поділки шкали приладу)</p>
+
+    <p>∆s<sub>сер</sub> = <input style="font-size: 3vw;" id="f_∆s" type="text"></p>
+    <p>ε<sub>s</sub> = <input style="font-size: 3vw;" id="f_es" type="text"></p>
+    <p style="display: flex;align-items: center;">3) модуля прискорення:
+        <img src="./img/acceleration/f3.png" />
+    </p>
+    <p>ε<sub>a</sub> = <input style="font-size: 3vw;" id="f_εa" type="text"></p>
+    <p>∆a = <input style="font-size: 3vw;" id="f_∆a" type="text"></p>
+    <p>4. Округліть результати та запишіть до таблиці результат вимірювання прискорення.</div>
+    <div>(Абсолютну похибку ∆a округлюють до однієї значущої цифри із завищенням, а результат вимірювання
+        a<sub>сер</sub> – до величини розряду, який залишився в абсолютній похибці після округлення)
+        </p>
+
+        <h2>Аналіз експерименту та його результатів</h2>
+        <div>
+            Проаналізуйте експеримент і його результати.
+            За результатами експерименту сформулюйте і запишіть висновок, у якому зазначте:
+        </div>
+        <div>1) величину, яку ви вимірювали; </div>
+        <div><textarea class="txt_ar" id="v1" cols="70" rows="5"></textarea></div>
+        <div>2) результат вимірювання; </div>
+        <div><textarea class="txt_ar" id="v2" cols="70" rows="5"></textarea></div>
+        <div>3) причини похибки;</div>
+        <div><textarea class="txt_ar" id="v3" cols="70" rows="5"></textarea></div>
+        <div>4) вимірювання якої величини дає найбільшу похибку.</div>
+        <div><textarea class="txt_ar" id="v4" cols="70" rows="5"></textarea></div>
+
+
+        <div class="submit_block">
+            <button id="submin_button">Відправити</button>
+        </div>
+
+</body>
+
+</html>

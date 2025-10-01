@@ -1,0 +1,308 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      font-size: 1.8em;
+      color: #667eea;
+      margin: 30px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #667eea;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      border-left: 5px solid #667eea;
+    }
+
+    .info-box strong {
+      color: #764ba2;
+      font-size: 1.1em;
+    }
+
+    .student {
+      margin: 20px 0;
+    }
+
+    .student h2 {
+      font-size: 1.3em;
+      color: #764ba2;
+      border: none;
+      margin: 15px 0 10px;
+    }
+
+    .txt_inp {
+      width: 100%;
+      max-width: 500px;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .txt_inp:focus {
+      outline: none;
+      border-color: #764ba2;
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+      transform: translateY(-2px);
+    }
+
+    ol, ul {
+      margin: 15px 0 15px 30px;
+    }
+
+    li {
+      margin: 10px 0;
+      padding-left: 10px;
+    }
+
+    .diagram-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .diagram-item {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .diagram-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .pole-inputs {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 auto 15px;
+      width: 200px;
+    }
+
+    .pole-inputs input {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .pole-inputs input:focus {
+      outline: none;
+      border-color: #764ba2;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+    }
+
+    .diagram-item img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 20px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    th {
+      padding: 20px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 15px 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    tbody tr {
+      background: white;
+      transition: background 0.3s ease;
+    }
+
+    tbody tr:hover {
+      background: #f5f7fa;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    textarea {
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 15px;
+      padding: 15px;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      resize: vertical;
+      transition: all 0.3s ease;
+      min-height: 80px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #764ba2;
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .link-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .link-box a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: 600;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .link-box a:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .lab-image {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
+      display: block;
+    }
+
+    .submit_block {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    #submin_button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 1.3em;
+      font-weight: 600;
+      padding: 18px 50px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    #submin_button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    #submin_button:active {
+      transform: translateY(-1px);
+    }
+
+    .creative-task {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 30px;
+      border-radius: 15px;
+      margin: 30px 0;
+      border-left: 5px solid #fdcb6e;
+    }
+
+    .creative-task h2 {
+      color: #d63031;
+      border-color: #d63031;
+    }
+
+    .creative-task img {
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      margin: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8em;
+      }
+
+      h2 {
+        font-size: 1.4em;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .diagram-container {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 14px;
+      }
+    }

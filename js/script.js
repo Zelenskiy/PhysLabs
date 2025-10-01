@@ -23,6 +23,7 @@ submin_button.addEventListener('click', ()=>{
     
     const inputs = document.querySelectorAll('input');
     const textareas = document.querySelectorAll('textarea');
+    const selects = document.querySelectorAll('select');
     const td_hs = document.querySelectorAll('.td_h');
 
     for (let td_h of td_hs){
@@ -35,6 +36,10 @@ submin_button.addEventListener('click', ()=>{
 
     for (let textarea of textareas){
         data[textarea.id] = textarea.value;
+    }
+
+    for (let select of selects){
+        data[select.id] = select.value;
     }
     console.log(data);
     let mess = ''

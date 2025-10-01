@@ -1,164 +1,530 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Визначення прискорення тіла в ході рівноприскореного прямолінійного руху</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="./js/treskoef.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./js/script.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-        rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .info-box strong {
+            color: #764ba2;
+            font-size: 1.1em;
+        }
+
+        .student {
+            margin: 20px 0;
+        }
+
+        .student h2 {
+            font-size: 1.3em;
+            color: #764ba2;
+            border: none;
+            margin: 15px 0 10px;
+        }
+
+        .txt_inp {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .txt_inp:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        p {
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        thead tr, tbody tr:first-child, tbody tr:nth-child(2) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        tbody tr {
+            background: white;
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:not(:first-child):not(:nth-child(2)):hover {
+            background: #f5f7fa;
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        textarea {
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            min-height: 80px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #c92a2a;
+        }
+
+        .warning-box h2 {
+            color: white;
+            border: none;
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #4dabf7 0%, #339af0 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1971c2;
+            font-weight: 600;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 552px;
+            height: 360px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            border: none;
+        }
+
+        .formula-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .formula-input input {
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            max-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .formula-input input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+        }
+
+        .formula-box img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+        }
+
+        .submit_block {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        #submin_button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.3em;
+            font-weight: 600;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #submin_button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        #submin_button:active {
+            transform: translateY(-1px);
+        }
+
+        .instruction-list {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .instruction-list p {
+            padding-left: 10px;
+            border-left: 3px solid #667eea;
+            margin: 15px 0;
+        }
+
+        .table-title {
+            text-align: right;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            font-size: 1.1em;
+            color: #667eea;
+        }
+
+        sub, sup {
+            font-size: 0.75em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            iframe {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-    <h1>Лабораторна робота № 1 </h1>
-    <h2> Визначення прискорення тіла в ході рівноприскореного прямолінійного руху.</h2>
-    <input type="text" id="sheetName" hidden value="Прискорення">
-    <p><strong>Мета: </strong>визначити прискорення руху кульки, яка скочується похилою поверхнею.</p>
-    <p><strong>Обладнання:</strong> похила поверхня, кулька, секундомір, вимірювальна стрічка</p>
-    <p>
-    <div class="student">
-        <h2>Впишіть ваш клас</h2>
-        <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
-    </div>
-    <div class="student">
-        <h2>Впишіть ваше прізвище та ім'я</h2>
-        <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
-    </div>
-    </p>
-
-    <h2>Підготовка до експерименту</h2>
-    <div>
-        <p>Підготуйте похилу поверхню. Це може бути стіл, під дві ніжки якого підкладіть невеликі предмети.</p>
-        <p>Підготуйте кульку невеликих розмірів. Це може бути кулька для настільного тенісу, металева кулька від
-            підшипника. Можна також використати предмет циліндричної форми, якщо ви не знайдете кульки.</p>
-        <p>Пустіть по поверхні стола кульку, переконайтеся, що кулька котиться по прямій траєкторій.</p>
-        <p>Підберіть кут нахилу таким, щоб кулька котилася не менш ніж 1 секунду. Штовхати кульку не потрібно.</p>
-        <p>Якщо кулька котиться не по прямій, можна покласти довгу планку, опираючись збоку на яку котитиметься ваша кулька.
-        </p>
-        <p>Відмітьте точку, від якої ви пускатимете кульку.</p>
-        <p>Відмітьте точку, до якої котитиметься кулька.</p>
-        <p>Підготуйте секундомір. Це може бути секундомір у вашому мобільному телефоні.</p>
-    </div>
-    <iframe width="552" height="360" src="https://www.youtube.com/embed/WLStaT3cTtI" title="схема установки" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <h2 style="font-weight:800; color: red;">ВАЖЛИВО!!!</h2>
-    <p style="font-weight:600; color: blue;">Сфотографуйте вашу установку та надішліть фото через nz.ua у Дистанційному
-        завданні до цього уроку.</h2>
-    <h2>Експеримент</h2>
-    <p><i>Суворо дотримуйтесь інструкції з безпеки.
-            Результати вимірювань відразу заносьте до таблиці.
-        </i></p>
-
-    <p>1. Виміряйте відстань s від позначки від якої ви відпускатимете кульку
-        до позначки, до якої котитиметься кулька (ця відстань дорівнює модулю переміщення кульки).</p>
-    <p>2. Розташуйте кульку навпроти позначки та виміряйте час t<sub>1</sub>, за який скочується кулька (до моменту її
-        перетину позначки завершення руху).</p>
-        <iframe width="552" height="360" src="https://www.youtube.com/embed/yZGDF5CEYR8" title="0001 0300" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-
-    <div style="margin-top: 14px; text-align: right;">Таблиця 1</div>
-    <table border="1">
-        <tbody>
-            <tr style="height: 73.625px;background-color: lightcyan;">
-                <td rowspan="2">№</td>
-                <td rowspan="2">Переміщення кульки s, м</td>
-                <td colspan="2">Час руху кульки</td>
-                <td rowspan="2">Прискорення кульки<br>a<sub>сер</sub>, м/с<sup>2</sup></td>
-                <td colspan="2">Похибка вимірювання прискорення</td>
-                <td style="width: 20%;" rowspan="2">Результат вимірювання прискорення<br>a = a<sub>сер</sub> ±
-                    ∆a,<br>м/с<sup>2</sup></td>
-            </tr>
-            <tr style="height: 73.625px;background-color: lightcyan;">
-                <td style="width: 10%;">t<sub>i</sub>, с</td>
-                <td style="width: 10%;">t<sub>сер</sub>, с</td>
-                <td>відносна<br>ε<sub>a</sub>, %</td>
-                <td>абсолютна<br>∆a, м/с<sup>2</sup></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>1</td>
-                <td rowspan="4"><input class="cell" id="S" type="text"></td>
-                <td><input class="cell" id="t1" type="text"></td>
-                <td rowspan="4"><input class="cell" id="t_ser" type="text"></td>
-                <td rowspan="4"><input class="cell" id="a_ser" type="text"></td>
-                <td rowspan="4"><input class="cell" id="e_a_ser" type="text"></td>
-                <td rowspan="4"><input class="cell" id="∆a_ser" type="text"></td>
-                <td rowspan="4"><input class="cell" id="res" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>2</td>
-                <td><input class="cell" id="t2" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>3</td>
-                <td><input class="cell" id="t3" type="text"></td>
-            </tr>
-            <tr style="height: 73.625px;">
-                <td>4</td>
-                <td><input class="cell" id="t4" type="text"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>Опрацювання результатів експерименту</h2>
-    <p>1. Обчисліть середній час руху кульки:
-        t<sub>сер</sub> = (t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub> + t<sub>4</sub> ) / 4</p>
-    <p>t<sub>сер</sub> = <input style="font-size: 3vw;" id="f_t_ser" type="text"></p>
-    <p>2. Обчисліть середнє значення прискорення кульки:
-        a<sub>сер</sub> = 2s/t<sub>сер</sub><sup>2</sup></p>
-    <p>a<sub>сер</sub> = <input style="font-size: 3vw;" id="f_a_ser" type="text"></p>
-    <p>3. Обчисліть абсолютну та відносну похибки вимірювання (див. п. 4 § 2):</p>
-    <p style="display: flex;align-items: center;">1) часу:
-        <img src="./img/acceleration/f1.png" />
-    </p>
-    <p>∆t<sub>сер</sub> = <input style="font-size: 3vw;" id="f_t_ser" type="text"></p>
-    <p>ε<sub>t</sub> = <input style="font-size: 3vw;" id="f_et" type="text"></p>
-    <p style="display: flex;align-items: center;">2) модуля переміщення:
-        <img src="./img/acceleration/f2.png" />
-    </p>
-    <p>(Похибки приладів див. п. 4 § 2, якщо ви користуєтесь іншими приладами,
-        то вважайте, що похибка приладу дорівнює половині ціни поділки шкали цього приладу.</dpiv>
-    <p>Якщо вимірювання проводилися один раз, то випадкова похибка дорівнює половині
-        ціни поділки шкали приладу)</p>
-
-    <p>∆s<sub>сер</sub> = <input style="font-size: 3vw;" id="f_∆s" type="text"></p>
-    <p>ε<sub>s</sub> = <input style="font-size: 3vw;" id="f_es" type="text"></p>
-    <p style="display: flex;align-items: center;">3) модуля прискорення:
-        <img src="./img/acceleration/f3.png" />
-    </p>
-    <p>ε<sub>a</sub> = <input style="font-size: 3vw;" id="f_εa" type="text"></p>
-    <p>∆a = <input style="font-size: 3vw;" id="f_∆a" type="text"></p>
-    <p>4. Округліть результати та запишіть до таблиці результат вимірювання прискорення.</div>
-    <div>(Абсолютну похибку ∆a округлюють до однієї значущої цифри із завищенням, а результат вимірювання
-        a<sub>сер</sub> – до величини розряду, який залишився в абсолютній похибці після округлення)
-        </p>
-
-        <h2>Аналіз експерименту та його результатів</h2>
-        <div>
-            Проаналізуйте експеримент і його результати.
-            За результатами експерименту сформулюйте і запишіть висновок, у якому зазначте:
-        </div>
-        <div>1) величину, яку ви вимірювали; </div>
-        <div><textarea class="txt_ar" id="v1" cols="70" rows="5"></textarea></div>
-        <div>2) результат вимірювання; </div>
-        <div><textarea class="txt_ar" id="v2" cols="70" rows="5"></textarea></div>
-        <div>3) причини похибки;</div>
-        <div><textarea class="txt_ar" id="v3" cols="70" rows="5"></textarea></div>
-        <div>4) вимірювання якої величини дає найбільшу похибку.</div>
-        <div><textarea class="txt_ar" id="v4" cols="70" rows="5"></textarea></div>
-
-
-        <div class="submit_block">
-            <button id="submin_button">Відправити</button>
+    <div class="container">
+        <div class="header">
+            <h1>Лабораторна робота № 1</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Визначення прискорення тіла в ході рівноприскореного прямолінійного руху</h2>
         </div>
 
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Прискорення">
+
+            <div class="info-box">
+                <p><strong>Мета:</strong> визначити прискорення руху кульки, яка скочується похилою поверхнею.</p>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Обладнання:</strong> похила поверхня, кулька, секундомір, вимірювальна стрічка</p>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Підготовка до експерименту</h2>
+            
+            <div class="instruction-list">
+                <p>Підготуйте похилу поверхню. Це може бути стіл, під дві ніжки якого підкладіть невеликі предмети.</p>
+                <p>Підготуйте кульку невеликих розмірів. Це може бути кулька для настільного тенісу, металева кулька від підшипника. Можна також використати предмет циліндричної форми, якщо ви не знайдете кульки.</p>
+                <p>Пустіть по поверхні стола кульку, переконайтеся, що кулька котиться по прямій траєкторій.</p>
+                <p>Підберіть кут нахилу таким, щоб кулька котилася не менш ніж 1 секунду. Штовхати кульку не потрібно.</p>
+                <p>Якщо кулька котиться не по прямій, можна покласти довгу планку, опираючись збоку на яку котитиметься ваша кулька.</p>
+                <p>Відмітьте точку, від якої ви пускатимете кульку.</p>
+                <p>Відмітьте точку, до якої котитиметься кулька.</p>
+                <p>Підготуйте секундомір. Це може бути секундомір у вашому мобільному телефоні.</p>
+            </div>
+
+            <iframe src="https://www.youtube.com/embed/WLStaT3cTtI" title="схема установки" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+            <div class="warning-box">
+                <h2>ВАЖЛИВО!!!</h2>
+            </div>
+
+            <div class="important-box">
+                Сфотографуйте вашу установку та надішліть фото через nz.ua у Дистанційному завданні до цього уроку.
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="info-box">
+                <p><em>Суворо дотримуйтесь інструкції з безпеки. Результати вимірювань відразу заносьте до таблиці.</em></p>
+            </div>
+
+            <p><strong>1.</strong> Виміряйте відстань s від позначки від якої ви відпускатимете кульку до позначки, до якої котитиметься кулька (ця відстань дорівнює модулю переміщення кульки).</p>
+            
+            <p><strong>2.</strong> Розташуйте кульку навпроти позначки та виміряйте час t<sub>1</sub>, за який скочується кулька (до моменту її перетину позначки завершення руху).</p>
+
+            <iframe src="https://www.youtube.com/embed/yZGDF5CEYR8" title="Проведення експерименту" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+            <div class="table-title">Таблиця 1</div>
+            <table border="1">
+                <tbody>
+                    <tr>
+                        <td rowspan="2">№</td>
+                        <td rowspan="2">Переміщення кульки s, м</td>
+                        <td colspan="2">Час руху кульки</td>
+                        <td rowspan="2">Прискорення кульки<br>a<sub>сер</sub>, м/с<sup>2</sup></td>
+                        <td colspan="2">Похибка вимірювання прискорення</td>
+                        <td style="width: 20%;" rowspan="2">Результат вимірювання прискорення<br>a = a<sub>сер</sub> ± ∆a,<br>м/с<sup>2</sup></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;">t<sub>i</sub>, с</td>
+                        <td style="width: 10%;">t<sub>сер</sub>, с</td>
+                        <td>відносна<br>ε<sub>a</sub>, %</td>
+                        <td>абсолютна<br>∆a, м/с<sup>2</sup></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td rowspan="4"><input class="cell" id="S" type="text"></td>
+                        <td><input class="cell" id="t1" type="text"></td>
+                        <td rowspan="4"><input class="cell" id="t_ser" type="text"></td>
+                        <td rowspan="4"><input class="cell" id="a_ser" type="text"></td>
+                        <td rowspan="4"><input class="cell" id="e_a_ser" type="text"></td>
+                        <td rowspan="4"><input class="cell" id="∆a_ser" type="text"></td>
+                        <td rowspan="4"><input class="cell" id="res" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input class="cell" id="t2" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><input class="cell" id="t3" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><input class="cell" id="t4" type="text"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <div class="formula-box">
+                <p><strong>1.</strong> Обчисліть середній час руху кульки:</p>
+                <p>t<sub>сер</sub> = (t<sub>1</sub> + t<sub>2</sub> + t<sub>3</sub> + t<sub>4</sub>) / 4</p>
+                <div class="formula-input">
+                    <span>t<sub>сер</sub> =</span>
+                    <input id="f_t_ser" type="text">
+                    <span>с</span>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <p><strong>2.</strong> Обчисліть середнє значення прискорення кульки:</p>
+                <p>a<sub>сер</sub> = 2s/t<sub>сер</sub><sup>2</sup></p>
+                <div class="formula-input">
+                    <span>a<sub>сер</sub> =</span>
+                    <input id="f_a_ser" type="text">
+                    <span>м/с<sup>2</sup></span>
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <p><strong>3.</strong> Обчисліть абсолютну та відносну похибки вимірювання (див. п. 4 § 2):</p>
+                
+                <p><strong>1) часу:</strong></p>
+                <img src="./img/acceleration/f1.png" alt="Формула похибки часу" />
+                <div class="formula-input">
+                    <span>∆t<sub>сер</sub> =</span>
+                    <input id="f_∆t_ser" type="text">
+                    <span>с</span>
+                </div>
+                <div class="formula-input">
+                    <span>ε<sub>t</sub> =</span>
+                    <input id="f_et" type="text">
+                    <span>%</span>
+                </div>
+
+                <p><strong>2) модуля переміщення:</strong></p>
+                <img src="./img/acceleration/f2.png" alt="Формула похибки переміщення" />
+                <p style="font-size: 0.95em; margin-top: 10px;">(Похибки приладів див. п. 4 § 2, якщо ви користуєтесь іншими приладами, то вважайте, що похибка приладу дорівнює половині ціни поділки шкали цього приладу.</p>
+                <p style="font-size: 0.95em;">Якщо вимірювання проводилися один раз, то випадкова похибка дорівнює половині ціни поділки шкали приладу)</p>
+                <div class="formula-input">
+                    <span>∆s<sub>сер</sub> =</span>
+                    <input id="f_∆s" type="text">
+                    <span>м</span>
+                </div>
+                <div class="formula-input">
+                    <span>ε<sub>s</sub> =</span>
+                    <input id="f_es" type="text">
+                    <span>%</span>
+                </div>
+
+                <p><strong>3) модуля прискорення:</strong></p>
+                <img src="./img/acceleration/f3.png" alt="Формула похибки прискорення" />
+                <div class="formula-input">
+                    <span>ε<sub>a</sub> =</span>
+                    <input id="f_εa" type="text">
+                    <span>%</span>
+                </div>
+                <div class="formula-input">
+                    <span>∆a =</span>
+                    <input id="f_∆a" type="text">
+                    <span>м/с<sup>2</sup></span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>4.</strong> Округліть результати та запишіть до таблиці результат вимірювання прискорення.</p>
+                <p>(Абсолютну похибку ∆a округлюють до однієї значущої цифри із завищенням, а результат вимірювання a<sub>сер</sub> – до величини розряду, який залишився в абсолютній похибці після округлення)</p>
+            </div>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+            
+            <p>Проаналізуйте експеримент і його результати. За результатами експерименту сформулюйте і запишіть висновок, у якому зазначте:</p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) величину, яку ви вимірювали;</strong></p>
+                <textarea class="txt_ar" id="v1"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) результат вимірювання;</strong></p>
+                <textarea class="txt_ar" id="v2"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>3) причини похибки;</strong></p>
+                <textarea class="txt_ar" id="v3"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>4) вимірювання якої величини дає найбільшу похибку.</strong></p>
+                <textarea class="txt_ar" id="v4"></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submin_button">Відправити</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/treskoef.js" defer></script>
+    <script src="./js/script.js" defer></script>
 </body>
-
 </html>

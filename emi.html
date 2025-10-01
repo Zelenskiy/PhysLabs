@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Спостереження явища електромагнітної індукції</title>
+  <link rel="stylesheet" href="./css/n-style.css">
+  <script defer src="./js/script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Лабораторна робота № 2</h1>
+      <h2 style="color: white; border: none; margin-top: 10px;">Спостереження явища електромагнітної індукції</h2>
+    </div>
+
+    <div class="content">
+      <input type="text" id="sheetName" hidden value="Спостереження явища електромагнітної індукції">
+      
+      <div class="info-box">
+        <div><strong>Мета:</strong> дослідити умови виникнення індукційного струму в замкненій котушці; з'ясувати чинники, від яких залежать сила та напрямок індукційного струму</div>
+      </div>
+
+      <div class="info-box">
+        <div><strong>Обладнання:</strong> міліамперметр (або амперметр із шунтом), два штабові або дугоподібні магніти, дротяна котушка-моток на каркасі</div>
+      </div>
+
+      <div class="student">
+        <h2>Впишіть ваш клас</h2>
+        <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+      </div>
+
+      <div class="student">
+        <h2>Впишіть ваше прізвище та ім'я</h2>
+        <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+      </div>
+
+      <h2>Підготовка до експерименту</h2>
+
+      <div>
+        <div style="margin: 20px 0;">1. Перед виконанням роботи згадайте:</div>
+        <ol>
+          <li>вимоги безпеки під час роботи з електричними колами;</li>
+          <li>правила, яких необхідно дотримуватися під час вимірювання сили струму амперметром;</li>
+          <li>як залежить сила індукційного струму від швидкості зміни магнітного поля;</li>
+          <li>від чого залежить напрямок індукційного струму.</li>
+        </ol>
+
+        <div style="margin: 20px 0;">2. Виконайте завдання. На рис. 1-4 зображено штабовий магніт, котушку-моток (далі – котушка), приєднану до міліамперметра, та зазначено напрямок швидкості руху магніту. Перенесіть рисунки до зошита й для кожного випадку:</div>
+        <ol>
+          <li>укажіть магнітні полюси котушки (впишіть в текстові поля N або S);</li>
+          <li>визначте та покажіть напрямок індукційного струму в котушці.</li>
+        </ol>
+
+        <div class="diagram-container">
+          <div class="diagram-item">
+            <div class="pole-inputs">
+              <input id="pic1_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+              <input id="pic1_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            </div>
+            <img src="./img/emi/pic1.png" alt="мал. 1">
+          </div>
+
+          <div class="diagram-item">
+            <div class="pole-inputs">
+              <input id="pic2_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+              <input id="pic2_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            </div>
+            <img src="./img/emi/pic2.png" alt="мал. 2">
+          </div>
+
+          <div class="diagram-item">
+            <div class="pole-inputs">
+              <input id="pic3_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+              <input id="pic3_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            </div>
+            <img src="./img/emi/pic3.png" alt="мал. 3">
+          </div>
+
+          <div class="diagram-item">
+            <div class="pole-inputs">
+              <input id="pic4_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+              <input id="pic4_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            </div>
+            <img src="./img/emi/pic4.png" alt="мал. 4">
+          </div>
+        </div>
+      </div>
+
+      <h2>Експеримент</h2>
+      <div class="info-box">
+        <strong>Експеримент 1.</strong> З'ясування умов виникнення індукційного струму в замкненому провіднику та чинників, від яких залежить напрямок індукційного струму.
+      </div>
+
+      <div style="margin: 20px 0;">Для проведення експерименту скористаємося віртуальною лабораторією.</div>
+      
+      <div class="link-box">
+        <a href="https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_all.html?locale=uk" target="_blank">Відкрити віртуальну лабораторію PhET</a>
+      </div>
+
+      <img class="lab-image" src="./img/emi/pict.png" alt="Віртуальна лабораторія">
+
+      <ol>
+        <li>Оберіть розділ "Котушка індуктивності"</li>
+        <li>Замініть лампочку на індикатор</li>
+        <li>Утримуючи котушку та магніт у руках, послідовно виконайте досліди, зазначені в табл. 1.</li>
+      </ol>
+
+      <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 1</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px;">№</th>
+            <th style="width: 40%;">Дії з магнітом і котушкою</th>
+            <th>Як поводиться стрілка міліамперметра (відхиляється ліворуч, праворуч, не відхиляється)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Уводимо магніт у котушку північним полюсом</td>
+            <td><textarea id="ansv_1_1"></textarea></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Залишаємо магніт нерухомим</td>
+            <td><textarea id="ansv_1_2"></textarea></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Виводимо магніт із котушки</td>
+            <td><textarea id="ansv_1_3"></textarea></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Уводимо магніт у котушку південним полюсом</td>
+            <td><textarea id="ansv_1_4"></textarea></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Залишаємо магніт нерухомим</td>
+            <td><textarea id="ansv_1_5"></textarea></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Виводимо магніт із котушки</td>
+            <td><textarea id="ansv_1_6"></textarea></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Наближаємо котушку до південного полюса магніту</td>
+            <td><textarea id="ansv_1_7"></textarea></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Наближаємо котушку до північного полюса магніту</td>
+            <td><textarea id="ansv_1_8"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Аналіз результатів експерименту 1</h2>
+      <div style="margin: 15px 0;">Проаналізуйте табл. 1 і сформулюйте висновок, у якому зазначте:</div>
+      
+      <div style="margin: 15px 0;">1) за яких умов у замкненій котушці виникає індукційний струм;</div>
+      <textarea id="v1_1"></textarea>
+
+      <div style="margin: 15px 0;">2) як змінюється напрямок індукційного струму в разі зміни напрямку руху магніту;</div>
+      <textarea id="v1_2"></textarea>
+
+      <div style="margin: 15px 0;">3) як змінюється напрямок індукційного струму в разі зміни полюса магніту, який наближають або віддаляють від котушки.</div>
+      <textarea id="v1_3"></textarea>
+
+      <div class="info-box" style="margin-top: 40px;">
+        <strong>Експеримент 2.</strong> З'ясування чинників, від яких залежить значення індукційного струму.
+      </div>
+
+      <div style="margin: 20px 0;">Утримуючи котушку та магніт в руках, послідовно виконайте досліди, зазначені в табл. 2. Щоразу знімайте покази міліамперметра та заносьте їх до табл. 2.</div>
+
+      <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 2</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px;">№</th>
+            <th style="width: 50%;">Дії з магнітом і котушкою</th>
+            <th>Сила струму I, мА. (Ціна поділки 1 мА)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Швидко вводимо магніт у котушку</td>
+            <td><textarea id="ansv_2_1"></textarea></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Повільно вводимо магніт у котушку</td>
+            <td><textarea id="ansv_2_2"></textarea></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Встановлюєм силу постійного магніту в 100% та швидко вводимо магніт в котушку</td>
+            <td><textarea id="ansv_2_3"></textarea></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Повільно вводимо в котушку магніти, силу якого встановлено в 100%</td>
+            <td><textarea id="ansv_2_4"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Аналіз результатів експерименту 2</h2>
+      <div style="margin: 15px 0;">Проаналізуйте табл. 2 і сформулюйте висновок, у якому зазначте:</div>
+      
+      <div style="margin: 15px 0;">1) як залежить сила індукційного струму від швидкості відносного руху магніту та котушки;</div>
+      <textarea id="v2_1"></textarea>
+
+      <div style="margin: 15px 0;">2) як залежить сила індукційного струму від значення індукції зовнішнього магнітного поля, зміна якого спричиняє появу струму в котушці.</div>
+      <textarea id="v2_2"></textarea>
+
+      <div class="creative-task">
+        <h2>Творче завдання</h2>
+        <div style="margin: 20px 0;">Продумайте та запишіть план проведення експериментів із дослідження умов виникнення індукційного струму в замкненій котушці для випадків, коли дві котушки надіто на спільне осердя (див. рис.).</div>
+        <img src="./img/emi/pic6.png" alt="Дві котушки на спільному осерді">
+        <textarea id="cr_task"></textarea>
+      </div>
+
+      <div class="submit_block">
+        <button id="submin_button">Надіслати результати</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
