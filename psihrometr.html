@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,21 +11,31 @@
     <script defer src="./js/psihrometr/js.js"></script>
     <style>
         .panel {
-            background: white;
+            /* background: white; */
+            position: relative;;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin: 30px 0;
             display: flex;
             justify-content: center;
-        }
-
-        .panel table {
             border-collapse: collapse;
-            background-image: url('./img/psihrometr/termometr.png');
-            background-size: cover;
+            /* background-size: cover;
+            background: url("./img/psihrometr/2termometr.png") no-repeat bottom right; */
+
         }
 
+
+        .psychro-img {
+            position: absolute;
+            bottom: 0;
+            left: 22px;
+            width: 85%;
+            height: 95%;
+            
+        }
+
+ 
         .panel td {
             padding: 0;
             border: none;
@@ -117,11 +128,12 @@
             width: 100%;
         }
 
-        sub, sup {
+        sub,
+        sup {
             font-size: 0.75em;
         }
 
-        @media (max-width: 768px) {
+        /* @media (max-width: 768px) {
             .panel {
                 padding: 15px;
                 overflow-x: auto;
@@ -139,9 +151,10 @@
                 font-size: 11px;
                 padding: 5px;
             }
-        }
+        } */
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -183,65 +196,249 @@
                 <p><strong>2.</strong> Визначіть покази сухого термометра та запишіть до таблиці (табл. 2)</p>
                 <p><strong>3.</strong> Визначіть покази вологого термометра та запишіть до таблиці (табл. 2)</p>
             </div>
+            <div style="display: flex; gap: 50px; justify-content: space-between; flex-wrap: wrap;">
+                <div class="panel">
+                    <img class="psychro-img" src="./img/psihrometr/2termometr.png" alt="">
+                    <table class="psychro-table" cellspacing="0" cellpadding="0" width="180" height="500">
+                        <tbody>
+                            <tr>
+                                <td colspan="4" height="30">сухий</td>
+                                <td colspan="4" height="30">вологий</td>
+                            </tr>
+                            <tr>
+                                <td width="30">&nbsp;</td>
+                                <td width="6">&nbsp;</td>
+                                <td width="20">&nbsp;</td>
+                                <td width="30">&nbsp;</td>
+                                <td width="38">&nbsp;</td>
+                                <td width="6">&nbsp;</td>
+                                <td width="20">&nbsp;</td>
+                                <td width="30">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de5">25</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de10">25</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u14">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u34">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u13">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u33">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u12">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de4">20</td>
+                                <td>&nbsp;</td>
+                                <td id="u32">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de9">20</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u11">&nbsp;</td>
+                                <td height="31">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u31">&nbsp;</td>
+                                <td height="31">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u10">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u30">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u9">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de3">15</td>
+                                <td>&nbsp;</td>
+                                <td id="u29">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de8">15</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u8">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u28">&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u7">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u27">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td height="23">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u6">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de2" height="20">10</td>
+                                <td>&nbsp;</td>
+                                <td id="u26">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de7" height="20">10</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u5">&nbsp;</td>
+                                <td height="25">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u25">&nbsp;</td>
+                                <td height="25">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u4">&nbsp;</td>
+                                <td height="20">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u24">&nbsp;</td>
+                                <td height="20">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u3">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de1" height="20">5</td>
+                                <td>&nbsp;</td>
+                                <td id="u23">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="de6" height="20">5</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u2">&nbsp;</td>
+                                <td height="22">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u22">&nbsp;</td>
+                                <td height="22">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td id="u1">&nbsp;</td>
+                                <td height="30">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td id="u21">&nbsp;</td>
+                                <td height="30">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td height="25">&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td height="25">&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td height="50" colspan="4" valign="bottom">&nbsp;</td>
+                                <td height="50" colspan="4" align="left" valign="bottom"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <div class="table-caption">Табл. 1. Психрометрична таблиця</div>
+                    <div class="img-container">
+                        <img src="./img/psihrometr/1520945988.jpg" alt="Психрометрична таблиця">
+                    </div>
+                </div>
 
-            <div class="panel">
-                <table border="0" cellspacing="0" cellpadding="0" width="180" height="500">
-                    <tbody>
-                        <tr>
-                            <td colspan="4" height="30">сухий</td>
-                            <td colspan="4" height="30">вологий</td>
-                        </tr>
-                        <tr>
-                            <td width="30">&nbsp;</td>
-                            <td width="6">&nbsp;</td>
-                            <td width="20">&nbsp;</td>
-                            <td width="30">&nbsp;</td>
-                            <td width="38">&nbsp;</td>
-                            <td width="6">&nbsp;</td>
-                            <td width="20">&nbsp;</td>
-                            <td width="30">&nbsp;</td>
-                        </tr>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="de5">25</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="de10">25</td></tr>
-                        <tr><td>&nbsp;</td><td id="u14">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u34">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u13">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u33">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u12">&nbsp;</td><td>&nbsp;</td><td id="de4">20</td><td>&nbsp;</td><td id="u32">&nbsp;</td><td>&nbsp;</td><td id="de9">20</td></tr>
-                        <tr><td>&nbsp;</td><td id="u11">&nbsp;</td><td height="31">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u31">&nbsp;</td><td height="31">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u10">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u30">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u9">&nbsp;</td><td>&nbsp;</td><td id="de3">15</td><td>&nbsp;</td><td id="u29">&nbsp;</td><td>&nbsp;</td><td id="de8">15</td></tr>
-                        <tr><td>&nbsp;</td><td id="u8">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u28">&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u7">&nbsp;</td><td>&nbsp;</td><td height="23">&nbsp;</td><td>&nbsp;</td><td id="u27">&nbsp;</td><td>&nbsp;</td><td height="23">&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u6">&nbsp;</td><td>&nbsp;</td><td id="de2" height="20">10</td><td>&nbsp;</td><td id="u26">&nbsp;</td><td>&nbsp;</td><td id="de7" height="20">10</td></tr>
-                        <tr><td>&nbsp;</td><td id="u5">&nbsp;</td><td height="25">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u25">&nbsp;</td><td height="25">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u4">&nbsp;</td><td height="20">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u24">&nbsp;</td><td height="20">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u3">&nbsp;</td><td>&nbsp;</td><td id="de1" height="20">5</td><td>&nbsp;</td><td id="u23">&nbsp;</td><td>&nbsp;</td><td id="de6" height="20">5</td></tr>
-                        <tr><td>&nbsp;</td><td id="u2">&nbsp;</td><td height="22">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u22">&nbsp;</td><td height="22">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td id="u1">&nbsp;</td><td height="30">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td id="u21">&nbsp;</td><td height="30">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>&nbsp;</td><td>&nbsp;</td><td height="25">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td height="25">&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td height="50" colspan="4" valign="bottom">&nbsp;</td><td height="50" colspan="4" align="left" valign="bottom"><img src="./img/psihrometr/img19.png" width="80"></td></tr>
-                    </tbody>
-                </table>
             </div>
-
             <h2>Опрацювання результатів експерименту</h2>
 
             <div style="margin: 20px 0;">
-                <p><strong>1.</strong> Визначіть різницю показів сухого та вологого термометрів та запишіть до таблиці (табл. 2)</p>
-                <p><strong>2.</strong> Користуючись психрометричною таблицею (табл. 1) визначте відносну вологість повітря. Запишіть значення до таблиці 2.</p>
-                <p><strong>3.</strong> За таблицею 3 визначте густину насиченої пари ρ<sub>н</sub> (за температури t<sub>сух</sub>). Запишіть значення до таблиці 2.</p>
-                <p><strong>4.</strong> Знаючи відносну вологість φ повітря та густину насиченої пари ρ<sub>н</sub> за даної температури t<sub>сух</sub>, розрахуйте абсолютну ρ<sub>а</sub> вологість повітря в кабінеті:</p>
+                <p><strong>1.</strong> Визначіть різницю показів сухого та вологого термометрів та запишіть до таблиці
+                    (табл. 2)</p>
+                <p><strong>2.</strong> Користуючись психрометричною таблицею (табл. 1) визначте відносну вологість
+                    повітря. Запишіть значення до таблиці 2.</p>
+                <p><strong>3.</strong> За таблицею 3 визначте густину насиченої пари ρ<sub>н</sub> (за температури
+                    t<sub>сух</sub>). Запишіть значення до таблиці 2.</p>
+                <p><strong>4.</strong> Знаючи відносну вологість φ повітря та густину насиченої пари ρ<sub>н</sub> за
+                    даної температури t<sub>сух</sub>, розрахуйте абсолютну ρ<sub>а</sub> вологість повітря в кабінеті:
+                </p>
             </div>
 
             <div class="formula-container">
                 <img src="./img/psihrometr/2024-02-28_155048.png" alt="Формула абсолютної вологості">
             </div>
 
-            <div class="table-caption">Табл. 1. Психрометрична таблиця</div>
-            <div class="img-container">
-                <img src="./img/psihrometr/1520945988.jpg" alt="Психрометрична таблиця">
-            </div>
+
 
             <div class="table-caption">Табл. 2. Результати експерименту</div>
             <table class="result_table" border="1">
@@ -251,7 +448,8 @@
                         <td class="td_h"><strong>Показ вологого термометра<br><i>t</i><sub>вол</sub>, ℃</strong></td>
                         <td class="td_h"><strong>Різниця показів<br>∆t=t<sub>сух</sub>-t<sub>вол</sub>, ℃</strong></td>
                         <td class="td_h"><strong>Відносна вологість<br><i>φ</i>, %</strong></td>
-                        <td class="td_h"><strong>Густина насиченої пари ρ<sub>н</sub> (при t<sub>сух</sub>)<br>г/м<sup>3</sup></strong></td>
+                        <td class="td_h"><strong>Густина насиченої пари ρ<sub>н</sub> (при
+                                t<sub>сух</sub>)<br>г/м<sup>3</sup></strong></td>
                         <td class="td_h"><strong>Абсолютна вологість<br>ρ<sub>a</sub>, г/м<sup>3</sup></strong></td>
                     </tr>
                     <tr>
@@ -272,7 +470,8 @@
 
             <h2>Аналіз експерименту та його результатів</h2>
 
-            <p style="margin: 20px 0;">Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:</p>
+            <p style="margin: 20px 0;">Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому
+                зазначте:</p>
 
             <div style="margin: 20px 0;">
                 <p><strong>1) які фізичні величини виміряли за допомогою цього приладу;</strong></p>
@@ -303,4 +502,5 @@
         </div>
     </div>
 </body>
+
 </html>
