@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="./css/n-style.css">
   <script defer src="./js/script.js"></script>
 </head>
+
 <body>
   <div class="container">
     <div class="header">
@@ -16,13 +18,15 @@
 
     <div class="content">
       <input type="text" id="sheetName" hidden value="Спостереження явища електромагнітної індукції">
-      
+
       <div class="info-box">
-        <div><strong>Мета:</strong> дослідити умови виникнення індукційного струму в замкненій котушці; з'ясувати чинники, від яких залежать сила та напрямок індукційного струму</div>
+        <div><strong>Мета:</strong> дослідити умови виникнення індукційного струму в замкненій котушці; з'ясувати
+          чинники, від яких залежать сила та напрямок індукційного струму</div>
       </div>
 
       <div class="info-box">
-        <div><strong>Обладнання:</strong> міліамперметр (або амперметр із шунтом), два штабові або дугоподібні магніти, дротяна котушка-моток на каркасі</div>
+        <div><strong>Обладнання:</strong> міліамперметр (або амперметр із шунтом), два штабові або дугоподібні магніти,
+          дротяна котушка-моток на каркасі</div>
       </div>
 
       <div class="student">
@@ -46,213 +50,337 @@
           <li>від чого залежить напрямок індукційного струму.</li>
         </ol>
 
-        <div style="margin: 20px 0;">2. Виконайте завдання. На рис. 1-4 зображено штабовий магніт, котушку-моток (далі – котушка), приєднану до міліамперметра, та зазначено напрямок швидкості руху магніту. Перенесіть рисунки до зошита й для кожного випадку:</div>
+        <div style="margin: 20px 0;">2. Виконайте завдання. На рис. 1-4 зображено штабовий магніт, котушку-моток (далі –
+          котушка), приєднану до міліамперметра, та зазначено напрямок швидкості руху магніту. Перенесіть рисунки до
+          зошита й для кожного випадку:</div>
         <ol>
           <li>укажіть магнітні полюси котушки (впишіть в текстові поля N або S);</li>
           <li>визначте та покажіть напрямок індукційного струму в котушці.</li>
         </ol>
 
         <div class="diagram-container">
-          <div class="diagram-item">
-            <div class="pole-inputs" style="position: relative;">
-              <div style="position: absolute; top: 0; left: 80px; display: flex; gap:50px">
-                <input id="pic1_1" class="ns-input" type="text" maxlength="1" readonly>
-                <input id="pic1_2" class="ns-input" type="text" maxlength="1" readonly>
-              </div>
-              <div style="position: absolute; top: 120px; left: 197px; display: flex; gap:40px">
-                <input id="pic1_3" class="arrow-input" type="text" maxlength="1" readonly>
-              </div>
-            </div>
-            <img src="./img/emi/pic1.png" alt="мал. 1">
+
+
+          <div class="diagram-item" style="position: relative; display: inline-block;">
+            <img src="./img/emi/pic1.png" alt="мал. 4" style="width: 100%; height: auto; display: block;">
+
+            <input id="pic1_1" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top:  3%; 
+              left: 35%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+            <input id="pic1_2" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 3%; 
+              left: 80%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+
+            <input id="pic1_3" class="arrow-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 35%; 
+              right: 15%;  
+              transform: translate(50%, 10%);
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
           </div>
+          <div class="diagram-item" style="position: relative; display: inline-block;">
+            <img src="./img/emi/pic2.png" alt="мал. 4" style="width: 100%; height: auto; display: block;">
 
-          <div class="diagram-item">
-            <div class="pole-inputs" style="position: relative;">
-              <div style="position: absolute; top: 0; left: 90px; display: flex; gap:40px">
-                <input  id="pic2_1" class="ns-input" type="text" maxlength="1" readonly>
-                <input  id="pic2_2" class="ns-input" type="text" maxlength="1" readonly>
+            <input id="pic2_1" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top:  3%; 
+              left: 40%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+            <input id="pic2_2" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 3%; 
+              left: 80%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
 
-
-              </div>
-              <div style="position: absolute; top: 140px; left: 212px; display: flex; gap:40px">
-                <input id="pic2_3" class="arrow-input" type="text" maxlength="1" readonly>
-              </div>
-            </div>
-            <img src="./img/emi/pic2.png" alt="мал. 2">
+            <input id="pic2_3" class="arrow-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 45%; 
+              right: 10%;  
+              transform: translate(50%, 10%);
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
           </div>
+          <div class="diagram-item" style="position: relative; display: inline-block;">
+            <img src="./img/emi/pic3.png" alt="мал. 4" style="width: 100%; height: auto; display: block;">
 
-          <div class="diagram-item">
-            <div class="pole-inputs" style="position: relative;">
-              <div style="position: absolute; top: 0; left: 110px; display: flex; gap:40px">
-                <input  id="pic3_1" class="ns-input" type="text" maxlength="1" readonly>
-                <input  id="pic3_2" class="ns-input" type="text" maxlength="1" readonly>
-              </div>
-              <div style="position: absolute; top: 140px; left: 232px; display: flex; gap:40px">
-                <input id="pic3_3" class="arrow-input" type="text" maxlength="1" readonly>
-              </div>
-            </div>
-            <img src="./img/emi/pic3.png" alt="мал. 3">
+            <input id="pic3_1" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top:  3%; 
+              left: 45%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+            <input id="pic3_2" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 3%; 
+              left: 85%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+
+            <input id="pic3_3" class="arrow-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 50%; 
+              right: 5%;  
+              transform: translate(50%, 10%);
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
           </div>
+          <div class="diagram-item" style="position: relative; display: inline-block;">
+            <img src="./img/emi/pic4.png" alt="мал. 4" style="width: 100%; height: auto; display: block;">
 
-          <div class="diagram-item">
-            <div class="pole-inputs" style="position: relative;">
-              <div style="position: absolute; top: 0; left: 110px; display: flex; gap:40px">
-                <input  id="pic4_1" class="ns-input" type="text" maxlength="1" readonly>
-                <input  id="pic4_2" class="ns-input" type="text" maxlength="1" readonly>
-              </div>
-              <div style="position: absolute; top: 140px; left: 232px; display: flex; gap:40px">
-                <input id="pic4_3" class="arrow-input" type="text" maxlength="1" readonly>
-              </div>
-            </div>
-            <img src="./img/emi/pic4.png" alt="мал. 4">
+            <input id="pic4_1" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top:  3%; 
+              left: 45%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+            <input id="pic4_2" class="ns-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 3%; 
+              left: 85%; 
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
+
+            <input id="pic4_3" class="arrow-input" type="text" maxlength="1" readonly style="
+              position: absolute; 
+              top: 50%; 
+              right: 5%;  
+              transform: translate(50%, 10%);
+              width: 40px;
+              height: 40px;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              border: 1px solid #667eea;
+              border-radius: 8px;">
           </div>
         </div>
-      </div>
 
-      <h2>Експеримент</h2>
-      <div class="info-box">
-        <strong>Експеримент 1.</strong> З'ясування умов виникнення індукційного струму в замкненому провіднику та чинників, від яких залежить напрямок індукційного струму.
-      </div>
+        <h2>Експеримент</h2>
+        <div class="info-box">
+          <strong>Експеримент 1.</strong> З'ясування умов виникнення індукційного струму в замкненому провіднику та
+          чинників, від яких залежить напрямок індукційного струму.
+        </div>
 
-      <div style="margin: 20px 0;">Для проведення експерименту скористаємося віртуальною лабораторією.</div>
-      
-      <div class="link-box">
-        <a href="https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_all.html?locale=uk" target="_blank">Відкрити віртуальну лабораторію PhET</a>
-      </div>
+        <div style="margin: 20px 0;">Для проведення експерименту скористаємося віртуальною лабораторією.</div>
 
-      <img class="lab-image" src="./img/emi/pict.png" alt="Віртуальна лабораторія">
+        <div class="link-box">
+          <a href="https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_all.html?locale=uk"
+            target="_blank">Відкрити віртуальну лабораторію PhET</a>
+        </div>
+        <div>або скористайтеся вбудованою версією:</div>
+        <iframe
+          src="https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_all.html?locale=uk"
+          allowfullscreen width="100%" height="auto" style="border: none; min-height: 500px;">
 
-      <ol>
-        <li>Оберіть розділ "Котушка індуктивності"</li>
-        <li>Замініть лампочку на індикатор</li>
-        <li>Утримуючи котушку та магніт у руках, послідовно виконайте досліди, зазначені в табл. 1.</li>
-      </ol>
+        </iframe>
 
-      <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 1</div>
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 50px;">№</th>
-            <th style="width: 40%;">Дії з магнітом і котушкою</th>
-            <th>Як поводиться стрілка міліамперметра (відхиляється ліворуч, праворуч, не відхиляється)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Уводимо магніт у котушку північним полюсом</td>
-            <td><textarea id="ansv_1_1"></textarea></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Залишаємо магніт нерухомим</td>
-            <td><textarea id="ansv_1_2"></textarea></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Виводимо магніт із котушки</td>
-            <td><textarea id="ansv_1_3"></textarea></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Уводимо магніт у котушку південним полюсом</td>
-            <td><textarea id="ansv_1_4"></textarea></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Залишаємо магніт нерухомим</td>
-            <td><textarea id="ansv_1_5"></textarea></td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>Виводимо магніт із котушки</td>
-            <td><textarea id="ansv_1_6"></textarea></td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td>Наближаємо котушку до південного полюса магніту</td>
-            <td><textarea id="ansv_1_7"></textarea></td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>Наближаємо котушку до північного полюса магніту</td>
-            <td><textarea id="ansv_1_8"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
 
-      <h2>Аналіз результатів експерименту 1</h2>
-      <div style="margin: 15px 0;">Проаналізуйте табл. 1 і сформулюйте висновок, у якому зазначте:</div>
-      
-      <div style="margin: 15px 0;">1) за яких умов у замкненій котушці виникає індукційний струм;</div>
-      <textarea id="v1_1"></textarea>
+        <ol>
+          <li>Оберіть розділ "Котушка індуктивності"</li>
+          <li>Замініть лампочку на індикатор</li>
+          <li>Утримуючи котушку та магніт у руках, послідовно виконайте досліди, зазначені в табл. 1.</li>
+        </ol>
+        <img class="lab-image" src="./img/emi/pict.png" alt="Віртуальна лабораторія" width="100%" height="auto">
 
-      <div style="margin: 15px 0;">2) як змінюється напрямок індукційного струму в разі зміни напрямку руху магніту;</div>
-      <textarea id="v1_2"></textarea>
+        <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 1</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50px;">№</th>
+              <th style="width: 40%;">Дії з магнітом і котушкою</th>
+              <th>Як поводиться стрілка міліамперметра (відхиляється ліворуч, праворуч, не відхиляється)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Уводимо магніт у котушку північним полюсом</td>
+              <td><textarea id="ansv_1_1"></textarea></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Залишаємо магніт нерухомим</td>
+              <td><textarea id="ansv_1_2"></textarea></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Виводимо магніт із котушки</td>
+              <td><textarea id="ansv_1_3"></textarea></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Уводимо магніт у котушку південним полюсом</td>
+              <td><textarea id="ansv_1_4"></textarea></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Залишаємо магніт нерухомим</td>
+              <td><textarea id="ansv_1_5"></textarea></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Виводимо магніт із котушки</td>
+              <td><textarea id="ansv_1_6"></textarea></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Наближаємо котушку до південного полюса магніту</td>
+              <td><textarea id="ansv_1_7"></textarea></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Наближаємо котушку до північного полюса магніту</td>
+              <td><textarea id="ansv_1_8"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
 
-      <div style="margin: 15px 0;">3) як змінюється напрямок індукційного струму в разі зміни полюса магніту, який наближають або віддаляють від котушки.</div>
-      <textarea id="v1_3"></textarea>
+        <h2>Аналіз результатів експерименту 1</h2>
+        <div style="margin: 15px 0;">Проаналізуйте табл. 1 і сформулюйте висновок, у якому зазначте:</div>
 
-      <div class="info-box" style="margin-top: 40px;">
-        <strong>Експеримент 2.</strong> З'ясування чинників, від яких залежить значення індукційного струму.
-      </div>
+        <div style="margin: 15px 0;">1) за яких умов у замкненій котушці виникає індукційний струм;</div>
+        <textarea id="v1_1"></textarea>
 
-      <div style="margin: 20px 0;">Утримуючи котушку та магніт в руках, послідовно виконайте досліди, зазначені в табл. 2. Щоразу знімайте покази міліамперметра та заносьте їх до табл. 2.</div>
+        <div style="margin: 15px 0;">2) як змінюється напрямок індукційного струму в разі зміни напрямку руху магніту;
+        </div>
+        <textarea id="v1_2"></textarea>
 
-      <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 2</div>
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 50px;">№</th>
-            <th style="width: 50%;">Дії з магнітом і котушкою</th>
-            <th>Сила струму I, мА. (Ціна поділки 1 мА)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Швидко вводимо магніт у котушку</td>
-            <td><textarea id="ansv_2_1"></textarea></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Повільно вводимо магніт у котушку</td>
-            <td><textarea id="ansv_2_2"></textarea></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Встановлюєм силу постійного магніту в 100% та швидко вводимо магніт в котушку</td>
-            <td><textarea id="ansv_2_3"></textarea></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Повільно вводимо в котушку магніти, силу якого встановлено в 100%</td>
-            <td><textarea id="ansv_2_4"></textarea></td>
-          </tr>
-        </tbody>
-      </table>
+        <div style="margin: 15px 0;">3) як змінюється напрямок індукційного струму в разі зміни полюса магніту, який
+          наближають або віддаляють від котушки.</div>
+        <textarea id="v1_3"></textarea>
 
-      <h2>Аналіз результатів експерименту 2</h2>
-      <div style="margin: 15px 0;">Проаналізуйте табл. 2 і сформулюйте висновок, у якому зазначте:</div>
-      
-      <div style="margin: 15px 0;">1) як залежить сила індукційного струму від швидкості відносного руху магніту та котушки;</div>
-      <textarea id="v2_1"></textarea>
+        <div class="info-box" style="margin-top: 40px;">
+          <strong>Експеримент 2.</strong> З'ясування чинників, від яких залежить значення індукційного струму.
+        </div>
 
-      <div style="margin: 15px 0;">2) як залежить сила індукційного струму від значення індукції зовнішнього магнітного поля, зміна якого спричиняє появу струму в котушці.</div>
-      <textarea id="v2_2"></textarea>
+        <div style="margin: 20px 0;">Утримуючи котушку та магніт в руках, послідовно виконайте досліди, зазначені в
+          табл.
+          2. Щоразу знімайте покази міліамперметра та заносьте їх до табл. 2.</div>
 
-      <div class="creative-task">
-        <h2>Творче завдання</h2>
-        <div style="margin: 20px 0;">Продумайте та запишіть план проведення експериментів із дослідження умов виникнення індукційного струму в замкненій котушці для випадків, коли дві котушки надіто на спільне осердя (див. рис.).</div>
-        <img src="./img/emi/pic6.png" alt="Дві котушки на спільному осерді">
-        <textarea id="cr_task"></textarea>
-      </div>
+        <div style="font-weight: 600; margin: 20px 0; font-size: 1.1em;">Таблиця 2</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50px;">№</th>
+              <th style="width: 50%;">Дії з магнітом і котушкою</th>
+              <th>Сила струму I, мА. (Ціна поділки 1 мА)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Швидко вводимо магніт у котушку</td>
+              <td><textarea id="ansv_2_1"></textarea></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Повільно вводимо магніт у котушку</td>
+              <td><textarea id="ansv_2_2"></textarea></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Встановлюєм силу постійного магніту в 100% та швидко вводимо магніт в котушку</td>
+              <td><textarea id="ansv_2_3"></textarea></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Повільно вводимо в котушку магніти, силу якого встановлено в 100%</td>
+              <td><textarea id="ansv_2_4"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
 
-      <div class="submit_block">
-        <button id="submin_button">Надіслати результати</button>
+        <h2>Аналіз результатів експерименту 2</h2>
+        <div style="margin: 15px 0;">Проаналізуйте табл. 2 і сформулюйте висновок, у якому зазначте:</div>
+
+        <div style="margin: 15px 0;">1) як залежить сила індукційного струму від швидкості відносного руху магніту та
+          котушки;</div>
+        <textarea id="v2_1"></textarea>
+
+        <div style="margin: 15px 0;">2) як залежить сила індукційного струму від значення індукції зовнішнього
+          магнітного
+          поля, зміна якого спричиняє появу струму в котушці.</div>
+        <textarea id="v2_2"></textarea>
+
+        <div class="creative-task">
+          <h2>Творче завдання</h2>
+          <div style="margin: 20px 0;">Продумайте та запишіть план проведення експериментів із дослідження умов
+            виникнення
+            індукційного струму в замкненій котушці для випадків, коли дві котушки надіто на спільне осердя (див. рис.).
+          </div>
+          <img src="./img/emi/pic6.png" alt="Дві котушки на спільному осерді">
+          <textarea id="cr_task"></textarea>
+        </div>
+
+        <div class="submit_block">
+          <button id="submin_button">Надіслати результати</button>
+        </div>
       </div>
     </div>
-  </div>
 </body>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -279,8 +407,22 @@
       input.addEventListener("click", () => {
         index = (index + 1) % symbols.length;
         input.value = symbols[index];
+        if (input.value === "N") {
+          input.style.background = "blue";
+          input.style.color = "white";
+          input.style.border = "0 none";
+        } else if (input.value === "S") {
+          input.style.background = "red";
+          input.style.color = "white";
+          input.style.border = "0 none";
+        } else {
+          input.style.background = "white";
+          input.style.color = "black";
+          input.style.border = "1px solid #667eea";
+        }
       });
     });
   });
 </script>
+
 </html>
