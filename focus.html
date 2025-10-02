@@ -1,110 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Визначення фокусної відстані та оптичної сили тонкої лінзи</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/n-style.css">
     <script src="./js/script.js" defer></script>
+    <style>
+        .vstavka {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .virt_lab {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .td_h {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table td {
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .formula-img {
+            display: block;
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .link-section a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .link-section a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+        }
+
+        .question-box > div:first-child {
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .txt_ar {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .virt_lab {
+                height: 400px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            .cell {
+                font-size: 12px;
+                padding: 5px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Лабораторна робота № 5 </h1>
-    <h2> Дослідження заломлення світла</h2>
-    <input type="text" id="sheetName" hidden value="Визначення фокусної відстані та оптичної сили тонкої лінзи">
-    <div><strong>Мета: </strong>визначити фокусну відстань та оптичну силу тонкої збиральної лінзи. </div>
-    <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання</div>
-    <div>
-        <div class="student">
-            <h2>Впишіть ваш клас</h2>
-            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Лабораторна робота № 5</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Дослідження заломлення світла</h2>
         </div>
-        <div class="student">
-            <h2>Впишіть ваше прізвище та ім'я</h2>
-            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
-        </div>
-    </div>
-    <h2>Підготовка до експерименту</h2>
-    <div>
-        <div>1. Що таке лінза?</div>
-        <div>Яку лінзу називають тонкою?</div>
-        <div><textarea class="txt_ar" id="qw_1" cols="70" rows="10"></textarea></div>
-    </div>
-    <div>
-        <div>2. Розгляньте рисунок. Проаналізуйте формулу тонкої лінзи, </div>
-        <div>подумайте, які вимірювання вам слід зробити, щоб визначити фокусну відстань лінзи.</div>
-        <div><img src="./img/focus/img2.png" alt=""></div>
-    </div>
-    <h2>Експеримент</h2>
-    <div>Відкрийте симуляцію заломлення світла за посиланням:</div>
-    <a
-        href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk">https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk</a>
-    <div>або скористайтеся вставкою:</div>
-    <div class="vstavka">
-        <iframe class="virt_lab"
-            src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk"
-            allowfullscreen>
-        </iframe>
-    </div>
-    <div>1. Натисніть кнопку «Лінзи». Встановіть наступні параметри:</div>
-    <div>Стрілка. Збиральна лінза. Промені зручні. (див. рис.)</div>
-    <div><img src="./img/focus/img1.png" alt=""></div>
-    <div>2. Розташувавши лінзу між джерелом світла та екраном, дістаньте на екрані чітке зменшене зображення джерела
-        світла.</div>
-    <div>3. Виміряйте відстань d від джерела світла до лінзи та відстань f від лінзи до екрана.</div>
-    <div>Результати вимірювань записуємо до таблиці</div>
-    <div>4. Пересуваючи лінзу, дістаньте на екрані чітке збільшене зображення джерела світла.</div>
-    <div>5. Знову виміряйте відстань d від джерела світла до лінзи та відстань f від лінзи до екрана.</div>
 
-    <h2>Опрацювання результатів експерименту</h2>
-    <div>1. Для кожного досліду визначте:</div>
-    <div>1) фокусну відстань лінзи (скориставшись формулою тонкої лінзи);</div>
-    <div><img src="./img/focus/formula1.png" alt=""></div>
-    <div>2) оптичну силу лінзи (скориставшись означенням оптичної сили).</div>
-    <div><img src="./img/focus/formula2.png" alt=""></div>
-    <div>Запишіть отримані значення до таблиці.</div>
-    <div></div>
-    <table>
-        <tr style="height: 73.625px;">
-            <th class="td_h" id="h1"><strong>№</strong></th>
-            <th class="td_h" id="h2" style="width: 50px;"><strong>Відстань від предмета до лінзи<br> <i>d</i>, м</strong></th>
-            <th class="td_h" id="h3"><strong>Відстань від лінзи до екрана<br> <i>f</i>, м</th>
-            <th class="td_h" id="h4"><strong>Фокусна відстань лінзи<br> <i>F</i>, м </th>
-            <th class="td_h" id="h5"><strong>Оптична сила лінзи<br> <i>D</i>, дптр</th>
-        </tr>
-        <tbody>
-            <tr style="height: 22px;">
-                <td id="r1">1</td>
-                <td><input class="cell" id="r1c2" type="number"></td>
-                <td><input class="cell" id="r1c3" type="number"> </td>
-                <td><input class="cell" id="r1c4" type="number"> </td>
-                <td><input class="cell" id="r1c5" type="number"> </td>
-            </tr>
-            <tr style="height: 22px;">
-                <td id="r2">2</td>
-                <td><input class="cell" id="r2c2" type="number"></td>
-                <td><input class="cell" id="r2c3" type="number"></td>
-                <td><input class="cell" id="r2c4" type="number"></td>
-                <td><input class="cell" id="r2c5" type="number"></td>
-            </tr>            
-        </tbody>
-    </table>
-    <h2>Аналіз експерименту та його результатів</h2>
-    <div>
-        Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:
-    </div>
-    <div>1) порівняйте значення фокусної відстані, одержані вами в різних дослідах; </div>
-    <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
-    <div>2) дізнайтесь у вчителя значення оптичної сили лінзи, наведене в паспорті, та порівняйте його зі значеннями
-        оптичної сили, отриманими в ході експерименту; </div>
-    <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
-    <div>3) зазначте причини можливої розбіжності результатів.</div>
-    <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
-    <div class="submit_block">
-        <button id="submin_button">Відправити</button>
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Визначення фокусної відстані та оптичної сили тонкої лінзи">
+
+            <div class="info-box">
+                <div><strong>Мета:</strong> визначити фокусну відстань та оптичну силу тонкої збиральної лінзи.</div>
+            </div>
+
+            <div class="info-box">
+                <div><strong>Обладнання:</strong> комп'ютер або смартфон, комп'ютерна програма для моделювання</div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Підготовка до експерименту</h2>
+
+            <div class="question-box">
+                <div>1. Що таке лінза? Яку лінзу називають тонкою?</div>
+                <textarea class="txt_ar" id="qw_1" rows="10"></textarea>
+            </div>
+
+            <div class="question-box">
+                <div>2. Розгляньте рисунок. Проаналізуйте формулу тонкої лінзи, подумайте, які вимірювання вам слід зробити, щоб визначити фокусну відстань лінзи.</div>
+                <div class="img-container">
+                    <img src="./img/focus/img2.png" alt="Формула тонкої лінзи">
+                </div>
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="link-section">
+                <p style="margin-bottom: 10px;">Відкрийте симуляцію заломлення світла за посиланням:</p>
+                <p style="text-align: center;">
+                    <a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk" target="_blank">
+                        https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk
+                    </a>
+                </p>
+            </div>
+
+            <p style="margin: 15px 0;">або скористайтеся вставкою:</p>
+
+            <div class="vstavka">
+                <iframe class="virt_lab"
+                    src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1.</strong> Натисніть кнопку «Лінзи». Встановіть наступні параметри:</p>
+                <p style="margin-left: 20px;">Стрілка. Збиральна лінза. Промені зручні. (див. рис.)</p>
+                <div class="img-container">
+                    <img src="./img/focus/img1.png" alt="Налаштування симуляції">
+                </div>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2.</strong> Розташувавши лінзу між джерелом світла та екраном, дістаньте на екрані чітке зменшене зображення джерела світла.</p>
+                <p><strong>3.</strong> Виміряйте відстань d від джерела світла до лінзи та відстань f від лінзи до екрана. Результати вимірювань записуємо до таблиці.</p>
+                <p><strong>4.</strong> Пересуваючи лінзу, дістаньте на екрані чітке збільшене зображення джерела світла.</p>
+                <p><strong>5.</strong> Знову виміряйте відстань d від джерела світла до лінзи та відстань f від лінзи до екрана.</p>
+            </div>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <p style="margin: 20px 0;"><strong>1. Для кожного досліду визначте:</strong></p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) фокусну відстань лінзи</strong> (скориставшись формулою тонкої лінзи):</p>
+                <img class="formula-img" src="./img/focus/formula1.png" alt="Формула фокусної відстані">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) оптичну силу лінзи</strong> (скориставшись означенням оптичної сили):</p>
+                <img class="formula-img" src="./img/focus/formula2.png" alt="Формула оптичної сили">
+            </div>
+
+            <p style="margin: 20px 0;">Запишіть отримані значення до таблиці.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="td_h"><strong>№</strong></th>
+                        <th class="td_h"><strong>Відстань від предмета до лінзи<br><i>d</i>, м</strong></th>
+                        <th class="td_h"><strong>Відстань від лінзи до екрана<br><i>f</i>, м</strong></th>
+                        <th class="td_h"><strong>Фокусна відстань лінзи<br><i>F</i>, м</strong></th>
+                        <th class="td_h"><strong>Оптична сила лінзи<br><i>D</i>, дптр</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input class="cell" id="r1c2" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r1c3" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r1c4" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r1c5" type="number" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input class="cell" id="r2c2" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r2c3" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r2c4" type="number" step="0.001"></td>
+                        <td><input class="cell" id="r2c5" type="number" step="0.01"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+
+            <p style="margin: 20px 0;">Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:</p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) порівняйте значення фокусної відстані, одержані вами в різних дослідах;</strong></p>
+                <textarea class="txt_ar" id="v1" rows="10"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) дізнайтесь у вчителя значення оптичної сили лінзи, наведене в паспорті, та порівняйте його зі значеннями оптичної сили, отриманими в ході експерименту;</strong></p>
+                <textarea class="txt_ar" id="v2" rows="10"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>3) зазначте причини можливої розбіжності результатів.</strong></p>
+                <textarea class="txt_ar" id="v3" rows="10"></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submin_button">Відправити</button>
+            </div>
+        </div>
     </div>
 </body>
-
 </html>

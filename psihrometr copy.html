@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вимірювання відносної вологості повітря.</title>
+    <style>
+        
+    </style>
+    <script defer src="./psihrometr/psihro.js"></script>
+    <script defer src="./js/script.js"></script>
+    <script defer src="./js/psihrometr/js.js"></script>
+    <link rel="stylesheet" href="./css/psihrometr/style.css">
+
+</head>
+<body>
+    <h1>Лабораторна робота № 7 </h1>
+    <h2> Вимірювання відносної вологості повітря</h2>
+        <input type="text" id="sheetName" hidden value="Вимірювання відносної вологості повітря">
+    <div><strong>Мета: </strong>визначити відносної вологості повітря за допомогою психрометра</div>
+    <div><strong>Обладнання:</strong> психрометр</div>
+    <div>
+        <div class="student">
+            <h2>Впишіть ваш клас</h2>
+            <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+        </div>
+        <div class="student">
+            <h2>Впишіть ваше прізвище та ім'я</h2>
+            <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+        </div>
+    </div>
+
+    
+
+   
+
+    <h2>Підготовка до експерименту</h2>
+
+    <div>
+        <div>Уважно вивчіть схему установки для проведення лабораторної роботи</div>
+        
+    </div>
+    <h2>Експеримент</h2>
+    <div>1. Визначіть ціну поділки термометрів</div>
+    <div>2. Визначіть покази сухого термометра та запишіть до таблиці (табл. 2)</div>
+    <div>3. Визначіть покази вологого термометра та запишіть до таблиці (табл. 2)</div>
+    <h2>Опрацювання результатів експерименту</h2>
+    <div>1. Визначіть різницю показів сухого та вологого термометрів та запишіть до таблиці (табл. 2)</div>
+    <div>2. Користуючись психрометричною таблицею (табл. 1) визначте відносну вологість повітря. Запишіть значення до таблиці 2.</div>
+    <div>3. За таблицею 3 визначте густину насиченої пари ρ<sub>н</sub> (за температури t<sub>сух</sub>). Запишіть значення до таблиці 2.</div>
+    <div>4. Знаючи відносну вологість φ повітря та густину насиченої пари ρ<sub>н</sub> за даної температури t<sub>сух</sub>, розрахуйте абсолютну ρ<sub>а</sub> вологість повітря в кабінеті:</div>
+    <div>
+        <img src="./img/psihrometr/2024-02-28_155048.png" alt="">
+    </div>
+
+    <h3> Табл. 1. Психрометрична таблиця</h3>
+    <div>
+        <img src="./img/psihrometr/1520945988.jpg" alt="">
+    </div>
+
+    <h3> Табл. 2. Результати експерименту</h3>
+    <table class="result_table"  style="border-collapse: collapse; width: 70%; height: 71px;" border="1">
+
+        <tbody>
+            <tr style="height: 73.625px;">
+
+                <td class="td_h" id="h2"><strong>Показ сухого термометра<br><i>t</i><sub>сух</sub>, ℃</strong></td>
+                <td class="td_h" id="h3"><strong>Показ вологого термометра<br><i>t</i><sub>вол</sub>, ℃</strong></td>
+                <td class="td_h" id="h4"><strong>Різниця показів<br>∆t=t<sub>сух</sub>-t<sub>вол</sub>, ℃</strong></td>
+                <td class="td_h" id="h5"><strong>Відносна вологість<br><i>φ</i>, %</strong></td>
+                <td class="td_h" id="h6"><strong>Густина насиченої пари
+                    ρ<sub>н</sub>  (при t<sub>сух</sub> ) <br>г/м<sup>3</sup>
+                    </td>
+                <td class="td_h" id="h7"><strong>Абсолютна вологість<br>ρ<sub>a</sub>, г/м<sup>3</sup></strong></td>
+
+            </tr>
+            <tr style="height: 22px;">
+
+                <td class="td_c"><input class="cell" id="r1c2" type="number"></td>
+                <td class="td_c"><input class="cell" id="r1c3" type="number"></td>
+                <td class="td_c"><input class="cell" id="r1c4" type="number"></td>
+                <td class="td_c"><input class="cell" id="r1c5" type="number"></td>
+                <td class="td_c"><input class="cell" id="r1c6" type="number"></td>
+                <td class="td_c"><input class="cell" id="r1c7" type="number"></td>
+
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <h3> Табл. 3. Таблиця залежності густини насиченої водяної пари від температури </h3>
+    <div>
+        <img src="./img/psihrometr/2024-02-28_154634.png" alt="">
+    </div>
+    <div class="panel">
+        <!-- <img class="term1" style="position: absolute;" src="./img/psihrometr/termometr.png" alt="">
+        <img class="term2" style="position: absolute;" src="./img/psihrometr/termometr.png" alt="">
+        <table style="position: absolute; right:0; top:0;" border="0" cellspacing="0" cellpadding="0" width="180" height="500" > -->
+        <table border="0" cellspacing="0" cellpadding="0" width="180" height="500" background="./img/psihrometr/termometr.png">
+        <tbody><tr>
+          <td colspan="4" height="30">сухий</td>
+          <td colspan="4" height="30">вологий</td>
+        </tr>
+          <tr>
+            <td width="30">&nbsp;</td>
+            <td width="6">&nbsp;</td>
+            <td width="20">&nbsp;</td>
+            <td width="30">&nbsp;</td>
+            
+            <td width="38">&nbsp;</td>
+            <td width="6">&nbsp;</td>
+            <td width="20">&nbsp;</td>
+            <td width="30">&nbsp;</td>
+       </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+         <tr>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+         
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+       </tr>
+         <tr>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td id="de5">25</td>
+           
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td>&nbsp;</td>
+           <td id="de10">25</td>
+          </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u14">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u34">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u13">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u33">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+             <td id="u12">&nbsp;</td>
+             <td>&nbsp;</td>
+          <td id="de4">20</td>
+          
+          <td>&nbsp;</td>
+             <td id="u32">&nbsp;</td>
+             <td>&nbsp;</td>
+          <td id="de9">20</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u11">&nbsp;</td>
+         <td height="31">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u31">&nbsp;</td>
+         <td height="31">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u10">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u30">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u9">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de3">15</td>
+         
+           <td>&nbsp;</td>
+         <td id="u29">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de8">15</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u8">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+           <td>&nbsp;</td>
+         <td id="u28">&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+       <tr>
+         <td>&nbsp;</td>     
+         <td id="u7">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td height="23">&nbsp;</td>
+         
+         <td>&nbsp;</td>     
+         <td id="u27">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td height="23">&nbsp;</td>
+             </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u6">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de2" height="20">10</td>
+         
+         <td>&nbsp;</td>
+         <td id="u26">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de7" height="20">10</td>
+            </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u5">&nbsp;</td>
+         <td height="25">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u25">&nbsp;</td>
+         <td height="25">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u4">&nbsp;</td>
+         <td height="20">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u24">&nbsp;</td>
+         <td height="20">&nbsp;</td>
+         <td>&nbsp;</td>
+       </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u3">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de1" height="20">5</td>
+         
+         <td>&nbsp;</td>
+         <td id="u23">&nbsp;</td>
+         <td>&nbsp;</td>
+         <td id="de6" height="20">5</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td id="u2">&nbsp;</td>
+         <td height="22">&nbsp;</td>
+         <td>&nbsp;</td>
+         
+         <td>&nbsp;</td>
+         <td id="u22">&nbsp;</td>
+         <td height="22">&nbsp;</td>
+         <td>&nbsp;</td>
+         </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td id="u1">&nbsp;</td>
+            <td height="30">&nbsp;</td>
+            <td>&nbsp;</td>
+            
+            <td>&nbsp;</td>
+            <td id="u21">&nbsp;</td>
+            <td height="30">&nbsp;</td>
+            <td>&nbsp;</td>
+         </tr>
+       <tr>
+         <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td height="25">&nbsp;</td>
+          <td>&nbsp;</td>
+          
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td height="25">&nbsp;</td>
+          <td>&nbsp;</td>
+       </tr>
+       <tr>
+         <td height="50" colspan="4" valign="bottom">&nbsp;</td>
+         <td height="50" colspan="4" align="left" valign="bottom"><img src="./img/psihrometr/img19.png" width="80"></td>
+         </tr>
+     </tbody></table>
+     </div>
+
+    <h2>Аналіз експерименту та його результатів</h2>
+    <div>
+        Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:
+    </div>
+    <div>1) які фізичні величини виміряли за допомогою цього приладу;  </div>
+    <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
+    <div>2) які отримали результати; </div>
+    <div><textarea class="txt_ar" id="v2" cols="70" rows="10"></textarea></div>
+    <div>3) які чинники впливали на точність результатів проведеного експерименту.</div>
+    <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
+    <div class="submit_block">
+        <button id="submin_button">Надіслати</button>
+    </div>
+
+    <input class="cell" id="r1c2_ori" type="number" hidden>
+    <input class="cell" id="r1c3_ori" type="number" hidden>
+    <input class="cell" id="dt_ori" type="number" hidden>
+    <input class="cell" id="humidity_ori" type="number" hidden>
+    <input class="cell" id="density_ori" type="number" hidden>
+    <input class="cell" id="density_saturation_ori" type="number" hidden>
+
+</body>
+</html>
