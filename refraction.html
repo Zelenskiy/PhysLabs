@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дослідження заломлення світла</title>
+    <link rel="stylesheet" href="./css/n-style.css">
+    <script src="./js/script.js" defer></script>
+    <style>
+        .vstavka {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .td_h {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 15px 10px;
+        }
+
+        table td {
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-box img {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+
+        .txt_ar {
+            width: 100%;
+        }
+
+        .star-task {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .star-task h2 {
+            color: #e65100;
+            border-color: #e65100;
+        }
+
+        sub, sup {
+            font-size: 0.75em;
+        }
+
+        @media (max-width: 768px) {
+            iframe {
+                height: 400px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            .cell {
+                font-size: 12px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Лабораторна робота № 4</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Дослідження заломлення світла</h2>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Заломлення світла">
+
+            <div class="info-box">
+                <div><strong>Мета:</strong> визначити показник заломлення скла відносно повітря.</div>
+            </div>
+
+            <div class="info-box">
+                <div><strong>Обладнання:</strong> скляна пластинка з паралельними гранями, олівець, косинець із міліметровою шкалою, циркуль.</div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Підготовка до експерименту</h2>
+
+            <div class="question-box">
+                <p><strong>1. Перед тим як виконувати роботу, згадайте:</strong></p>
+                <ol>
+                    <li>вимоги безпеки під час роботи зі скляними предметами;</li>
+                    <li>закони заломлення світла;</li>
+                    <li>формулу для визначення показника заломлення.</li>
+                </ol>
+            </div>
+
+            <p style="margin: 20px 0;"><strong>2. Підготуйте рисунки для виконання роботи (див. рис. 1).</strong></p>
+
+            <div class="img-container">
+                <img src="./img/refraction/image1.png" alt="Рис. 1 - Підготовка до експерименту">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p>Для цього:</p>
+                <ol>
+                    <li>покладіть скляну пластинку на сторінку зошита і гостро заточеним олівцем окресліть контур пластинки;</li>
+                    <li>на відрізку, що відповідає положенню верхньої заломної грані пластинки:
+                        <ul>
+                            <li>позначте точку <em>О</em>;</li>
+                            <li>проведіть через точку <em>О</em> пряму <em>k</em> перпендикулярну до даного відрізка;</li>
+                            <li>за допомогою циркуля побудуйте коло радіусом 2,5 см із центром у точці <em>О</em>;</li>
+                        </ul>
+                    </li>
+                    <li>під кутом приблизно 45° накресліть промінь, який задаватиме напрямок пучка світла, що падає в точку <em>О</em>; позначте точку перетину променя і кола літерою <em>А</em>;</li>
+                    <li>повторіть дії, описані в пунктах 1-3, ще двічі (виконайте ще два рисунки на тій самій сторінці зошита), спочатку збільшивши, а потім зменшивши заданий кут падіння променя світла.</li>
+                </ol>
+            </div>
+
+            <h2>Віртуальна симуляція</h2>
+
+            <div class="link-box">
+                <p style="margin-bottom: 10px;">Для моделювання експерименту використовуйте симуляцію PhET:</p>
+                <p style="text-align: center;">
+                    <a href="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html?locale=uk" target="_blank">
+                        PhET - Заломлення світла
+                    </a>
+                </p>
+            </div>
+
+            <div class="vstavka">
+                <iframe src="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html?locale=uk"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="info-box">
+                <p><em>Суворо дотримуйтесь інструкції з безпеки.</em></p>
+            </div>
+
+            <div class="img-container">
+                <img src="./img/refraction/image2.png" alt="Рис. 2 - Проведення експерименту">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1.</strong> Накладіть скляну пластинку на перший контур.</p>
+                <p><strong>2.</strong> Дивлячись на промінь <em>АО</em> крізь скло, поставте поряд із нижньою гранню пластинки точку <em>М</em> так, щоб вона здавалася розташованою на продовженні променя <em>АО</em> (рис. 2).</p>
+                <p><strong>3.</strong> Повторіть дії, описані в пунктах 1 і 2, ще для двох контурів.</p>
+            </div>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <div class="img-container">
+                <img src="./img/refraction/image3.png" alt="Рис. 3 - Опрацювання результатів">
+            </div>
+
+            <p style="margin: 20px 0;">Для кожного досліду (див. рис. 3):</p>
+            <ol>
+                <li>проведіть заломлений промінь <em>OM</em>;</li>
+                <li>знайдіть точку перетину променя <em>OM</em> із колом (точку <em>B</em>);</li>
+                <li>із точок <em>A</em> і <em>B</em> опустіть перпендикуляри на пряму <em>k</em>, виміряйте довжини <em>a</em> і <em>b</em> отриманих відрізків і радіус кола <em>r</em>;</li>
+                <li>визначте показник заломлення скла відносно повітря:</li>
+            </ol>
+
+            <div class="formula-box">
+                <p style="font-size: 1.1em; margin: 10px 0;">
+                    n<sub>21</sub> = sin α / sin γ
+                </p>
+                <p style="font-size: 1.1em; margin: 10px 0;">
+                    sin α = a / r;&nbsp;&nbsp;&nbsp;&nbsp;sin γ = b / r
+                </p>
+                <p style="font-size: 1.2em; font-weight: 600; margin: 15px 0; color: #667eea;">
+                    ⇒ n<sub>21</sub> = a / b
+                </p>
+            </div>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td class="td_h"><strong>№</strong></td>
+                        <td class="td_h"><strong>Довжина відрізка <em>а</em>, мм</strong></td>
+                        <td class="td_h"><strong>Довжина відрізка <em>b</em>, мм</strong></td>
+                        <td class="td_h"><strong>Показник заломлення n<sub>21</sub></strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input class="cell" id="a1" type="number" step="0.1"></td>
+                        <td><input class="cell" id="b1" type="number" step="0.1"></td>
+                        <td><input class="cell" id="n1" type="number" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input class="cell" id="a2" type="number" step="0.1"></td>
+                        <td><input class="cell" id="b2" type="number" step="0.1"></td>
+                        <td><input class="cell" id="n2" type="number" step="0.01"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><input class="cell" id="a3" type="number" step="0.1"></td>
+                        <td><input class="cell" id="b3" type="number" step="0.1"></td>
+                        <td><input class="cell" id="n3" type="number" step="0.01"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+
+            <p style="margin: 20px 0;">Проаналізуйте експеримент і його результати. Сформулюйте висновок, у якому зазначте:</p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) яку фізичну величину ви визначали;</strong></p>
+                <textarea class="txt_ar" id="v1" rows="3"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) який результат отримали;</strong></p>
+                <textarea class="txt_ar" id="v2" rows="3"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>3) чи залежить значення отриманої величини від кута падіння світла;</strong></p>
+                <textarea class="txt_ar" id="v3" rows="3"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>4) у чому причини можливої похибки експерименту.</strong></p>
+                <textarea class="txt_ar" id="v4" rows="3"></textarea>
+            </div>
+
+            <div class="creative-task">
+                <h2>Творче завдання</h2>
+                <div class="img-container">
+                    <img src="./img/refraction/image4.png" alt="Схема для творчого завдання">
+                </div>
+                <p style="margin: 20px 0;">Скориставшись рисунком, продумайте та запишіть план проведення експерименту з визначення показника заломлення води відносно повітря. У разі можливості проведіть експеримент.</p>
+                <textarea class="txt_ar" id="creative" rows="10"></textarea>
+            </div>
+
+            <div class="star-task">
+                <h2>⭐ Завдання «із зірочкою»</h2>
+                <p style="margin: 20px 0;">Оцініть відносну похибку експерименту, проведеного в ході лабораторної роботи, скориставшись формулою:</p>
+                <div class="formula-box">
+                    <p style="font-size: 1.2em; margin: 10px 0;">
+                        ε = |1 - n<sub>вим</sub>/n<sub>табл</sub>| · 100%
+                    </p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 15px;">
+                        де n<sub>вим</sub> -- отримане під час експерименту значення показника заломлення скла;<br>
+                        n<sub>табл</sub> -- табличне значення показника заломлення скла, з якого виготовлена пластинка.
+                    </p>
+                </div>
+                <textarea class="txt_ar" id="star_task" rows="10" placeholder="Розрахуйте відносну похибку експерименту..."></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submin_button">Відправити</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дослідження відбивання світла за допомогою плоского дзеркала</title>
+    <link rel="stylesheet" href="./css/n-style.css">
+    <script src="./js/script.js" defer></script>
+    <style>
+        .vstavka {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .td_h {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 15px 10px;
+        }
+
+        table td {
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+        }
+
+        .txt_ar {
+            width: 100%;
+        }
+
+        .star-task {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .star-task h2 {
+            color: #e65100;
+            border-color: #e65100;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .formula-box img {
+            max-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            iframe {
+                height: 400px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            .cell {
+                font-size: 12px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Лабораторна робота № 3</h1>
+            <h2 style="color: white; border: none; margin-top: 10px;">Дослідження відбивання світла за допомогою плоского дзеркала</h2>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Відбивання світла">
+
+            <div class="info-box">
+                <div><strong>Мета:</strong> експериментально перевірити закони відбивання світла.</div>
+            </div>
+
+            <div class="info-box">
+                <div><strong>Обладнання:</strong> лінійка, транспортир, олівець, джерело світла (свічка або електрична лампочка на підставці), плоске дзеркало, екран зі щілиною, кілька чистих білих аркушів.</div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Підготовка до експерименту</h2>
+
+            <div class="question-box">
+                <p><strong>1. Перш ніж виконувати роботу, згадайте:</strong></p>
+                <ol>
+                    <li>вимоги безпеки під час роботи зі скляними предметами;</li>
+                    <li>закони відбивання світла.</li>
+                </ol>
+            </div>
+
+            <p style="margin: 20px 0;"><strong>2. Зберіть експериментальну установку (див. рисунок).</strong></p>
+
+            <div class="img-container">
+                <img src="./img/reflection/exp_ust.png" alt="Схема експериментальної установки">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p>Для цього:</p>
+                <ol>
+                    <li>установіть екран зі щілиною на білому аркуші;</li>
+                    <li>переміщуючи джерело світла, отримайте на папері тонку яскраву смужку;</li>
+                    <li>під деяким кутом до смужки та перпендикулярно до аркуша установіть плоске дзеркало, переконавшись, що відбитий пучок світла також дає на аркуші добре помітну смужку.</li>
+                </ol>
+            </div>
+
+            <h2>Віртуальна симуляція</h2>
+
+            <div class="link-box">
+                <p style="margin-bottom: 10px;">Для моделювання експерименту використовуйте симуляцію PhET:</p>
+                <p style="text-align: center;">
+                    <a href="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html?locale=uk" target="_blank">
+                        PhET - Заломлення світла (оберіть режим "Дзеркала")
+                    </a>
+                </p>
+            </div>
+
+            <div class="vstavka">
+                <iframe src="https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_all.html?locale=uk"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="info-box">
+                <p><em>Суворо дотримуйтесь інструкції з безпеки.</em></p>
+            </div>
+
+            <div class="img-container">
+                <img src="./img/reflection/exp_ust_2.png" alt="Проведення експерименту">
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1.</strong> Добре заточеним олівцем накресліть на папері лінію вздовж дзеркала. Поставте на папері три точки: першу -- посередині падаючого пучка світла, другу -- посередині відбитого пучка світла, третю -- у місці падіння світлового пучка на дзеркало.</p>
+                <p><strong>2.</strong> Повторіть дії ще кілька разів (на різних аркушах), установлюючи дзеркало під різними кутами до падаючого променя.</p>
+            </div>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <p style="margin: 20px 0;">Для кожного досліду:</p>
+            <ol>
+                <li>побудуйте промінь, що падає на дзеркало, та відбитий промінь;</li>
+                <li>із точки падіння променя встановіть перпендикуляр до лінії вздовж дзеркала;</li>
+                <li>позначте та виміряйте кут падіння і кут відбивання світла. Результати вимірювань занесіть до таблиці.</li>
+            </ol>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td class="td_h"><strong>№</strong></td>
+                        <td class="td_h"><strong>Кут падіння α, градус</strong></td>
+                        <td class="td_h"><strong>Кут відбивання β, градус</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input class="cell" id="alpha1" type="number" step="0.1"></td>
+                        <td><input class="cell" id="beta1" type="number" step="0.1"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input class="cell" id="alpha2" type="number" step="0.1"></td>
+                        <td><input class="cell" id="beta2" type="number" step="0.1"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><input class="cell" id="alpha3" type="number" step="0.1"></td>
+                        <td><input class="cell" id="beta3" type="number" step="0.1"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><input class="cell" id="alpha4" type="number" step="0.1"></td>
+                        <td><input class="cell" id="beta4" type="number" step="0.1"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><input class="cell" id="alpha5" type="number" step="0.1"></td>
+                        <td><input class="cell" id="beta5" type="number" step="0.1"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+
+            <p style="margin: 20px 0;">Проаналізуйте експеримент та його результати. Зробіть висновок, у якому зазначте:</p>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) яке співвідношення між кутом падіння світлового променя та кутом його відбивання ви встановили;</strong></p>
+                <textarea class="txt_ar" id="v1" rows="5"></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) чи виявилися результати дослідів абсолютно точними, а якщо ні, то в чому причини похибки.</strong></p>
+                <textarea class="txt_ar" id="v2" rows="5"></textarea>
+            </div>
+
+            <div class="creative-task">
+                <h2>Творче завдання</h2>
+                <div class="img-container">
+                    <img src="./img/reflection/cr_sxem.png" alt="Схема для творчого завдання">
+                </div>
+                <p style="margin: 20px 0;">Скориставшись рисунком, продумайте та запишіть план проведення експерименту з визначення висоти кімнати за допомогою плоского дзеркала; зазначте необхідне обладнання. У разі можливості проведіть експеримент.</p>
+                <textarea class="txt_ar" id="creative" rows="10"></textarea>
+            </div>
+
+            <div class="star-task">
+                <h2>⭐ Завдання «із зірочкою»</h2>
+                <p style="margin: 20px 0;">Для кожного досліду оцініть відносну похибку експерименту за формулою:</p>
+                <div class="formula-box">
+                    <p style="font-size: 1.2em; margin: 10px 0;">
+                        ε = |1 - α/β| · 100%
+                    </p>
+                    <p style="font-size: 0.9em; color: #666;">де α -- кут падіння; β -- кут відбивання.</p>
+                </div>
+                <textarea class="txt_ar" id="star_task" rows="10" placeholder="Розрахуйте відносну похибку для кожного досліду..."></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submin_button">Відправити</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
