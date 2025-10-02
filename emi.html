@@ -54,33 +54,55 @@
 
         <div class="diagram-container">
           <div class="diagram-item">
-            <div class="pole-inputs">
-              <input id="pic1_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
-              <input id="pic1_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            <div class="pole-inputs" style="position: relative;">
+              <div style="position: absolute; top: 0; left: 80px; display: flex; gap:50px">
+                <input id="pic1_1" class="ns-input" type="text" maxlength="1" readonly>
+                <input id="pic1_2" class="ns-input" type="text" maxlength="1" readonly>
+              </div>
+              <div style="position: absolute; top: 120px; left: 197px; display: flex; gap:40px">
+                <input id="pic1_3" class="arrow-input" type="text" maxlength="1" readonly>
+              </div>
             </div>
             <img src="./img/emi/pic1.png" alt="мал. 1">
           </div>
 
           <div class="diagram-item">
-            <div class="pole-inputs">
-              <input id="pic2_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
-              <input id="pic2_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            <div class="pole-inputs" style="position: relative;">
+              <div style="position: absolute; top: 0; left: 90px; display: flex; gap:40px">
+                <input  id="pic2_1" class="ns-input" type="text" maxlength="1" readonly>
+                <input  id="pic2_2" class="ns-input" type="text" maxlength="1" readonly>
+
+
+              </div>
+              <div style="position: absolute; top: 140px; left: 212px; display: flex; gap:40px">
+                <input id="pic2_3" class="arrow-input" type="text" maxlength="1" readonly>
+              </div>
             </div>
             <img src="./img/emi/pic2.png" alt="мал. 2">
           </div>
 
           <div class="diagram-item">
-            <div class="pole-inputs">
-              <input id="pic3_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
-              <input id="pic3_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            <div class="pole-inputs" style="position: relative;">
+              <div style="position: absolute; top: 0; left: 110px; display: flex; gap:40px">
+                <input  id="pic3_1" class="ns-input" type="text" maxlength="1" readonly>
+                <input  id="pic3_2" class="ns-input" type="text" maxlength="1" readonly>
+              </div>
+              <div style="position: absolute; top: 140px; left: 232px; display: flex; gap:40px">
+                <input id="pic3_3" class="arrow-input" type="text" maxlength="1" readonly>
+              </div>
             </div>
             <img src="./img/emi/pic3.png" alt="мал. 3">
           </div>
 
           <div class="diagram-item">
-            <div class="pole-inputs">
-              <input id="pic4_1" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
-              <input id="pic4_2" maxlength="1" oninput="this.value = this.value.toUpperCase().replace(/[^NS]/g, '')">
+            <div class="pole-inputs" style="position: relative;">
+              <div style="position: absolute; top: 0; left: 110px; display: flex; gap:40px">
+                <input  id="pic4_1" class="ns-input" type="text" maxlength="1" readonly>
+                <input  id="pic4_2" class="ns-input" type="text" maxlength="1" readonly>
+              </div>
+              <div style="position: absolute; top: 140px; left: 232px; display: flex; gap:40px">
+                <input id="pic4_3" class="arrow-input" type="text" maxlength="1" readonly>
+              </div>
             </div>
             <img src="./img/emi/pic4.png" alt="мал. 4">
           </div>
@@ -232,4 +254,33 @@
     </div>
   </div>
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const symbols = ["?", "↑", "↓"];
+
+    document.querySelectorAll(".arrow-input").forEach(input => {
+      let index = 0;
+      input.value = symbols[index]; // початкове значення
+
+      input.addEventListener("click", () => {
+        index = (index + 1) % symbols.length;
+        input.value = symbols[index];
+      });
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const symbols = ["?", "N", "S"];
+
+    document.querySelectorAll(".ns-input").forEach(input => {
+      let index = 0;
+      input.value = symbols[index]; // початкове значення
+
+      input.addEventListener("click", () => {
+        index = (index + 1) % symbols.length;
+        input.value = symbols[index];
+      });
+    });
+  });
+</script>
 </html>
