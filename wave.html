@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №6 - Звукові коливання</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .theory-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2em;
+            border: 2px solid #ffc107;
+        }
+
+        .note-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .note-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .note-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .note-table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .oscilloscope-section {
+            background: #1a1a2e;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            background: #1a1a2e;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 350px;
+            display: block;
+            cursor: crosshair;
+        }
+
+        .time-scale {
+            background: #2d2d44;
+            color: #00ff88;
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .scrollbar-container {
+            background: #2d2d44;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            margin-top: -5px;
+        }
+
+        .custom-scrollbar {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #1a1a2e;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .custom-scrollbar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60px;
+            height: 16px;
+            border-radius: 8px;
+            background: #00ff88;
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
+        }
+
+        .custom-scrollbar::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            background: #00dd77;
+        }
+
+        .custom-scrollbar::-moz-range-thumb {
+            width: 60px;
+            height: 16px;
+            border-radius: 8px;
+            background: #00ff88;
+            cursor: grab;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
+        }
+
+        .custom-scrollbar::-moz-range-thumb:active {
+            cursor: grabbing;
+            background: #00dd77;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%);
+            color: #333;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .status.recording {
+            background: #fff3cd;
+            color: #856404;
+            animation: pulse 1s infinite;
+        }
+
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .zoom-slider {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+
+        .zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .measurements {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-box strong {
+            color: #856404;
+        }
+
+        .experiment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .experiment-table th {
+            background: #764ba2;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .experiment-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .experiment-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .instruction-list {
+            background: white;
+            padding: 15px 15px 15px 35px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .instruction-list li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .tool-link:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .student {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .student h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .txt_inp {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .txt_inp:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit_block {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+
+        .submit_block button {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit_block button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit_block button:active {
+            transform: translateY(-1px);
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            button, .tool-link {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔊 ЛАБОРАТОРНА РОБОТА № 6</h1>
+            <p>Дослідження звукових коливань різноманітних джерел звуку</p>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Дослідження звукових коливань">
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <!-- Мета та обладнання -->
+            <div class="section">
+                <h2>📋 Мета роботи</h2>
+                <p>З'ясувати зв'язок між характеристиками звукової хвилі (амплітуда, частота) та гучністю й висотою тону звуку.</p>
+                
+                <h3>Обладнання:</h3>
+                <ul class="instruction-list">
+                    <li>Комп'ютер або мобільний телефон з мікрофоном</li>
+                    <li>Цей веб-додаток для запису та аналізу звуку</li>
+                    <li>Онлайн генератор звукових частот: <a href="https://splaudio.com.ua/ua/services/tongenerator/" target="_blank" class="tool-link">🔗 Відкрити генератор</a></li>
+                </ul>
+            </div>
+
+            <!-- Теоретичні відомості -->
+            <div class="section">
+                <h2>📚 Теоретичні відомості</h2>
+                
+                <div class="theory-box">
+                    <p><strong>Цифровий запис звуку</strong> – це послідовність значень амплітуди звукового сигналу, записаних через рівні проміжки часу. За графіком осцилограми можна визначити:</p>
+                    
+                    <h3>1. Гучність звуку</h3>
+                    <p>Визначається <span class="highlight">амплітудою A</span> звукової хвилі – максимальним відхиленням від положення рівноваги.</p>
+                    
+                    <h3>2. Тон звуку (висота)</h3>
+                    <p>Визначається <span class="highlight">частотою ν</span> (або періодом T) звукової хвилі.</p>
+                    
+                    <div class="formula">
+                        ν = N / t<br>
+                        <small>де N – кількість коливань, t – час у секундах</small>
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>Приклад:</strong> Якщо за 10 мс відбулося 8,8 коливань, то частота:<br>
+                        ν = 8,8 / 0,01 с = 880 Гц (нота "ля" другої октави)
+                    </div>
+                </div>
+
+                <h3>Таблиця частот музичних нот</h3>
+                <table class="note-table">
+                    <thead>
+                        <tr>
+                            <th>Нота</th>
+                            <th>Перша октава (Гц)</th>
+                            <th>Друга октава (Гц)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>До (C)</td><td>261,63</td><td>523,26</td></tr>
+                        <tr><td>Ре (D)</td><td>293,66</td><td>587,32</td></tr>
+                        <tr><td>Мі (E)</td><td>329,63</td><td>659,26</td></tr>
+                        <tr><td>Фа (F)</td><td>349,23</td><td>698,46</td></tr>
+                        <tr><td>Соль (G)</td><td>392,00</td><td>784,00</td></tr>
+                        <tr><td>Ля (A)</td><td>440,00</td><td>880,00</td></tr>
+                        <tr><td>Сі (B)</td><td>493,88</td><td>987,76</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Осцилограф -->
+            <div class="section">
+                <h2>🎵 Віртуальний осцилограф</h2>
+                
+                <div class="oscilloscope-section">
+                    <div class="canvas-wrapper">
+                        <canvas id="oscilloscope"></canvas>
+                        <div class="time-scale" id="timeScale"></div>
+                        <div class="scrollbar-container" id="scrollbarContainer" style="display: none;">
+                            <input type="range" id="horizontalScrollbar" class="custom-scrollbar" min="0" max="100" value="0" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="startBtn" class="btn-primary">▶ Запустити мікрофон</button>
+                        <button id="stopBtn" class="btn-danger" disabled>⏹ Зупинити</button>
+                        <button id="recordBtn" class="btn-success" disabled>⏺ Почати запис</button>
+                        <button id="stopRecordBtn" class="btn-danger" disabled>⏹ Завершити запис</button>
+                        <button id="clearBtn" class="btn-secondary" disabled>🗑️ Очистити</button>
+                    </div>
+
+                    <div class="zoom-controls" id="zoomControls" style="display: none;">
+                        <button id="zoomOutBtn" class="btn-secondary">−</button>
+                        <input type="range" id="zoomSlider" class="zoom-slider" min="1" max="50" value="1" step="0.5">
+                        <button id="zoomInBtn" class="btn-secondary">+</button>
+                        <span style="color: #00ff88; font-size: 14px;">Масштаб: <span id="zoomLevel">1x</span></span>
+                    </div>
+
+                    <div style="text-align: center; margin: 10px 0;">
+                        <button id="scrollLeftBtn" class="btn-secondary" style="display: none;">◄</button>
+                        <button id="scrollHomeBtn" class="btn-secondary" style="display: none;">⌂ Початок</button>
+                        <button id="scrollRightBtn" class="btn-secondary" style="display: none;">►</button>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-top: 10px;">
+                        <div style="color: white; text-align: center;">
+                            <span class="status inactive" id="status">Не активно</span>
+                            <span id="recordingStatus"></span>
+                        </div>
+                        <div id="measurements" class="measurements" style="display: none;"></div>
+                        <p style="color: #00ff88; text-align: center; margin-top: 10px; font-size: 14px;">
+                            💡 Підказка: Клацніть двічі на осцилограмі після запису, щоб виміряти період коливань
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Хід роботи -->
+            <div class="section">
+                <h2>🔬 Хід роботи</h2>
+                
+                <h3>Підготовка до експерименту:</h3>
+                <ol class="instruction-list">
+                    <li>Відкрийте генератор звукових частот: <a href="https://splaudio.com.ua/ua/services/tongenerator/" target="_blank" class="tool-link">splaudio.com.ua</a></li>
+                    <li>Натисніть "▶ Запустити мікрофон" у віртуальному осцилографі вище</li>
+                    <li>Дозвольте браузеру доступ до мікрофона</li>
+                </ol>
+
+                <h3>Виконання дослідів:</h3>
+                <ol class="instruction-list">
+                    <li><strong>Дослід 1:</strong> На генераторі встановіть частоту 440 Гц (нота "ля"). Натисніть "⏺ Почати запис", увімкніть звук на генераторі на 4-6 секунд, натисніть "⏹ Завершити запис".</li>
+                    
+                    <li><strong>Дослід 2:</strong> Очистіть запис. Збільште гучність генератора (не змінюючи частоту 440 Гц) і повторіть запис.</li>
+                    
+                    <li><strong>Дослід 3:</strong> Встановіть частоту 880 Гц на генераторі. Запишіть звук.</li>
+                    
+                    <li><strong>Дослід 4:</strong> Запишіть звук камертона (якщо є) або іншого джерела звуку.</li>
+                    
+                    <li><strong>Дослід 5:</strong> Проспівайте в мікрофон кілька нот. Записуйте кожну ноту окремо.</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>⚠️ Важливо:</strong> Після кожного запису використовуйте інструменти масштабування та вимірювання для визначення частоти. Клацніть двічі на двох сусідніх піках хвилі, щоб виміряти період і частоту.
+                </div>
+            </div>
+
+            <!-- Таблиця результатів -->
+            <div class="section">
+                <h2>📊 Таблиця результатів</h2>
+                
+                <table class="experiment-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Назва досліду</th>
+                            <th>Час коливань t, мс</th>
+                            <th>Кількість коливань N</th>
+                            <th>Частота ν, Гц</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input id="exp_fr_1_1" type="text" placeholder="440 Гц, нормальна гучність"></td>
+                            <td><input id="exp_fr_1_2" type="number" step="0.001"></td>
+                            <td><input id="exp_fr_1_3" type="number" step="0.1"></td>
+                            <td><input id="exp_fr_1_4" type="number" step="0.01"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input id="exp_fr_2_1" type="text" placeholder="440 Гц, підвищена гучність"></td>
+                            <td><input id="exp_fr_2_2" type="number" step="0.001"></td>
+                            <td><input id="exp_fr_2_3" type="number" step="0.1"></td>
+                            <td><input id="exp_fr_2_4" type="number" step="0.01"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input id="exp_fr_3_1" type="text" placeholder="880 Гц"></td>
+                            <td><input id="exp_fr_3_2" type="number" step="0.001"></td>
+                            <td><input id="exp_fr_3_3" type="number" step="0.1"></td>
+                            <td><input id="exp_fr_3_4" type="number" step="0.01"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input id="exp_fr_4_1" type="text" placeholder="Камертон / інше джерело"></td>
+                            <td><input id="exp_fr_4_2" type="number" step="0.001"></td>
+                            <td><input id="exp_fr_4_3" type="number" step="0.1"></td>
+                            <td><input id="exp_fr_4_4" type="number" step="0.01"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input id="exp_fr_5_1" type="text" placeholder="Спів (вкажіть ноту)"></td>
+                            <td><input id="exp_fr_5_2" type="number" step="0.001"></td>
+                            <td><input id="exp_fr_5_3" type="number" step="0.1"></td>
+                            <td><input id="exp_fr_5_4" type="number" step="0.01"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Висновки -->
+            <div class="section">
+                <h2>📝 Висновок</h2>
+                
+                <div class="theory-box">
+                    <h3>У висновку зазначте:</h3>
+                    <ol class="instruction-list">
+                        <li>Порівняйте виміряні частоти із заданими частотами генератора та табличними значеннями</li>
+                        <li>Як змінилася осцилограма при збільшенні гучності (дослід 1 vs дослід 2)?</li>
+                        <li>Як відрізняються осцилограми звуків різної частоти?</li>
+                        <li>Які причини можливої розбіжності результатів (шуми, неточність вимірювання тощо)?</li>
+                    </ol>
+                    
+                    <textarea style="width: 100%; min-height: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-top: 10px;" placeholder="Напишіть ваш висновок тут..."></textarea>
+                </div>
+            </div>
+
+            <!-- Завдання із зірочкою -->
+            <div class="section">
+                <h2>⭐ Завдання «із зірочкою»</h2>
+                
+                <div class="theory-box">
+                    <p>Оцініть відносну похибку одного з експериментів за формулою:</p>
+                    
+                    <div class="formula">
+                        ε = |1 - ν<sub>виміряна</sub> / ν<sub>задана</sub>| × 100%
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <label>ν<sub>задана</sub> (Гц): <input type="number" id="targetFreq" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 150px;"></label>
+                    </div>
+                    <div style="margin: 15px 0;">
+                        <label>ν<sub>виміряна</sub> (Гц): <input type="number" id="measuredFreq" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 150px;"></label>
+                    </div>
+                    <button onclick="calculateError()" class="btn-primary">Розрахувати похибку</button>
+                    <div id="errorResult" style="margin-top: 15px; font-size: 1.2em; font-weight: bold;"></div>
+                </div>
+            </div>
+
+            <!-- Кнопка відправки -->
+            <div class="submit_block">
+                <button id="submit_button">Надіслати результати</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('oscilloscope');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const stopRecordBtn = document.getElementById('stopRecordBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const statusEl = document.getElementById('status');
+        const recordingStatusEl = document.getElementById('recordingStatus');
+        const timeScaleEl = document.getElementById('timeScale');
+        const measurementsEl = document.getElementById('measurements');
+        const zoomControls = document.getElementById('zoomControls');
+        const zoomSlider = document.getElementById('zoomSlider');
+        const zoomLevelEl = document.getElementById('zoomLevel');
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const scrollLeftBtn = document.getElementById('scrollLeftBtn');
+        const scrollRightBtn = document.getElementById('scrollRightBtn');
+        const scrollHomeBtn = document.getElementById('scrollHomeBtn');
+        const horizontalScrollbar = document.getElementById('horizontalScrollbar');
+        const scrollbarContainer = document.getElementById('scrollbarContainer');
+
+        let audioContext;
+        let analyser;
+        let microphone;
+        let dataArray;
+        let bufferLength;
+        let animationId;
+        let isRecording = false;
+        let recordedData = [];
+        let recordStartTime;
+        let sampleRate;
+        let viewMode = 'live';
+        let zoomLevel = 1;
+        let scrollPosition = 0;
+        let clickMarkers = [];
+
+        canvas.width = canvas.offsetWidth * 2;
+        canvas.height = canvas.offsetHeight * 2;
+        ctx.scale(2, 2);
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = (seconds % 60).toFixed(3);
+            return `${mins}:${secs.padStart(6, '0')}`;
+        }
+
+        function updateTimeScale(duration, samplesPerPixel) {
+            if (viewMode === 'live') {
+                timeScaleEl.innerHTML = '<span>Режим реального часу</span>';
+                return;
+            }
+
+            const displayWidth = canvas.offsetWidth;
+            const numMarkers = 10;
+            let html = '';
+            
+            for (let i = 0; i <= numMarkers; i++) {
+                const pixelPos = (displayWidth / numMarkers) * i;
+                const samplePos = scrollPosition + (pixelPos * samplesPerPixel * zoomLevel);
+                const timeInSeconds = samplePos / sampleRate;
+                html += `<span>${formatTime(timeInSeconds)}</span>`;
+            }
+            
+            timeScaleEl.innerHTML = html;
+        }
+
+        function draw() {
+            const displayWidth = canvas.offsetWidth;
+            const displayHeight = canvas.offsetHeight;
+
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+            ctx.strokeStyle = '#2d2d44';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i <= 4; i++) {
+                const y = (displayHeight / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(displayWidth, y);
+                ctx.stroke();
+            }
+            
+            for (let i = 0; i <= 8; i++) {
+                const x = (displayWidth / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, displayHeight);
+                ctx.stroke();
+            }
+
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#00ff88';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#00ff88';
+
+            ctx.beginPath();
+
+            if (viewMode === 'live') {
+                analyser.getByteTimeDomainData(dataArray);
+                
+                const sliceWidth = displayWidth / bufferLength;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const v = dataArray[i] / 128.0;
+                    const y = (v * displayHeight) / 2;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                    x += sliceWidth;
+                }
+            } else {
+                const samplesPerPixel = zoomLevel;
+                const startSample = Math.floor(scrollPosition);
+                const endSample = Math.min(startSample + displayWidth * samplesPerPixel, recordedData.length);
+                
+                for (let i = 0; i < displayWidth; i++) {
+                    const sampleIndex = Math.floor(startSample + i * samplesPerPixel);
+                    if (sampleIndex >= recordedData.length) break;
+                    
+                    const v = recordedData[sampleIndex] / 128.0;
+                    const y = (v * displayHeight) / 2;
+                    const x = i;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                updateTimeScale((endSample - startSample) / sampleRate, samplesPerPixel);
+            }
+
+            ctx.lineTo(displayWidth, displayHeight / 2);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            if (clickMarkers.length > 0 && viewMode === 'playback') {
+                ctx.strokeStyle = '#ff0088';
+                ctx.lineWidth = 2;
+                
+                for (let marker of clickMarkers) {
+                    const x = (marker - scrollPosition) / zoomLevel;
+                    if (x >= 0 && x <= displayWidth) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, displayHeight);
+                        ctx.stroke();
+                    }
+                }
+
+                if (clickMarkers.length === 2) {
+                    const distance = Math.abs(clickMarkers[1] - clickMarkers[0]);
+                    const timeDistance = distance / sampleRate;
+                    const frequency = timeDistance > 0 ? 1 / timeDistance : 0;
+                    
+                    measurementsEl.style.display = 'block';
+                    measurementsEl.innerHTML = `
+                        📏 Вимірювання:<br>
+                        Δt = ${(timeDistance * 1000).toFixed(3)} мс<br>
+                        Частота = ${frequency.toFixed(2)} Гц (період: ${(timeDistance * 1000).toFixed(3)} мс)<br>
+                        Відстань: ${distance.toFixed(0)} семплів
+                    `;
+                }
+            }
+
+            if (viewMode === 'live') {
+                animationId = requestAnimationFrame(draw);
+            }
+        }
+
+        async function startOscilloscope() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                sampleRate = audioContext.sampleRate;
+
+                analyser.fftSize = 2048;
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                microphone.connect(analyser);
+
+                viewMode = 'live';
+                draw();
+
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                recordBtn.disabled = false;
+                statusEl.textContent = 'Активно';
+                statusEl.className = 'status active';
+
+            } catch (err) {
+                alert('Помилка доступу до мікрофона: ' + err.message);
+                console.error('Помилка:', err);
+            }
+        }
+
+        function stopOscilloscope() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+
+            if (isRecording) {
+                stopRecording();
+            }
+
+            if (microphone) {
+                microphone.disconnect();
+                microphone.mediaStream.getTracks().forEach(track => track.stop());
+            }
+
+            if (audioContext) {
+                audioContext.close();
+            }
+
+            if (recordedData.length === 0) {
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+            }
+
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            recordBtn.disabled = true;
+            statusEl.textContent = 'Не активно';
+            statusEl.className = 'status inactive';
+        }
+
+        async function startRecording() {
+            isRecording = true;
+            recordedData = [];
+            recordStartTime = Date.now();
+
+            recordBtn.disabled = true;
+            stopRecordBtn.disabled = false;
+            recordingStatusEl.innerHTML = '<span class="status recording">⏺ Запис...</span>';
+
+            function captureData() {
+                if (!isRecording) return;
+                
+                const tempArray = new Uint8Array(bufferLength);
+                analyser.getByteTimeDomainData(tempArray);
+                recordedData.push(...tempArray);
+                
+                setTimeout(captureData, 10);
+            }
+            captureData();
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            stopRecordBtn.disabled = true;
+            recordBtn.disabled = false;
+            recordingStatusEl.innerHTML = `<span class="status active">✓ Записано ${(recordedData.length / sampleRate).toFixed(2)} сек</span>`;
+            
+            clearBtn.disabled = false;
+            viewMode = 'playback';
+            zoomControls.style.display = 'flex';
+            scrollLeftBtn.style.display = 'inline-block';
+            scrollRightBtn.style.display = 'inline-block';
+            scrollHomeBtn.style.display = 'inline-block';
+            scrollbarContainer.style.display = 'block';
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            
+            updateScrollbar();
+            draw();
+        }
+
+        function clearRecording() {
+            recordedData = [];
+            clickMarkers = [];
+            scrollPosition = 0;
+            zoomLevel = 1;
+            zoomSlider.value = 1;
+            zoomLevelEl.textContent = '1x';
+            recordingStatusEl.innerHTML = '';
+            measurementsEl.style.display = 'none';
+            clearBtn.disabled = true;
+            zoomControls.style.display = 'none';
+            scrollLeftBtn.style.display = 'none';
+            scrollRightBtn.style.display = 'none';
+            scrollHomeBtn.style.display = 'none';
+            scrollbarContainer.style.display = 'none';
+            horizontalScrollbar.value = 0;
+            
+            if (viewMode === 'playback') {
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+                viewMode = 'live';
+                if (!animationId && analyser) {
+                    draw();
+                }
+            }
+        }
+
+        function updateZoom() {
+            zoomLevel = parseFloat(zoomSlider.value);
+            zoomLevelEl.textContent = zoomLevel.toFixed(1) + 'x';
+            
+            const maxScroll = Math.max(0, recordedData.length - (canvas.offsetWidth * zoomLevel));
+            scrollPosition = Math.min(scrollPosition, maxScroll);
+            
+            updateScrollbar();
+            draw();
+        }
+
+        function updateScrollbar() {
+            if (recordedData.length === 0) return;
+            
+            const maxScroll = Math.max(0, recordedData.length - (canvas.offsetWidth * zoomLevel));
+            
+            if (maxScroll > 0) {
+                const scrollPercentage = (scrollPosition / maxScroll) * 100;
+                horizontalScrollbar.value = scrollPercentage;
+            } else {
+                horizontalScrollbar.value = 0;
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (viewMode !== 'playback' || recordedData.length === 0) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const samplePosition = scrollPosition + (x * zoomLevel);
+            
+            clickMarkers.push(samplePosition);
+            if (clickMarkers.length > 2) {
+                clickMarkers.shift();
+            }
+            
+            draw();
+        });
+
+        zoomSlider.addEventListener('input', updateZoom);
+        zoomInBtn.addEventListener('click', () => {
+            zoomSlider.value = Math.min(50, parseFloat(zoomSlider.value) + 1);
+            updateZoom();
+        });
+        zoomOutBtn.addEventListener('click', () => {
+            zoomSlider.value = Math.max(1, parseFloat(zoomSlider.value) - 1);
+            updateZoom();
+        });
+
+        scrollLeftBtn.addEventListener('click', () => {
+            scrollPosition = Math.max(0, scrollPosition - canvas.offsetWidth * zoomLevel * 0.5);
+            updateScrollbar();
+            draw();
+        });
+        scrollRightBtn.addEventListener('click', () => {
+            const maxScroll = Math.max(0, recordedData.length - (canvas.offsetWidth * zoomLevel));
+            scrollPosition = Math.min(maxScroll, scrollPosition + canvas.offsetWidth * zoomLevel * 0.5);
+            updateScrollbar();
+            draw();
+        });
+        scrollHomeBtn.addEventListener('click', () => {
+            scrollPosition = 0;
+            updateScrollbar();
+            draw();
+        });
+
+        horizontalScrollbar.addEventListener('input', () => {
+            const maxScroll = Math.max(0, recordedData.length - (canvas.offsetWidth * zoomLevel));
+            const scrollPercentage = parseFloat(horizontalScrollbar.value) / 100;
+            scrollPosition = scrollPercentage * maxScroll;
+            draw();
+        });
+
+        startBtn.addEventListener('click', startOscilloscope);
+        stopBtn.addEventListener('click', stopOscilloscope);
+        recordBtn.addEventListener('click', startRecording);
+        stopRecordBtn.addEventListener('click', stopRecording);
+        clearBtn.addEventListener('click', clearRecording);
+
+        window.addEventListener('resize', () => {
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+            draw();
+        });
+
+        // Функція для розрахунку похибки
+        function calculateError() {
+            const target = parseFloat(document.getElementById('targetFreq').value);
+            const measured = parseFloat(document.getElementById('measuredFreq').value);
+            const resultEl = document.getElementById('errorResult');
+            
+            if (isNaN(target) || isNaN(measured) || target === 0) {
+                resultEl.innerHTML = '<span style="color: #f5576c;">❌ Введіть коректні значення частот</span>';
+                return;
+            }
+            
+            const error = Math.abs(1 - measured / target) * 100;
+            resultEl.innerHTML = `<span style="color: #56ab2f;">✓ Відносна похибка: ε = ${error.toFixed(2)}%</span>`;
+        }
+
+        // Функція для збору даних та відправки на сервер
+        document.getElementById('submit_button').addEventListener('click', async function() {
+            const klas = document.getElementById('klas').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const sheetName = document.getElementById('sheetName').value;
+
+            if (!klas || !name) {
+                alert('Будь ласка, заповніть клас та прізвище/ім\'я!');
+                return;
+            }
+
+            // Збираємо дані з таблиці експериментів
+            const tableData = [];
+            const table = document.querySelector('.experiment-table tbody');
+            const rows = table.querySelectorAll('tr');
+            
+            rows.forEach((row, index) => {
+                const inputs = row.querySelectorAll('input');
+                tableData.push({
+                    'Номер': index + 1,
+                    'Назва досліду': inputs[0].value || '',
+                    'Час коливань (мс)': inputs[1].value || '',
+                    'Кількість коливань': inputs[2].value || '',
+                    'Частота (Гц)': inputs[3].value || ''
+                });
+            });
+
+            // Збираємо висновок
+            const conclusion = document.querySelector('textarea').value || '';
+
+            // Збираємо дані похибки
+            const targetFreq = document.getElementById('targetFreq').value || '';
+            const measuredFreq = document.getElementById('measuredFreq').value || '';
+            const errorCalc = document.getElementById('errorResult').textContent || '';
+
+            // Формуємо об'єкт даних для відправки
+            const data = {
+                sheetName: sheetName,
+                studentInfo: {
+                    'Клас': klas,
+                    'Прізвище та ім\'я': name,
+                    'Дата виконання': new Date().toLocaleString('uk-UA')
+                },
+                experiments: tableData,
+                analysis: {
+                    'Висновок': conclusion,
+                    'Частота задана (Гц)': targetFreq,
+                    'Частота виміряна (Гц)': measuredFreq,
+                    'Результат розрахунку похибки': errorCalc
+                }
+            };
+
+            try {
+                // Відправка даних на сервер Google Apps Script
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxMa02J8zAwQ6fsCE2yQVWTn65jL-cUYP0RxOOUcA0b7Ym8x-0ZSHbBDj9OC_MU6Nxl/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                alert('✅ Результати успішно надіслано!\n\nДякуємо за виконання лабораторної роботи.');
+                
+            } catch (error) {
+                console.error('Помилка відправки:', error);
+                alert('❌ Виникла помилка при відправці даних.\nСпробуйте ще раз або зверніться до вчителя.');
+            }
+        });
+    </script>
+</body>
+</html>
