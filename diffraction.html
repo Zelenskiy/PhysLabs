@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №7 - Дифракція світла</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .student {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .student h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .txt_inp {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .txt_inp:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .simulation-container {
+            background: #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        canvas {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+            background: #000;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .control-group label {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .value-display {
+            min-width: 80px;
+            text-align: center;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2em;
+            border: 2px solid #ffc107;
+        }
+
+        .experiment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .experiment-table th {
+            background: #764ba2;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .experiment-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .experiment-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .submit_block {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+        }
+
+        .submit_block button {
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .measurement-display {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .instruction-list {
+            background: white;
+            padding: 15px 15px 15px 35px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .instruction-list li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌈 ЛАБОРАТОРНА РОБОТА № 7</h1>
+            <p>Вимірювання довжини світлової хвилі</p>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Вимірювання довжини світлової хвилі">
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 Мета роботи</h2>
+                <p>Навчитися вимірювати довжину світлової хвилі за допомогою дифракційної ґратки.</p>
+            </div>
+
+            <div class="section">
+                <h2>📚 Теоретичні відомості</h2>
+                
+                <p><strong>Дифракція світла</strong> — явище відхилення світла від прямолінійного поширення при проходженні через малі отвори або поблизу перешкод.</p>
+                
+                <p style="margin-top: 15px;"><strong>Дифракційна ґратка</strong> — оптичний прилад, що складається з великої кількості рівновіддалених паралельних щілин.</p>
+
+                <div class="formula">
+                    d sin φ = k λ
+                    <br><small>де d — період ґратки, φ — кут дифракції, k — порядок спектра, λ — довжина хвилі</small>
+                </div>
+
+                <p>Для малих кутів: sin φ ≈ tan φ = a/l</p>
+
+                <div class="formula">
+                    λ = (d × a) / l
+                    <br><small>де a — відстань від центру до спектральної лінії, l — відстань від ґратки до екрану</small>
+                </div>
+
+                <div class="info-box">
+                    <strong>Діапазони довжин хвиль видимого світла:</strong><br>
+                    • Фіолетовий: 380-450 нм<br>
+                    • Червоний: 620-760 нм
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔬 Віртуальна установка</h2>
+                
+                <div class="simulation-container">
+                    <canvas id="diffractionCanvas" width="800" height="400"></canvas>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Період ґратки d (мкм)</label>
+                            <div class="slider-container">
+                                <input type="range" id="gratingPeriod" min="1" max="10" value="2" step="0.1">
+                                <span class="value-display" id="gratingValue">2.0</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Відстань до екрану l (см)</label>
+                            <div class="slider-container">
+                                <input type="range" id="screenDistance" min="10" max="50" value="30" step="1">
+                                <span class="value-display" id="distanceValue">30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button id="measureBtn">📏 Виміряти спектр</button>
+                    </div>
+
+                    <div id="measurements" class="measurement-display" style="display: none;"></div>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Як користуватися:</strong><br>
+                    1. Налаштуйте період дифракційної ґратки та відстань до екрану<br>
+                    2. Натисніть "Виміряти спектр" для отримання даних<br>
+                    3. Запишіть виміряні значення у таблицю нижче
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔬 Хід роботи</h2>
+                
+                <h3 style="color: #764ba2; margin-top: 15px;">Підготовка до експерименту</h3>
+                <ol class="instruction-list">
+                    <li>Визначте період дифракційної ґратки за формулою: d = 10⁻³м / N, де N — кількість штрихів на 1 мм</li>
+                    <li>Виміряйте відстань від ґратки до екрану</li>
+                </ol>
+
+                <h3 style="color: #764ba2; margin-top: 20px;">Виконання вимірювань</h3>
+                <ol class="instruction-list">
+                    <li>Спостерігайте дифракційні спектри на віртуальному екрані</li>
+                    <li>Виміряйте відстань a₁ від центру до межі фіолетового кольору (праворуч)</li>
+                    <li>Виміряйте відстань a₂ від центру до межі фіолетового кольору (ліворуч)</li>
+                    <li>Повторіть вимірювання для червоного кольору</li>
+                    <li>Обчисліть середнє значення: a_сер = (a₁ + a₂) / 2</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h2>📊 Таблиця результатів</h2>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: #667eea;">Період ґратки d (м):</label>
+                    <input type="number" id="period_d" step="0.000001" style="padding: 8px; margin-left: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: 600; color: #667eea;">Відстань від ґратки до екрану l (м):</label>
+                    <input type="number" id="distance_l" step="0.01" style="padding: 8px; margin-left: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <table class="experiment-table">
+                    <thead>
+                        <tr>
+                            <th>Колір спектра</th>
+                            <th>a₁ (м)</th>
+                            <th>a₂ (м)</th>
+                            <th>a_сер (м)</th>
+                            <th>λ виміряна (нм)</th>
+                            <th>λ таблична (нм)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Фіолетовий</td>
+                            <td><input id="violet_a1" type="number" step="0.001"></td>
+                            <td><input id="violet_a2" type="number" step="0.001"></td>
+                            <td><input id="violet_avg" type="number" step="0.001"></td>
+                            <td><input id="violet_lambda" type="number" step="0.1"></td>
+                            <td>380-450</td>
+                        </tr>
+                        <tr>
+                            <td>Червоний</td>
+                            <td><input id="red_a1" type="number" step="0.001"></td>
+                            <td><input id="red_a2" type="number" step="0.001"></td>
+                            <td><input id="red_avg" type="number" step="0.001"></td>
+                            <td><input id="red_lambda" type="number" step="0.1"></td>
+                            <td>620-760</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button onclick="calculateWavelengths()" style="margin: 15px 0;">🔢 Розрахувати довжини хвиль</button>
+            </div>
+
+            <div class="section">
+                <h2>⭐ Оцінка похибки</h2>
+                
+                <div class="formula">
+                    ε = |1 - λ_вим / λ_табл| × 100%
+                </div>
+
+                <div style="margin: 15px 0;">
+                    <label style="font-weight: 600;">λ таблична (нм):</label>
+                    <input type="number" id="lambda_table" style="padding: 8px; margin: 0 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    
+                    <label style="font-weight: 600;">λ виміряна (нм):</label>
+                    <input type="number" id="lambda_measured" style="padding: 8px; margin: 0 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    
+                    <button onclick="calculateError()">Розрахувати похибку</button>
+                </div>
+
+                <div id="errorResult" style="margin-top: 15px; font-size: 1.1em; font-weight: bold;"></div>
+            </div>
+
+            <div class="section">
+                <h2>📝 Висновок</h2>
+                
+                <p style="margin-bottom: 10px;"><strong>У висновку зазначте:</strong></p>
+                <ol class="instruction-list">
+                    <li>Яку фізичну величину ви визначали</li>
+                    <li>Який результат отримали</li>
+                    <li>У чому причини можливої похибки експерименту</li>
+                </ol>
+
+                <textarea id="conclusion" placeholder="Напишіть ваш висновок тут..."></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submit_button">Надіслати результати</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('diffractionCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let gratingPeriod = 2.0;
+        let screenDistance = 30;
+
+        function drawDiffraction() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            const colors = [
+                { color: '#8B00FF', lambda: 420, name: 'violet' },
+                { color: '#4B0082', lambda: 450, name: 'indigo' },
+                { color: '#0000FF', lambda: 480, name: 'blue' },
+                { color: '#00FF00', lambda: 530, name: 'green' },
+                { color: '#FFFF00', lambda: 580, name: 'yellow' },
+                { color: '#FF7F00', lambda: 620, name: 'orange' },
+                { color: '#FF0000', lambda: 680, name: 'red' }
+            ];
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px monospace';
+            ctx.fillText('Центр (0)', centerX + 5, centerY - 10);
+
+            for (let order = -2; order <= 2; order++) {
+                if (order === 0) continue;
+
+                colors.forEach(spec => {
+                    const d = gratingPeriod * 1e-6;
+                    const lambda = spec.lambda * 1e-9;
+                    const l = screenDistance * 0.01;
+                    
+                    const sinPhi = (order * lambda) / d;
+                    if (Math.abs(sinPhi) > 1) return;
+                    
+                    const a = l * Math.tan(Math.asin(sinPhi));
+                    const pixelOffset = (a / l) * 200;
+                    
+                    const x = centerX + pixelOffset * Math.sign(order);
+                    
+                    const gradient = ctx.createLinearGradient(x - 10, 0, x + 10, 0);
+                    gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                    gradient.addColorStop(0.5, spec.color);
+                    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x - 10, 0, 20, canvas.height);
+                    
+                    if (Math.abs(order) === 1) {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = '10px monospace';
+                        ctx.fillText(`${spec.name}`, x - 15, canvas.height - 10);
+                    }
+                });
+            }
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '14px monospace';
+            ctx.fillText('← Спектр 1-го порядку', 50, 30);
+            ctx.fillText('Спектр 1-го порядку →', canvas.width - 200, 30);
+        }
+
+        document.getElementById('gratingPeriod').addEventListener('input', function() {
+            gratingPeriod = parseFloat(this.value);
+            document.getElementById('gratingValue').textContent = gratingPeriod.toFixed(1);
+            drawDiffraction();
+        });
+
+        document.getElementById('screenDistance').addEventListener('input', function() {
+            screenDistance = parseInt(this.value);
+            document.getElementById('distanceValue').textContent = screenDistance;
+            drawDiffraction();
+        });
+
+        document.getElementById('measureBtn').addEventListener('click', function() {
+            const d = gratingPeriod * 1e-6;
+            const l = screenDistance * 0.01;
+            
+            const violetLambda = 420e-9;
+            const redLambda = 680e-9;
+            
+            const violetA = l * Math.tan(Math.asin(violetLambda / d));
+            const redA = l * Math.tan(Math.asin(redLambda / d));
+            
+            const measureDiv = document.getElementById('measurements');
+            measureDiv.style.display = 'block';
+            measureDiv.innerHTML = `
+                <strong>📏 Виміряні значення:</strong><br><br>
+                <strong>Фіолетовий колір:</strong><br>
+                a (від центру) = ${(violetA * 100).toFixed(2)} см = ${violetA.toFixed(4)} м<br>
+                λ теоретична = ${(violetLambda * 1e9).toFixed(0)} нм<br><br>
+                <strong>Червоний колір:</strong><br>
+                a (від центру) = ${(redA * 100).toFixed(2)} см = ${redA.toFixed(4)} м<br>
+                λ теоретична = ${(redLambda * 1e9).toFixed(0)} нм<br><br>
+                <em>Запишіть ці значення у таблицю (пам'ятайте, що a₁ і a₂ — відстані з різних боків)</em>
+            `;
+        });
+
+        function calculateWavelengths() {
+            const d = parseFloat(document.getElementById('period_d').value);
+            const l = parseFloat(document.getElementById('distance_l').value);
+            
+            if (!d || !l) {
+                alert('Спочатку введіть період ґратки та відстань до екрану!');
+                return;
+            }
+
+            ['violet', 'red'].forEach(color => {
+                const a1 = parseFloat(document.getElementById(`${color}_a1`).value) || 0;
+                const a2 = parseFloat(document.getElementById(`${color}_a2`).value) || 0;
+                
+                if (a1 && a2) {
+                    const avg = (a1 + a2) / 2;
+                    document.getElementById(`${color}_avg`).value = avg.toFixed(4);
+                    
+                    const lambda = (d * avg) / l;
+                    const lambdaNm = lambda * 1e9;
+                    document.getElementById(`${color}_lambda`).value = lambdaNm.toFixed(1);
+                }
+            });
+            
+            alert('✅ Довжини хвиль розраховано!');
+        }
+
+        function calculateError() {
+            const lambdaTable = parseFloat(document.getElementById('lambda_table').value);
+            const lambdaMeasured = parseFloat(document.getElementById('lambda_measured').value);
+            
+            if (!lambdaTable || !lambdaMeasured) {
+                document.getElementById('errorResult').innerHTML = '<span style="color: #f5576c;">❌ Введіть обидва значення!</span>';
+                return;
+            }
+            
+            const error = Math.abs(1 - lambdaMeasured / lambdaTable) * 100;
+            document.getElementById('errorResult').innerHTML = `<span style="color: #56ab2f;">✓ Відносна похибка: ε = ${error.toFixed(2)}%</span>`;
+        }
+
+        document.getElementById('submit_button').addEventListener('click', async function() {
+            const klas = document.getElementById('klas').value.trim();
+            const name = document.getElementById('name').value.trim();
+
+            if (!klas || !name) {
+                alert('Будь ласка, заповніть клас та прізвище/ім\'я!');
+                return;
+            }
+
+            const data = {
+                sheetName: document.getElementById('sheetName').value,
+                studentInfo: {
+                    'Клас': klas,
+                    'Прізвище та ім\'я': name,
+                    'Дата виконання': new Date().toLocaleString('uk-UA')
+                },
+                parameters: {
+                    'Період ґратки d (м)': document.getElementById('period_d').value,
+                    'Відстань до екрану l (м)': document.getElementById('distance_l').value
+                },
+                measurements: {
+                    violet: {
+                        'a₁ (м)': document.getElementById('violet_a1').value,
+                        'a₂ (м)': document.getElementById('violet_a2').value,
+                        'a_сер (м)': document.getElementById('violet_avg').value,
+                        'λ виміряна (нм)': document.getElementById('violet_lambda').value
+                    },
+                    red: {
+                        'a₁ (м)': document.getElementById('red_a1').value,
+                        'a₂ (м)': document.getElementById('red_a2').value,
+                        'a_сер (м)': document.getElementById('red_avg').value,
+                        'λ виміряна (нм)': document.getElementById('red_lambda').value
+                    }
+                },
+                error: document.getElementById('errorResult').textContent,
+                conclusion: document.getElementById('conclusion').value
+            };
+
+            try {
+                await fetch('https://script.google.com/macros/s/AKfycbxMa02J8zAwQ6fsCE2yQVWTn65jL-cUYP0RxOOUcA0b7Ym8x-0ZSHbBDj9OC_MU6Nxl/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                alert('✅ Результати успішно надіслано!\n\nДякуємо за виконання лабораторної роботи.');
+            } catch (error) {
+                console.error('Помилка відправки:', error);
+                alert('❌ Виникла помилка при відправці даних.\nСпробуйте ще раз або зверніться до вчителя.');
+            }
+        });
+
+        drawDiffraction();
+    </script>
+</body>
+</html>
