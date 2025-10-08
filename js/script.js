@@ -10,6 +10,8 @@ const textInputs = document.querySelectorAll('textarea, input');
 
 
 submin_button.addEventListener('click', ()=>{
+    console.log('Відправка форми');
+    
     const name = document.querySelector(`#name`).value;
     const klas = document.querySelector(`#klas`).value;    
     const currentDate = new Date();
