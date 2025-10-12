@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завантаження файлів</title>
+    <!-- <script defer src="./js/script.js"></script> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .upload-container {
+            margin: 20px 0;
+        }
+
+        /* Стилі для drop zone */
+        #dropZone {
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            padding: 50px;
+            text-align: center;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #dropZone:hover {
+            border-color: #4CAF50;
+            background-color: #f0f8f0;
+        }
+
+        #dropZone.drag-over {
+            border-color: #4CAF50;
+            background-color: #e8f5e9;
+            transform: scale(1.02);
+        }
+
+        #dropZone .icon {
+            font-size: 48px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        #dropZone.drag-over .icon {
+            color: #4CAF50;
+        }
+
+        #dropZone p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        #dropZone .highlight {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Приховане input поле */
+        #fileInput {
+            display: none;
+        }
+
+        /* Кнопка */
+        .upload-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+
+        .upload-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Повідомлення */
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Прев'ю зображення */
+        #preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .link-result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+
+        .link-result a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+
+        .link-result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Завантаження файлів на Google Drive</h1>
+
+    <div class="upload-container">
+        <!-- Drop Zone -->
+        <div id="dropZone">
+            <div class="icon">📁</div>
+            <p><span class="highlight">Перетягніть файл сюди</span></p>
+            <p>або</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Вибрати файл
+            </button>
+        </div>
+
+        <!-- Приховане input поле -->
+        <input type="file" id="fileInput" accept="image/*">
+
+        <!-- Прев'ю -->
+        <div id="preview"></div>
+
+        <!-- Повідомлення -->
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const messageDiv = document.getElementById('message');
+
+        // Налаштування drop zone
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        // Обробка вибору файлу через input
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        // Обробка файлу
+        function handleFile(file) {
+            // Показуємо прев'ю
+            showPreview(file);
+            
+            // Завантажуємо на сервер
+            uploadFile(file);
+        }
+
+        // Показати прев'ю зображення
+        function showPreview(file) {
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                preview.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="file-info">
+                        <strong>Файл:</strong> ${file.name}<br>
+                        <strong>Розмір:</strong> ${(file.size / 1024).toFixed(2)} KB<br>
+                        <strong>Тип:</strong> ${file.type}
+                    </div>
+                `;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // Показати повідомлення
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type} show`;
+            
+            setTimeout(() => {
+                messageDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        // Завантаження файлу на сервер
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('folder_id', '1652sgZaNjYyjwY2umIZW7AlnL-TqlsWV');
+            formData.append('filename', file.name);
+
+            showMessage('Завантаження...', 'success');
+
+            fetch('https://AlexZelenskiy.pythonanywhere.com/upload_image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('Файл успішно завантажено!', 'success');
+                    
+                    // Додаємо посилання на файл
+                    const linkDiv = document.createElement('div');
+                    linkDiv.className = 'link-result';
+                    linkDiv.innerHTML = `
+                        <strong>Посилання на файл:</strong><br>
+                        <a href="${data.link}" target="_blank">${data.link}</a><br><br>
+                        <strong>Посилання для завантаження:</strong><br>
+                        <a href="${data.download_link}" target="_blank">${data.download_link}</a>
+                    `;
+                    preview.appendChild(linkDiv);
+                    
+                    console.log('Дані відповіді:', data);
+                } else {
+                    showMessage('Помилка: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                showMessage('Помилка завантаження: ' + error.message, 'error');
+                console.error('Помилка:', error);
+            });
+        }
+    </script>
+</body>
+</html>

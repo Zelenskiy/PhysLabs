@@ -5,11 +5,10 @@ const server = 'https://AlexZelenskiy.pythonanywhere.com/';
 const idTable = '';
 const sheetName = document.getElementById('sheetName').value;
 
-const submin_button = document.querySelector("#submin_button");
+const submit_button = document.querySelector("#submit_button");
 const textInputs = document.querySelectorAll('textarea, input');
 
-
-submin_button.addEventListener('click', ()=>{
+function submit_data() {
     console.log('Відправка форми');
     
     const name = document.querySelector(`#name`).value;
@@ -54,14 +53,18 @@ submin_button.addEventListener('click', ()=>{
             window.scrollTo(0, 0);
 
         }
+}
 
+
+submit_button.addEventListener('click', ()=>{
+    submit_data();
 })
 
-  
+
 
 function sendText(data) {
-    submin_button.disabled = true;
-    submin_button.classList.add('disabl')
+    submit_button.disabled = true;
+    submit_button.classList.add('disabl')
     // URL серверу, на який ви хочете відправити дані
     const serverUrl = server + 'add_lab/';
     // Об'єкт з налаштуваннями запиту
@@ -84,8 +87,8 @@ function sendText(data) {
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
-                submin_button.disabled = false;
-                submin_button.classList.remove('disabl')
+                submit_button.disabled = false;
+                submit_button.classList.remove('disabl')
             }
             return response.json();
         })
@@ -97,8 +100,8 @@ function sendText(data) {
         .catch(error => {
             console.error('Сталася помилка під час відправлення запиту:', error);
             alert('Сталася помилка під час відправлення. Спробуйте ще.')
-            submin_button.disabled = false;
-            submin_button.classList.remove('disabl')
+            submit_button.disabled = false;
+            submit_button.classList.remove('disabl')
         });
     // alert('Роботу відправлено на перевірку.')
 }
@@ -109,13 +112,39 @@ function sendText(data) {
 // Функція, яка викликається при зміні поля вводу
 function handleInputChange(event) {
     // Ваш код для обробки події тут
-    submin_button.disabled = false;
-    submin_button.classList.remove('disabl')
+    submit_button.disabled = false;
+    submit_button.classList.remove('disabl')
 }
 
 // Додаємо обробник подій для кожного textarea та input
 textInputs.forEach(function (input) {
     input.addEventListener('input', handleInputChange);    
 });
+
+function setupDragAndDrop() {
+    const dropZone = document.getElementById('dropZone');
+    
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+    
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+    
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        
+        const file = e.dataTransfer.files[0];
+        
+        if (file) {
+            uploadFile(file);
+        }
+    });
+}
+
+
 
 

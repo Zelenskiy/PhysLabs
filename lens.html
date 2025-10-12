@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лабораторна робота №5 - Фокусна відстань лінзи</title>
-     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="alternate icon" type="image/png" href="favicon.png">
     <script src="./js/script.js" defer></script>
     <style>
@@ -147,7 +148,7 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .data-table th {
@@ -318,15 +319,20 @@
             body {
                 background: white;
             }
+
             .container {
                 box-shadow: none;
             }
-            button, .link-box, iframe {
+
+            button,
+            .link-box,
+            iframe {
                 display: none;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -351,7 +357,7 @@
             <div class="section">
                 <h2>📋 Мета роботи</h2>
                 <p>Визначити фокусну відстань та оптичну силу тонкої збиральної лінзи.</p>
-                
+
                 <div style="margin-top: 20px;">
                     <strong>Обладнання:</strong>
                     <ul class="instruction-list">
@@ -366,7 +372,7 @@
             <!-- Підготовка до експерименту -->
             <div class="section">
                 <h2>📚 Підготовка до експерименту</h2>
-                
+
                 <div class="theory-box">
                     <h3 style="color: #667eea; margin-bottom: 15px;">1. Формула тонкої лінзи</h3>
                     <div class="formula-box">
@@ -379,7 +385,7 @@
                             f – відстань від лінзи до зображення
                         </p>
                     </div>
-                    
+
                     <div class="formula-box" style="background: #e8f5e9; border-color: #4caf50;">
                         <div class="formula" style="color: #2e7d32;">
                             F = (d × f) / (d + f)
@@ -390,7 +396,8 @@
                 <div class="theory-box">
                     <h3 style="color: #667eea; margin-bottom: 15px;">2. Оптична сила лінзи</h3>
                     <p style="margin-bottom: 15px;">
-                        <strong>Означення:</strong> Оптична сила лінзи – це величина, обернена до фокусної відстані лінзи.
+                        <strong>Означення:</strong> Оптична сила лінзи – це величина, обернена до фокусної відстані
+                        лінзи.
                     </p>
                     <div class="formula-box">
                         <div class="formula">
@@ -404,16 +411,19 @@
                 </div>
 
                 <div class="info-box">
-                    <strong>💡 Підказка:</strong> Для визначення фокусної відстані лінзи потрібно виміряти відстань від предмета до лінзи (d) та відстань від лінзи до чіткого зображення на екрані (f), а потім скористатися формулою тонкої лінзи.
+                    <strong>💡 Підказка:</strong> Для визначення фокусної відстані лінзи потрібно виміряти відстань від
+                    предмета до лінзи (d) та відстань від лінзи до чіткого зображення на екрані (f), а потім
+                    скористатися формулою тонкої лінзи.
                 </div>
             </div>
 
             <!-- Віртуальна лабораторія -->
             <div class="section">
                 <h2>🔬 Віртуальна лабораторія</h2>
-                
+
                 <div class="link-box">
-                    <a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk" target="_blank">
+                    <a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk"
+                        target="_blank">
                         🔗 Відкрити віртуальну лабораторію у новому вікні
                     </a>
                 </div>
@@ -422,7 +432,9 @@
                     <strong>Або скористайтеся вбудованою версією:</strong>
                 </div>
 
-                <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk" allowfullscreen></iframe>
+                <iframe
+                    src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_all.html?locale=uk"
+                    allowfullscreen></iframe>
 
                 <div class="info-box">
                     <strong>⚙️ Налаштування експерименту:</strong>
@@ -439,7 +451,7 @@
             <!-- Експеримент -->
             <div class="section">
                 <h2>🔬 Виконання експерименту</h2>
-                
+
                 <div class="info-box">
                     <strong>Дослід 1:</strong> Отримання зменшеного зображення
                 </div>
@@ -468,7 +480,7 @@
             <!-- Таблиця даних -->
             <div class="section">
                 <h2>📊 Таблиця результатів вимірювань</h2>
-                
+
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -484,15 +496,19 @@
                             <td>1</td>
                             <td><input type="number" id="d1" step="0.01" placeholder="0.00"></td>
                             <td><input type="number" id="f1" step="0.01" placeholder="0.00"></td>
-                            <td><input type="number" id="F1" step="0.001" placeholder="0.000" readonly style="background: #f0f0f0;"></td>
-                            <td><input type="number" id="D1" step="0.01" placeholder="0.00" readonly style="background: #f0f0f0;"></td>
+                            <td><input type="number" id="F1" step="0.001" placeholder="0.000" readonly
+                                    style="background: #f0f0f0;"></td>
+                            <td><input type="number" id="D1" step="0.01" placeholder="0.00" readonly
+                                    style="background: #f0f0f0;"></td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td><input type="number" id="d2" step="0.01" placeholder="0.00"></td>
                             <td><input type="number" id="f2" step="0.01" placeholder="0.00"></td>
-                            <td><input type="number" id="F2" step="0.001" placeholder="0.000" readonly style="background: #f0f0f0;"></td>
-                            <td><input type="number" id="D2" step="0.01" placeholder="0.00" readonly style="background: #f0f0f0;"></td>
+                            <td><input type="number" id="F2" step="0.001" placeholder="0.000" readonly
+                                    style="background: #f0f0f0;"></td>
+                            <td><input type="number" id="D2" step="0.01" placeholder="0.00" readonly
+                                    style="background: #f0f0f0;"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -506,22 +522,26 @@
             <!-- Розрахунки -->
             <div class="section">
                 <h2>🧮 Опрацювання результатів</h2>
-                
+
                 <div class="calculation-box">
                     <h3>Дослід 1 - Розрахунки</h3>
-                    <textarea id="calc1" placeholder="Тут автоматично з'являться розрахунки після натискання кнопки 'Розрахувати Дослід 1'" readonly style="background: #f9f9f9;"></textarea>
+                    <textarea id="calc1"
+                        placeholder="Тут автоматично з'являться розрахунки після натискання кнопки 'Розрахувати Дослід 1'"
+                        readonly style="background: #f9f9f9;"></textarea>
                 </div>
 
                 <div class="calculation-box">
                     <h3>Дослід 2 - Розрахунки</h3>
-                    <textarea id="calc2" placeholder="Тут автоматично з'являться розрахунки після натискання кнопки 'Розрахувати Дослід 2'" readonly style="background: #f9f9f9;"></textarea>
+                    <textarea id="calc2"
+                        placeholder="Тут автоматично з'являться розрахунки після натискання кнопки 'Розрахувати Дослід 2'"
+                        readonly style="background: #f9f9f9;"></textarea>
                 </div>
             </div>
 
             <!-- Аналіз результатів -->
             <div class="section">
                 <h2>📝 Аналіз експерименту та його результатів</h2>
-                
+
                 <div style="margin: 15px 0;">
                     <strong>Проаналізуйте експеримент і сформулюйте висновок, у якому зазначте:</strong>
                 </div>
@@ -529,15 +549,19 @@
                 <div style="margin: 15px 0;">
                     <strong>1) Порівняйте значення фокусної відстані, отримані в різних дослідах:</strong>
                 </div>
-                <textarea id="conclusion1" placeholder="Напишіть ваш аналіз порівняння фокусних відстаней..."></textarea>
+                <textarea id="conclusion1"
+                    placeholder="Напишіть ваш аналіз порівняння фокусних відстаней..."></textarea>
 
                 <div style="margin: 15px 0;">
-                    <strong>2) Впишіть значення оптичної сили лінзи за паспортом (дізнайтеся у вчителя) та порівняйте його зі значеннями, отриманими в експерименті:</strong>
+                    <strong>2) Впишіть значення оптичної сили лінзи за паспортом (дізнайтеся у вчителя) та порівняйте
+                        його зі значеннями, отриманими в експерименті:</strong>
                 </div>
                 <div style="margin: 10px 0;">
-                    <label>D<sub>паспорт</sub> (дптр): <input type="number" id="D_passport" step="0.1" style="padding: 8px; border: 2px solid #667eea; border-radius: 4px; width: 150px;"></label>
+                    <label>D<sub>паспорт</sub> (дптр): <input type="number" id="D_passport" step="0.1"
+                            style="padding: 8px; border: 2px solid #667eea; border-radius: 4px; width: 150px;"></label>
                 </div>
-                <textarea id="conclusion2" placeholder="Порівняйте експериментальні значення з паспортним..."></textarea>
+                <textarea id="conclusion2"
+                    placeholder="Порівняйте експериментальні значення з паспортним..."></textarea>
 
                 <div style="margin: 15px 0;">
                     <strong>3) Зазначте причини можливої розбіжності результатів:</strong>
@@ -548,10 +572,10 @@
             <!-- Завдання із зірочкою -->
             <div class="section">
                 <h2>⭐ Завдання «із зірочкою»</h2>
-                
+
                 <div class="theory-box">
                     <p>Оцініть відносну похибку одного з експериментів за формулою:</p>
-                    
+
                     <div class="formula-box">
                         <div class="formula">
                             ε = |1 - D<sub>вим</sub> / D<sub>пасп</sub>| × 100%
@@ -561,10 +585,11 @@
                             D<sub>пасп</sub> – значення оптичної сили лінзи за паспортом
                         </p>
                     </div>
-                    
+
                     <div style="margin: 15px 0;">
-                        <label>Оберіть дослід для розрахунку: 
-                            <select id="errorExperiment" style="padding: 8px; border: 2px solid #667eea; border-radius: 4px; margin-left: 10px;">
+                        <label>Оберіть дослід для розрахунку:
+                            <select id="errorExperiment"
+                                style="padding: 8px; border: 2px solid #667eea; border-radius: 4px; margin-left: 10px;">
                                 <option value="1">Дослід 1</option>
                                 <option value="2">Дослід 2</option>
                             </select>
@@ -572,31 +597,34 @@
                     </div>
                     <button onclick="calculateError()" class="calc-button">Розрахувати похибку</button>
                     <div id="errorResult" style="margin-top: 15px;"></div>
-                    <textarea id="errorCalc" placeholder="Розрахунки похибки з'являться тут..." readonly style="background: #f9f9f9; margin-top: 10px;"></textarea>
+                    <textarea id="errorCalc" placeholder="Розрахунки похибки з'являться тут..." readonly
+                        style="background: #f9f9f9; margin-top: 10px;"></textarea>
                 </div>
             </div>
 
             <!-- Творче завдання -->
             <div class="section">
                 <h2>🌟 Творче завдання</h2>
-                
+
                 <div class="info-box">
                     <strong>Завдання:</strong> Визначте фокусну відстань лінзи ще двома методами:
                     <ol class="instruction-list">
-                        <li>Отримавши на екрані зображення віддаленого предмета (можна використати режим "Нескінченно далекий об'єкт" у симуляції)</li>
+                        <li>Отримавши на екрані зображення віддаленого предмета (можна використати режим "Нескінченно
+                            далекий об'єкт" у симуляції)</li>
                         <li>Отримавши на екрані зображення, яке за розміром дорівнює розмірам самого об'єкта</li>
                     </ol>
                 </div>
-                
+
                 <div style="margin: 15px 0;">
                     <strong>Опишіть, які вимірювання та розрахунки ви виконували в кожному випадку:</strong>
                 </div>
-                <textarea id="creativeTask" placeholder="Опишіть методи та результати додаткових досліджень..." style="min-height: 150px;"></textarea>
+                <textarea id="creativeTask" placeholder="Опишіть методи та результати додаткових досліджень..."
+                    style="min-height: 150px;"></textarea>
             </div>
 
             <!-- Кнопка відправки -->
             <div class="submit_block">
-                <button id="submin_button">Надіслати результати</button>
+                <button id="submit_button">Надіслати результати</button>
             </div>
         </div>
     </div>
@@ -606,7 +634,7 @@
         function calculateExperiment(expNum) {
             const d = parseFloat(document.getElementById(`d${expNum}`).value);
             const f = parseFloat(document.getElementById(`f${expNum}`).value);
-            
+
             if (isNaN(d) || isNaN(f) || d <= 0 || f <= 0) {
                 alert('Будь ласка, введіть коректні додатні значення відстаней!');
                 return;
@@ -614,14 +642,14 @@
 
             // Розрахунок фокусної відстані: F = (d × f) / (d + f)
             const F = (d * f) / (d + f);
-            
+
             // Розрахунок оптичної сили: D = 1 / F
             const D = 1 / F;
-            
+
             // Заповнення полів результатів
             document.getElementById(`F${expNum}`).value = F.toFixed(3);
             document.getElementById(`D${expNum}`).value = D.toFixed(2);
-            
+
             // Формування тексту розрахунків
             const calcText = `Дослід ${expNum}:\n\n` +
                 `Дано:\n` +
@@ -636,7 +664,7 @@
                 `D = 1 / F\n` +
                 `D = 1 / ${F.toFixed(3)}\n` +
                 `D = ${D.toFixed(2)} дптр`;
-            
+
             document.getElementById(`calc${expNum}`).value = calcText;
         }
 
@@ -647,21 +675,21 @@
             const D_passport = parseFloat(document.getElementById('D_passport').value);
             const resultEl = document.getElementById('errorResult');
             const calcEl = document.getElementById('errorCalc');
-            
+
             if (isNaN(D_measured) || D_measured === 0) {
                 alert('Спочатку розрахуйте оптичну силу для обраного досліду!');
                 return;
             }
-            
+
             if (isNaN(D_passport) || D_passport === 0) {
                 alert('Будь ласка, введіть паспортне значення оптичної сили лінзи!');
                 return;
             }
-            
+
             const error = Math.abs(1 - D_measured / D_passport) * 100;
-            
+
             resultEl.innerHTML = `<div class="result-display">✓ Відносна похибка досліду ${expNum}: ε = ${error.toFixed(2)}%</div>`;
-            
+
             const calcText = `Розрахунок відносної похибки для досліду ${expNum}:\n\n` +
                 `Дано:\n` +
                 `D_виміряна = ${D_measured.toFixed(2)} дптр\n` +
@@ -672,11 +700,12 @@
                 `ε = |1 - ${(D_measured / D_passport).toFixed(4)}| × 100%\n` +
                 `ε = ${Math.abs(1 - D_measured / D_passport).toFixed(4)} × 100%\n` +
                 `ε = ${error.toFixed(2)}%`;
-            
+
             calcEl.value = calcText;
         }
 
-       
+
     </script>
 </body>
+
 </html>

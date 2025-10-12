@@ -616,58 +616,58 @@
             document.getElementById('errorResult').innerHTML = `<span style="color: #56ab2f;">✓ Відносна похибка: ε = ${error.toFixed(2)}%</span>`;
         }
 
-        document.getElementById('submit_button').addEventListener('click', async function() {
-            const klas = document.getElementById('klas').value.trim();
-            const name = document.getElementById('name').value.trim();
+        // document.getElementById('submit_button').addEventListener('click', async function() {
+        //     const klas = document.getElementById('klas').value.trim();
+        //     const name = document.getElementById('name').value.trim();
 
-            if (!klas || !name) {
-                alert('Будь ласка, заповніть клас та прізвище/ім\'я!');
-                return;
-            }
+        //     if (!klas || !name) {
+        //         alert('Будь ласка, заповніть клас та прізвище/ім\'я!');
+        //         return;
+        //     }
 
-            const data = {
-                sheetName: document.getElementById('sheetName').value,
-                studentInfo: {
-                    'Клас': klas,
-                    'Прізвище та ім\'я': name,
-                    'Дата виконання': new Date().toLocaleString('uk-UA')
-                },
-                parameters: {
-                    'Період ґратки d (м)': document.getElementById('period_d').value,
-                    'Відстань до екрану l (м)': document.getElementById('distance_l').value
-                },
-                measurements: {
-                    violet: {
-                        'a₁ (м)': document.getElementById('violet_a1').value,
-                        'a₂ (м)': document.getElementById('violet_a2').value,
-                        'a_сер (м)': document.getElementById('violet_avg').value,
-                        'λ виміряна (нм)': document.getElementById('violet_lambda').value
-                    },
-                    red: {
-                        'a₁ (м)': document.getElementById('red_a1').value,
-                        'a₂ (м)': document.getElementById('red_a2').value,
-                        'a_сер (м)': document.getElementById('red_avg').value,
-                        'λ виміряна (нм)': document.getElementById('red_lambda').value
-                    }
-                },
-                error: document.getElementById('errorResult').textContent,
-                conclusion: document.getElementById('conclusion').value
-            };
+        //     const data = {
+        //         sheetName: document.getElementById('sheetName').value,
+        //         studentInfo: {
+        //             'Клас': klas,
+        //             'Прізвище та ім\'я': name,
+        //             'Дата виконання': new Date().toLocaleString('uk-UA')
+        //         },
+        //         parameters: {
+        //             'Період ґратки d (м)': document.getElementById('period_d').value,
+        //             'Відстань до екрану l (м)': document.getElementById('distance_l').value
+        //         },
+        //         measurements: {
+        //             violet: {
+        //                 'a₁ (м)': document.getElementById('violet_a1').value,
+        //                 'a₂ (м)': document.getElementById('violet_a2').value,
+        //                 'a_сер (м)': document.getElementById('violet_avg').value,
+        //                 'λ виміряна (нм)': document.getElementById('violet_lambda').value
+        //             },
+        //             red: {
+        //                 'a₁ (м)': document.getElementById('red_a1').value,
+        //                 'a₂ (м)': document.getElementById('red_a2').value,
+        //                 'a_сер (м)': document.getElementById('red_avg').value,
+        //                 'λ виміряна (нм)': document.getElementById('red_lambda').value
+        //             }
+        //         },
+        //         error: document.getElementById('errorResult').textContent,
+        //         conclusion: document.getElementById('conclusion').value
+        //     };
 
-            try {
-                await fetch('https://script.google.com/macros/s/AKfycbxMa02J8zAwQ6fsCE2yQVWTn65jL-cUYP0RxOOUcA0b7Ym8x-0ZSHbBDj9OC_MU6Nxl/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
+        //     try {
+        //         await fetch('https://script.google.com/macros/s/AKfycbxMa02J8zAwQ6fsCE2yQVWTn65jL-cUYP0RxOOUcA0b7Ym8x-0ZSHbBDj9OC_MU6Nxl/exec', {
+        //             method: 'POST',
+        //             mode: 'no-cors',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify(data)
+        //         });
 
-                alert('✅ Результати успішно надіслано!\n\nДякуємо за виконання лабораторної роботи.');
-            } catch (error) {
-                console.error('Помилка відправки:', error);
-                alert('❌ Виникла помилка при відправці даних.\nСпробуйте ще раз або зверніться до вчителя.');
-            }
-        });
+        //         alert('✅ Результати успішно надіслано!\n\nДякуємо за виконання лабораторної роботи.');
+        //     } catch (error) {
+        //         console.error('Помилка відправки:', error);
+        //         alert('❌ Виникла помилка при відправці даних.\nСпробуйте ще раз або зверніться до вчителя.');
+        //     }
+        // });
 
         drawDiffraction();
     </script>

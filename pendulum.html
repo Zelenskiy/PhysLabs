@@ -16,8 +16,10 @@
     <h1>Лабораторна робота № 5 </h1>
     <h2> Дослідження коливань нитяного маятника, вимірювання прискорення вільного падіння</h2>
     <input type="text" id="sheetName" hidden value="Дослідження коливань нитяного маятника">
-    <div><strong>Мета: </strong>виготовити нитяний маятник, визначити за його допомогою прискорення вільного падіння; переконатися в справедливості формули Гюйґенса. </div>
-    <div><strong>Обладнання:</strong> штатив із муфтою та лапкою, металева кулька (або тягарець) із петелькою, нитка завдовжки 1,5–2 м, вимірювальна стрічка, секундомір.</div>
+    <div><strong>Мета: </strong>виготовити нитяний маятник, визначити за його допомогою прискорення вільного падіння;
+        переконатися в справедливості формули Гюйґенса. </div>
+    <div><strong>Обладнання:</strong> штатив із муфтою та лапкою, металева кулька (або тягарець) із петелькою, нитка
+        завдовжки 1,5–2 м, вимірювальна стрічка, секундомір.</div>
     <div>
         <div class="student">
             <h2>Впишіть ваш клас</h2>
@@ -30,17 +32,19 @@
     </div>
     <h2>Підготовка до експерименту</h2>
     <div>
-        <div>Виготовте маятник (див. рисунок). Нитка маятника має бути досить довгою – кулька повинна майже торкатися підлоги.</div>
+        <div>Виготовте маятник (див. рисунок). Нитка маятника має бути досить довгою – кулька повинна майже торкатися
+            підлоги.</div>
         <div>Замість підвішування до штативу, ви можете прив'язати нитку у проємі дверей тощо.</div>
-        <div style="display: flex; align-items: flex-start;"><img style="width: 20%;"  src="./img/pendulum/2023-12-10_122108.png" alt="">
-        <img style="width: 20%;" src="./img/pendulum/111.png" alt="">
-        </div>        
+        <div style="display: flex; align-items: flex-start;"><img style="width: 20%;"
+                src="./img/pendulum/2023-12-10_122108.png" alt="">
+            <img style="width: 20%;" src="./img/pendulum/111.png" alt="">
+        </div>
     </div>
-    
+
     <h2>Експеримент</h2>
-    <div><i>Суворо дотримуйтесь інструкції з безпеки. 
-        Результати вимірювань і обчислень відразу заносьте до таблиці.
-        </i></div>    
+    <div><i>Суворо дотримуйтесь інструкції з безпеки.
+            Результати вимірювань і обчислень відразу заносьте до таблиці.
+        </i></div>
     <div>1. Виміряйте довжину маятника (відстань від точки підвісу до центра кульки).</div>
     <div>2. Відхиліть маятник від положення рівноваги на 5–8 см і відпустіть.</div>
     <div>3. Виміряйте інтервал часу, за який маятник здійснює 20 коливань.</div>
@@ -49,7 +53,8 @@
     <table border="1" class="border">
         <tr style="height: 73.625px;">
             <th class="td_h" id="h1" rowspan="2"><strong>№</strong></th>
-            <th class="td_h" id="h2" rowspan="2" style="width: 50px;"><strong>Довжина нитки <br> <i>l</i>, м</strong></th>
+            <th class="td_h" id="h2" rowspan="2" style="width: 50px;"><strong>Довжина нитки <br> <i>l</i>, м</strong>
+            </th>
             <th class="td_h" id="h3" rowspan="2"><strong>Кількість коливань<br> <i>N</i></th>
             <th class="td_h" id="h4" colspan="2"><strong>Час коливань</th>
             <th class="td_h" id="h5" rowspan="2"><strong>Період коливань<br> <i>T</i>, с</th>
@@ -61,10 +66,10 @@
         <tbody>
             <tr style="height: 22px;">
                 <td id="r1">1</td>
-                 <td rowspan="3"><input class="cell" id="r1c2" type="number"></td>
+                <td rowspan="3"><input class="cell" id="r1c2" type="number"></td>
                 <td rowspan="3"><input class="cell" id="r1c3" type="number"> </td>
                 <td><input class="cell" id="r1c4" type="number"> </td>
-                 <td rowspan="3"><input class="cell" id="r1c5" type="number"> </td>
+                <td rowspan="3"><input class="cell" id="r1c5" type="number"> </td>
                 <td rowspan="3"><input class="cell" id="r1c6" type="number"> </td>
             </tr>
             <tr style="height: 22px;">
@@ -72,11 +77,11 @@
 
                 <td><input class="cell" id="r2c4" type="number"></td>
 
-            </tr>            
+            </tr>
             <tr style="height: 22px;">
                 <td id="r3">3</td>
                 <td><input class="cell" id="r3c4" type="number"></td>
-            </tr>            
+            </tr>
             <tr style="height: 22px;">
                 <td id="r4">4</td>
                 <td><input class="cell" id="r4c2" type="number"></td>
@@ -84,26 +89,28 @@
                 <td><input class="cell" id="r4c4" type="number"></td>
                 <td><input class="cell" id="r4c5" type="number"></td>
                 <td><input class="cell" id="r4c6" type="number"></td>
-            </tr>            
+            </tr>
         </tbody>
     </table>
 
     <h2>Опрацювання результатів експерименту</h2>
     <div><i>Частина 1. Вимірювання прискорення вільного падіння</i></div>
     <div>1. За даними дослідів 1–3 визначте: </div>
-    <div>1) середній час 20 коливань: <i>t</i><sub>сер</sub> = (<i>t</i><sub>1</sub> + <i>t</i><sub>2</sub> + <i>t</i><sub>3</sub> ) / 3</div>
+    <div>1) середній час 20 коливань: <i>t</i><sub>сер</sub> = (<i>t</i><sub>1</sub> + <i>t</i><sub>2</sub> +
+        <i>t</i><sub>3</sub> ) / 3</div>
     <div><textarea class="txt_ar" id="sol_tser" cols="70" rows="1"></textarea></div>
     <div>2) період коливань маятника: <i>T</i> = <i>t</i><sub>сер</sub> / <i>N</i></div>
     <div><textarea class="txt_ar" id="sol_Tser" cols="70" rows="1"></textarea></div>
     <div style="display: flex; flex-direction: row; align-items: center;">
-        3) прискорення вільного падіння:     
+        3) прискорення вільного падіння:
         <img style="width: 15vw;" src="./img/pendulum/f1.png" alt="">
     </div>
     <div><textarea class="txt_ar" id="sol_g" cols="70" rows="1"></textarea></div>
     <div>
-        2. Оцініть відносну похибку експерименту, 
-        порівнявши значення прискорення вільного падіння, 
-        отриманого в ході експерименту (<i>g</i><sub>вим</sub> ), із табличним значенням (<i>g</i><sub>таб</sub> = 9,8 м⁄с<sup>2</sup> ), за формулою:
+        2. Оцініть відносну похибку експерименту,
+        порівнявши значення прискорення вільного падіння,
+        отриманого в ході експерименту (<i>g</i><sub>вим</sub> ), із табличним значенням (<i>g</i><sub>таб</sub> = 9,8
+        м⁄с<sup>2</sup> ), за формулою:
     </div>
     <div>
         <img style="width: 20vw;" src="./img/pendulum/f2.png" alt="">
@@ -128,7 +135,7 @@
 
     <h2>Аналіз експерименту та його результатів</h2>
     <div>
-        Проаналізуйте експеримент і його результати. У висновку зазначте: 
+        Проаналізуйте експеримент і його результати. У висновку зазначте:
     </div>
     <div>1) величини, які ви вимірювали;</div>
     <div><textarea class="txt_ar" id="v1" cols="70" rows="10"></textarea></div>
@@ -137,7 +144,7 @@
     <div>3) причини похибки.</div>
     <div><textarea class="txt_ar" id="v3" cols="70" rows="10"></textarea></div>
     <div class="submit_block">
-        <button id="submin_button">Відправити</button>
+        <button id="submit_button">Відправити</button>
     </div>
 </body>
 

@@ -243,7 +243,7 @@
       margin: 40px 0;
     }
 
-    #submin_button {
+    #submit_button {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       font-size: 1.3em;
@@ -256,12 +256,12 @@
       box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
     }
 
-    #submin_button:hover {
+    #submit_button:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
     }
 
-    #submin_button:active {
+    #submit_button:active {
       transform: translateY(-1px);
     }
 

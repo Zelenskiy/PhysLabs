@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="alternate icon" type="image/png" href="favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         * {
             margin: 0;
@@ -114,12 +115,15 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        thead tr, tbody tr:first-child, tbody tr:nth-child(2) {
+        thead tr,
+        tbody tr:first-child,
+        tbody tr:nth-child(2) {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: center;
             border: 1px solid #e0e0e0;
@@ -244,7 +248,7 @@
             margin: 40px 0;
         }
 
-        #submin_button {
+        #submit_button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             font-size: 1.3em;
@@ -257,12 +261,12 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        #submin_button:hover {
+        #submit_button:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
         }
 
-        #submin_button:active {
+        #submit_button:active {
             transform: translateY(-1px);
         }
 
@@ -288,7 +292,8 @@
             color: #667eea;
         }
 
-        sub, sup {
+        sub,
+        sup {
             font-size: 0.75em;
         }
 
@@ -309,7 +314,8 @@
                 font-size: 12px;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 8px;
             }
 
@@ -319,11 +325,13 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>Лабораторна робота № 1</h1>
-            <h2 style="color: white; border: none; margin-top: 10px;">Визначення прискорення тіла в ході рівноприскореного прямолінійного руху</h2>
+            <h2 style="color: white; border: none; margin-top: 10px;">Визначення прискорення тіла в ході
+                рівноприскореного прямолінійного руху</h2>
         </div>
 
         <div class="content">
@@ -348,19 +356,24 @@
             </div>
 
             <h2>Підготовка до експерименту</h2>
-            
+
             <div class="instruction-list">
                 <p>Підготуйте похилу поверхню. Це може бути стіл, під дві ніжки якого підкладіть невеликі предмети.</p>
-                <p>Підготуйте кульку невеликих розмірів. Це може бути кулька для настільного тенісу, металева кулька від підшипника. Можна також використати предмет циліндричної форми, якщо ви не знайдете кульки.</p>
+                <p>Підготуйте кульку невеликих розмірів. Це може бути кулька для настільного тенісу, металева кулька від
+                    підшипника. Можна також використати предмет циліндричної форми, якщо ви не знайдете кульки.</p>
                 <p>Пустіть по поверхні стола кульку, переконайтеся, що кулька котиться по прямій траєкторій.</p>
-                <p>Підберіть кут нахилу таким, щоб кулька котилася не менш ніж 1 секунду. Штовхати кульку не потрібно.</p>
-                <p>Якщо кулька котиться не по прямій, можна покласти довгу планку, опираючись збоку на яку котитиметься ваша кулька.</p>
+                <p>Підберіть кут нахилу таким, щоб кулька котилася не менш ніж 1 секунду. Штовхати кульку не потрібно.
+                </p>
+                <p>Якщо кулька котиться не по прямій, можна покласти довгу планку, опираючись збоку на яку котитиметься
+                    ваша кулька.</p>
                 <p>Відмітьте точку, від якої ви пускатимете кульку.</p>
                 <p>Відмітьте точку, до якої котитиметься кулька.</p>
                 <p>Підготуйте секундомір. Це може бути секундомір у вашому мобільному телефоні.</p>
             </div>
 
-            <iframe src="https://www.youtube.com/embed/WLStaT3cTtI" title="схема установки" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/WLStaT3cTtI" title="схема установки"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
 
             <div class="warning-box">
                 <h2>ВАЖЛИВО!!!</h2>
@@ -373,14 +386,19 @@
             <h2>Експеримент</h2>
 
             <div class="info-box">
-                <p><em>Суворо дотримуйтесь інструкції з безпеки. Результати вимірювань відразу заносьте до таблиці.</em></p>
+                <p><em>Суворо дотримуйтесь інструкції з безпеки. Результати вимірювань відразу заносьте до таблиці.</em>
+                </p>
             </div>
 
-            <p><strong>1.</strong> Виміряйте відстань s від позначки від якої ви відпускатимете кульку до позначки, до якої котитиметься кулька (ця відстань дорівнює модулю переміщення кульки).</p>
-            
-            <p><strong>2.</strong> Розташуйте кульку навпроти позначки та виміряйте час t<sub>1</sub>, за який скочується кулька (до моменту її перетину позначки завершення руху).</p>
+            <p><strong>1.</strong> Виміряйте відстань s від позначки від якої ви відпускатимете кульку до позначки, до
+                якої котитиметься кулька (ця відстань дорівнює модулю переміщення кульки).</p>
 
-            <iframe src="https://www.youtube.com/embed/yZGDF5CEYR8" title="Проведення експерименту" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <p><strong>2.</strong> Розташуйте кульку навпроти позначки та виміряйте час t<sub>1</sub>, за який
+                скочується кулька (до моменту її перетину позначки завершення руху).</p>
+
+            <iframe src="https://www.youtube.com/embed/yZGDF5CEYR8" title="Проведення експерименту"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
 
             <div class="table-title">Таблиця 1</div>
             <table border="1">
@@ -391,7 +409,8 @@
                         <td colspan="2">Час руху кульки</td>
                         <td rowspan="2">Прискорення кульки<br>a<sub>сер</sub>, м/с<sup>2</sup></td>
                         <td colspan="2">Похибка вимірювання прискорення</td>
-                        <td style="width: 20%;" rowspan="2">Результат вимірювання прискорення<br>a = a<sub>сер</sub> ± ∆a,<br>м/с<sup>2</sup></td>
+                        <td style="width: 20%;" rowspan="2">Результат вимірювання прискорення<br>a = a<sub>сер</sub> ±
+                            ∆a,<br>м/с<sup>2</sup></td>
                     </tr>
                     <tr>
                         <td style="width: 10%;">t<sub>i</sub>, с</td>
@@ -448,7 +467,7 @@
 
             <div class="formula-box">
                 <p><strong>3.</strong> Обчисліть абсолютну та відносну похибки вимірювання (див. п. 4 § 2):</p>
-                
+
                 <p><strong>1) часу:</strong></p>
                 <img src="./img/acceleration/f1.png" alt="Формула похибки часу" />
                 <div class="formula-input">
@@ -464,8 +483,11 @@
 
                 <p><strong>2) модуля переміщення:</strong></p>
                 <img src="./img/acceleration/f2.png" alt="Формула похибки переміщення" />
-                <p style="font-size: 0.95em; margin-top: 10px;">(Похибки приладів див. п. 4 § 2, якщо ви користуєтесь іншими приладами, то вважайте, що похибка приладу дорівнює половині ціни поділки шкали цього приладу.</p>
-                <p style="font-size: 0.95em;">Якщо вимірювання проводилися один раз, то випадкова похибка дорівнює половині ціни поділки шкали приладу)</p>
+                <p style="font-size: 0.95em; margin-top: 10px;">(Похибки приладів див. п. 4 § 2, якщо ви користуєтесь
+                    іншими приладами, то вважайте, що похибка приладу дорівнює половині ціни поділки шкали цього
+                    приладу.</p>
+                <p style="font-size: 0.95em;">Якщо вимірювання проводилися один раз, то випадкова похибка дорівнює
+                    половині ціни поділки шкали приладу)</p>
                 <div class="formula-input">
                     <span>∆s<sub>сер</sub> =</span>
                     <input id="f_∆s" type="text">
@@ -492,13 +514,16 @@
             </div>
 
             <div class="info-box">
-                <p><strong>4.</strong> Округліть результати та запишіть до таблиці результат вимірювання прискорення.</p>
-                <p>(Абсолютну похибку ∆a округлюють до однієї значущої цифри із завищенням, а результат вимірювання a<sub>сер</sub> – до величини розряду, який залишився в абсолютній похибці після округлення)</p>
+                <p><strong>4.</strong> Округліть результати та запишіть до таблиці результат вимірювання прискорення.
+                </p>
+                <p>(Абсолютну похибку ∆a округлюють до однієї значущої цифри із завищенням, а результат вимірювання
+                    a<sub>сер</sub> – до величини розряду, який залишився в абсолютній похибці після округлення)</p>
             </div>
 
             <h2>Аналіз експерименту та його результатів</h2>
-            
-            <p>Проаналізуйте експеримент і його результати. За результатами експерименту сформулюйте і запишіть висновок, у якому зазначте:</p>
+
+            <p>Проаналізуйте експеримент і його результати. За результатами експерименту сформулюйте і запишіть
+                висновок, у якому зазначте:</p>
 
             <div style="margin: 20px 0;">
                 <p><strong>1) величину, яку ви вимірювали;</strong></p>
@@ -521,7 +546,7 @@
             </div>
 
             <div class="submit_block">
-                <button id="submin_button">Відправити</button>
+                <button id="submit_button">Відправити</button>
             </div>
         </div>
     </div>
@@ -529,4 +554,5 @@
     <script src="./js/treskoef.js" defer></script>
     <script src="./js/script.js" defer></script>
 </body>
+
 </html>
