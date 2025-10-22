@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визначення електрохімічного еквівалента речовини</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" type="image/png" href="favicon.png">
+    <script src="./js/script.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h2 {
+            font-size: 1.3em;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #1976d2;
+            line-height: 1.8;
+        }
+
+        .info-box strong {
+            color: #1565c0;
+        }
+
+        .student {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .student h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .txt_inp {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .txt_inp:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
+        }
+
+        h2 {
+            color: #ffffff;
+            margin: 30px 0 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-section {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #ff9800;
+            text-align: center;
+        }
+
+        .link-section a {
+            display: inline-block;
+            color: white;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2em;
+            padding: 15px 40px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(238, 90, 111, 0.4);
+        }
+
+        .link-section a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(238, 90, 111, 0.6);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        table td:first-child {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-weight: 600;
+        }
+
+        .cell {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .cell:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .formula-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.3em;
+            color: #333;
+            margin: 15px 0;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .input-group {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #4caf50;
+        }
+
+        .input-group p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .input-group input {
+            padding: 10px;
+            font-size: 1.1em;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .txt_ar {
+            width: 100%;
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .txt_ar:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit_block {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        #submit_button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #submit_button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .description-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #ff9800;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            .cell {
+                font-size: 12px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Лабораторна робота № 2</h1>
+            <h2>Визначення електрохімічного еквівалента речовини</h2>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Визначення електрохімічного еквівалента речовини">
+            <div class="info-box">
+                <div><strong>Мета:</strong> дослідити електроліз водного розчину купрум(ІІ) сульфату та виміряти електрохімічний еквівалент міді.</div>
+            </div>
+
+            <div class="info-box">
+                <div><strong>Обладнання:</strong> терези з важками (або електронні ваги); амперметр; годинник; ключ; реостат; з'єднувальні проводи; джерело постійного струму; склянка з водним розчином купрум(ІІ) сульфату; вугільні або мідні електроди; тримач; паперові серветки.</div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <div><input class="txt_inp" placeholder="Клас" id="klas" type="text"></div>
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <div><input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text"></div>
+            </div>
+
+            <h2>Підготовка до експерименту</h2>
+
+            <div class="formula-box">
+                <p><strong>1. З першого закону Фарадея для електролізу отримайте формулу для визначення електрохімічного еквівалента:</strong></p>
+                <div class="formula">m = kIt</div>
+                <p>де m - маса речовини, k - електрохімічний еквівалент, I - сила струму, t - час</p>
+                <div class="formula">k = m / (It)</div>
+            </div>
+
+            <div class="description-box">
+                <p><strong>План проведення експерименту:</strong></p>
+                <ol style="padding-left: 20px; line-height: 2;">
+                    <li>Підготувати електроди та зважити катод</li>
+                    <li>Зібрати електричне коло</li>
+                    <li>Провести електроліз протягом певного часу</li>
+                    <li>Зважити катод після електролізу</li>
+                    <li>Розрахувати електрохімічний еквівалент міді</li>
+                </ol>
+            </div>
+
+            <h2>Відеоексперимент</h2>
+
+            <div class="link-section">
+                <p style="margin-bottom: 20px; font-size: 1.1em; color: #333;">Перегляньте відео експерименту та заповніть таблицю даними:</p>
+                <p>
+                    <a href="https://www.youtube.com/watch?v=kDcA2ZCDZBw" target="_blank">🎥 Відкрити відеоексперимент</a>
+                </p>
+            </div>
+
+            <h2>Експеримент</h2>
+
+            <div class="warning-box">
+                <p><strong>⚠️ Дотримуйтесь інструкції з безпеки!</strong> Результати вимірювань відразу заносьте до таблиці.</p>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Сила струму I, А</th>
+                    <th>Час електролізу t, с</th>
+                    <th>Маса катода на початок досліду m₀, г</th>
+                    <th>Маса катода після досліду m, г</th>
+                    <th>Маса міді, що виділилася Δm, мг</th>
+                    <th>Електрохімічний еквівалент k, мг/Кл</th>
+                </tr>
+                <tr>
+                    <td><input class="cell" id="current" type="number" step="0.01"></td>
+                    <td><input class="cell" id="time" type="number" step="1"></td>
+                    <td><input class="cell" id="mass0" type="number" step="0.001"></td>
+                    <td><input class="cell" id="mass1" type="number" step="0.001"></td>
+                    <td><input class="cell" id="deltam" type="number" step="0.1" readonly style="background: #f0f0f0;"></td>
+                    <td><input class="cell" id="k_result" type="number" step="0.01" readonly style="background: #f0f0f0;"></td>
+                </tr>
+            </table>
+
+            <h2>Опрацювання результатів експерименту</h2>
+
+            <div class="input-group">
+                <p><strong>1. Визначте масу міді, що виділилася на катоді:</strong></p>
+                <div class="formula">Δm = m - m₀</div>
+                <p>Результат подайте в міліграмах.</p>
+            </div>
+
+            <div class="input-group">
+                <p><strong>2. Знайдіть значення електрохімічного еквівалента міді:</strong></p>
+                <div class="formula">k = Δm / (I × t)</div>
+                <p>Табличне значення: k<sub>табл</sub> = 0,33 мг/Кл</p>
+            </div>
+
+            <div class="input-group">
+                <p><strong>3. Обчисліть відносну похибку вимірювання:</strong></p>
+                <div class="formula">ε = |k<sub>експ</sub> - k<sub>табл</sub>| / k<sub>табл</sub> × 100%</div>
+                <p>Відносна похибка ε = <input id="error" type="number" step="0.01" readonly style="background: #f0f0f0;"> %</p>
+            </div>
+
+            <h2>Аналіз експерименту та його результатів</h2>
+
+            <div style="margin: 20px 0;">
+                <p><strong>1) Яке явище ви досліджували:</strong></p>
+                <textarea class="txt_ar" id="v1" rows="4" placeholder="Опишіть процес електролізу..."></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>2) Які фізичні величини вимірювали:</strong></p>
+                <textarea class="txt_ar" id="v2" rows="4" placeholder="Перелічіть виміряні величини..."></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>3) Чи збіглося виміряне значення електрохімічного еквівалента міді з табличним:</strong></p>
+                <textarea class="txt_ar" id="v3" rows="4" placeholder="Порівняйте результати..."></textarea>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <p><strong>4) У чому, на вашу думку, причина розбіжності:</strong></p>
+                <textarea class="txt_ar" id="v4" rows="4" placeholder="Вкажіть можливі причини похибок..."></textarea>
+            </div>
+
+            <h2>Творче завдання</h2>
+
+            <div class="description-box">
+                <p><strong>Завдання:</strong> Запропонуйте спосіб визначити масу хлору, що виділяється на аноді за певний час електролізу водного розчину натрій хлориду (кухонної солі).</p>
+                <p style="margin-top: 15px;"><strong>Доступне обладнання:</strong> джерело живлення, з'єднувальні проводи, два набори для електролізу (дві склянки, два тримачі, чотири електроди), терези, водний розчин купрум(ІІ) сульфату, водний розчин натрій хлориду, таблиця електрохімічних еквівалентів.</p>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <textarea class="txt_ar" id="creative" rows="8" placeholder="Опишіть ваш спосіб визначення маси хлору..."></textarea>
+            </div>
+
+            <div class="submit_block">
+                <button id="submit_button">Відправити</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Автоматичні розрахунки
+        const mass0Input = document.getElementById('mass0');
+        const mass1Input = document.getElementById('mass1');
+        const deltamInput = document.getElementById('deltam');
+        const currentInput = document.getElementById('current');
+        const timeInput = document.getElementById('time');
+        const kResultInput = document.getElementById('k_result');
+        const errorInput = document.getElementById('error');
+
+        function calculate() {
+            const m0 = parseFloat(mass0Input.value) || 0;
+            const m1 = parseFloat(mass1Input.value) || 0;
+            const I = parseFloat(currentInput.value) || 0;
+            const t = parseFloat(timeInput.value) || 0;
+
+            // Розрахунок Δm в міліграмах
+            const deltam = (m1 - m0) * 1000;
+            deltamInput.value = deltam.toFixed(1);
+
+            // Розрахунок k (електрохімічний еквівалент)
+            if (I > 0 && t > 0 && deltam > 0) {
+                const k = deltam / (I * t);
+                kResultInput.value = k.toFixed(2);
+
+                // Розрахунок похибки
+                const kTabl = 0.33;
+                const error = Math.abs(k - kTabl) / kTabl * 100;
+                errorInput.value = error.toFixed(1);
+            }
+        }
+
+        mass0Input.addEventListener('input', calculate);
+        mass1Input.addEventListener('input', calculate);
+        currentInput.addEventListener('input', calculate);
+        timeInput.addEventListener('input', calculate);
+
+        // Обробка відправки
+        // document.getElementById('submit_button').addEventListener('click', function() {
+        //     const klas = document.getElementById('klas').value;
+        //     const name = document.getElementById('name').value;
+
+        //     if (!klas || !name) {
+        //         alert('Будь ласка, заповніть клас та прізвище!');
+        //         return;
+        //     }
+
+        //     const v1 = document.getElementById('v1').value;
+        //     const v2 = document.getElementById('v2').value;
+        //     const v3 = document.getElementById('v3').value;
+        //     const v4 = document.getElementById('v4').value;
+
+        //     if (!v1 || !v2 || !v3 || !v4) {
+        //         alert('Будь ласка, заповніть всі поля аналізу експерименту!');
+        //         return;
+        //     }
+
+        //     alert('Роботу успішно відправлено!\n\nКлас: ' + klas + '\nУчень: ' + name + '\n\nЕлектрохімічний еквівалент: ' + kResultInput.value + ' мг/Кл\nПохибка: ' + errorInput.value + '%');
+        // });
+    </script>
+</body>
+</html>
