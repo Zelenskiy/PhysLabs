@@ -383,8 +383,8 @@
                     <td><input class="cell" id="time" type="number" step="1"></td>
                     <td><input class="cell" id="mass0" type="number" step="0.001"></td>
                     <td><input class="cell" id="mass1" type="number" step="0.001"></td>
-                    <td><input class="cell" id="deltam" type="number" step="0.1" readonly style="background: #f0f0f0;"></td>
-                    <td><input class="cell" id="k_result" type="number" step="0.01" readonly style="background: #f0f0f0;"></td>
+                    <td><input class="cell" id="deltam" type="number" step="0.1" style="background: #f0f0f0;"></td>
+                    <td><input class="cell" id="k_result" type="number" step="0.01" style="background: #f0f0f0;"></td>
                 </tr>
             </table>
 
@@ -405,19 +405,19 @@
             <div class="input-group">
                 <p><strong>3. Обчисліть відносну похибку вимірювання:</strong></p>
                 <div class="formula">ε = |k<sub>експ</sub> - k<sub>табл</sub>| / k<sub>табл</sub> × 100%</div>
-                <p>Відносна похибка ε = <input id="error" type="number" step="0.01" readonly style="background: #f0f0f0;"> %</p>
+                <p>Відносна похибка ε = <input id="error" type="number" step="0.01" style="background: #f0f0f0;"> %</p>
             </div>
 
             <h2>Аналіз експерименту та його результатів</h2>
 
             <div style="margin: 20px 0;">
                 <p><strong>1) Яке явище ви досліджували:</strong></p>
-                <textarea class="txt_ar" id="v1" rows="4" placeholder="Опишіть процес електролізу..."></textarea>
+                <textarea class="txt_ar" id="v1" rows="4" placeholder=""></textarea>
             </div>
 
             <div style="margin: 20px 0;">
-                <p><strong>2) Які фізичні величини вимірювали:</strong></p>
-                <textarea class="txt_ar" id="v2" rows="4" placeholder="Перелічіть виміряні величини..."></textarea>
+                <p><strong>2) Які фізичні величини вимірювали, яку величину визначали:</strong></p>
+                <textarea class="txt_ar" id="v2" rows="4" placeholder=""></textarea>
             </div>
 
             <div style="margin: 20px 0;">
@@ -458,25 +458,25 @@
         const errorInput = document.getElementById('error');
 
         function calculate() {
-            const m0 = parseFloat(mass0Input.value) || 0;
-            const m1 = parseFloat(mass1Input.value) || 0;
-            const I = parseFloat(currentInput.value) || 0;
-            const t = parseFloat(timeInput.value) || 0;
+            // const m0 = parseFloat(mass0Input.value) || 0;
+            // const m1 = parseFloat(mass1Input.value) || 0;
+            // const I = parseFloat(currentInput.value) || 0;
+            // const t = parseFloat(timeInput.value) || 0;
 
-            // Розрахунок Δm в міліграмах
-            const deltam = (m1 - m0) * 1000;
-            deltamInput.value = deltam.toFixed(1);
+            // // Розрахунок Δm в міліграмах
+            // const deltam = (m1 - m0) * 1000;
+            // deltamInput.value = deltam.toFixed(1);
 
-            // Розрахунок k (електрохімічний еквівалент)
-            if (I > 0 && t > 0 && deltam > 0) {
-                const k = deltam / (I * t);
-                kResultInput.value = k.toFixed(2);
+            // // Розрахунок k (електрохімічний еквівалент)
+            // if (I > 0 && t > 0 && deltam > 0) {
+            //     const k = deltam / (I * t);
+            //     kResultInput.value = k.toFixed(2);
 
-                // Розрахунок похибки
-                const kTabl = 0.33;
-                const error = Math.abs(k - kTabl) / kTabl * 100;
-                errorInput.value = error.toFixed(1);
-            }
+            //     // Розрахунок похибки
+            //     const kTabl = 0.33;
+            //     const error = Math.abs(k - kTabl) / kTabl * 100;
+            //     errorInput.value = error.toFixed(1);
+            // }
         }
 
         mass0Input.addEventListener('input', calculate);
@@ -484,28 +484,6 @@
         currentInput.addEventListener('input', calculate);
         timeInput.addEventListener('input', calculate);
 
-        // Обробка відправки
-        // document.getElementById('submit_button').addEventListener('click', function() {
-        //     const klas = document.getElementById('klas').value;
-        //     const name = document.getElementById('name').value;
-
-        //     if (!klas || !name) {
-        //         alert('Будь ласка, заповніть клас та прізвище!');
-        //         return;
-        //     }
-
-        //     const v1 = document.getElementById('v1').value;
-        //     const v2 = document.getElementById('v2').value;
-        //     const v3 = document.getElementById('v3').value;
-        //     const v4 = document.getElementById('v4').value;
-
-        //     if (!v1 || !v2 || !v3 || !v4) {
-        //         alert('Будь ласка, заповніть всі поля аналізу експерименту!');
-        //         return;
-        //     }
-
-        //     alert('Роботу успішно відправлено!\n\nКлас: ' + klas + '\nУчень: ' + name + '\n\nЕлектрохімічний еквівалент: ' + kResultInput.value + ' мг/Кл\nПохибка: ' + errorInput.value + '%');
-        // });
     </script>
 </body>
 </html>
