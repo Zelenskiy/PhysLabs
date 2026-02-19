@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Експериментальна робота №7 - Вимірювання довжини світлової хвилі</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a6fa8 0%, #0d3d6e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a6fa8 0%, #0d3d6e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+
+        .header h2 {
+            font-size: 1.3em;
+            opacity: 0.95;
+            border: none;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .content { padding: 30px; }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #1a6fa8;
+        }
+
+        .section h2 { color: #1a6fa8; margin-bottom: 15px; font-size: 1.5em; }
+
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-box strong { color: #856404; }
+
+        .student {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #1a6fa8;
+        }
+
+        .student h2 { color: #1a6fa8; font-size: 1.2em; margin-bottom: 10px; }
+
+        .txt_inp {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #1a6fa8;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .txt_inp:focus {
+            outline: none;
+            border-color: #0d3d6e;
+            box-shadow: 0 0 10px rgba(26,111,168,0.3);
+        }
+
+        .formula-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #1a6fa8;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.3em;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .theory-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: #0d3d6e;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .data-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .data-table td.color-violet { background: #f0e6ff; font-weight: bold; color: #6600cc; }
+        .data-table td.color-red { background: #ffe6e6; font-weight: bold; color: #cc0000; }
+
+        .data-table input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .data-table input:focus { outline: none; border-color: #1a6fa8; }
+
+        .calculation-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .calculation-box h3 { color: #2e7d32; margin-bottom: 10px; }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        textarea:focus { outline: none; border-color: #1a6fa8; }
+
+        .link-box {
+            background: linear-gradient(135deg, #1a6fa8 0%, #0d3d6e 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .link-box a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .link-box a:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+        iframe {
+            border: 3px solid #1a6fa8;
+            border-radius: 10px;
+            width: 100%;
+            min-height: 500px;
+            margin: 20px 0;
+        }
+
+        .instruction-list {
+            background: white;
+            padding: 15px 15px 15px 35px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .instruction-list li { margin: 10px 0; line-height: 1.6; }
+
+        .submit_block {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a6fa8 0%, #0d3d6e 100%);
+            border-radius: 15px;
+        }
+
+        .submit_block button {
+            background: white;
+            color: #1a6fa8;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit_block button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .spectrum-bar {
+            height: 30px;
+            border-radius: 6px;
+            margin: 10px 0;
+            background: linear-gradient(to right,
+                #8B00FF 0%, #4400FF 10%, #0000FF 20%,
+                #00AAFF 35%, #00FF88 50%, #AAFF00 60%,
+                #FFFF00 70%, #FFA500 82%, #FF0000 100%);
+        }
+
+        .wavelength-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+        .wavelength-table th, .wavelength-table td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        .wavelength-table th { background: #0d3d6e; color: white; }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .link-box, iframe { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ЕКСПЕРИМЕНТАЛЬНА РОБОТА № 7</h1>
+            <h2>Вимірювання довжини світлової хвилі</h2>
+        </div>
+
+        <div class="content">
+            <input type="text" id="sheetName" hidden value="Вимірювання довжини світлової хвилі">
+
+            <div class="student">
+                <h2>Впишіть ваш клас</h2>
+                <input class="txt_inp" placeholder="Клас" id="klas" type="text">
+            </div>
+
+            <div class="student">
+                <h2>Впишіть ваше прізвище та ім'я</h2>
+                <input class="txt_inp" placeholder="Прізвище, ім'я" id="name" type="text">
+            </div>
+
+            <!-- Мета та обладнання -->
+            <div class="section">
+                <h2>📋 Мета роботи</h2>
+                <p>Навчитися вимірювати довжину світлової хвилі за допомогою дифракційної ґратки.</p>
+                <div style="margin-top: 20px;">
+                    <strong>Обладнання:</strong>
+                    <ul class="instruction-list">
+                        <li>Лампа з прямою ниткою розжарення</li>
+                        <li>Прилад для визначення довжини світлової хвилі</li>
+                        <li>Штатив із муфтою</li>
+                        <li>Дифракційна ґратка</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Теорія -->
+            <div class="section">
+                <h2>📚 Теоретичні відомості</h2>
+
+                <div class="theory-box">
+                    <h3 style="color:#1a6fa8; margin-bottom:15px;">Умова головних максимумів дифракційної ґратки</h3>
+                    <div class="formula-box">
+                        <div class="formula">d · sin θ = m · λ</div>
+                        <p style="margin-top:10px; color:#666;">
+                            <strong>d</strong> – стала дифракційної ґратки (м),&nbsp;
+                            <strong>θ</strong> – кут дифракції,&nbsp;
+                            <strong>m</strong> – порядок максимуму,&nbsp;
+                            <strong>λ</strong> – довжина хвилі (м)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <h3 style="color:#1a6fa8; margin-bottom:15px;">Робоча формула</h3>
+                    <p style="margin-bottom:10px;">Де <strong>l</strong> – відстань від ґратки до екрана, <strong>x</strong> – середня відстань від центра до спектральної лінії. Для першого порядку (m = 1):</p>
+                    <div class="formula-box" style="background:#e8f0ff; border-color:#1a6fa8;">
+                        <div class="formula" style="color:#0d3d6e;">λ = d · x / √(x² + l²)</div>
+                    </div>
+                    <p style="margin-top:10px;">Стала ґратки:</p>
+                    <div class="formula-box" style="background:#e8f5e9; border-color:#4caf50;">
+                        <div class="formula" style="color:#2e7d32;">d = 1 / N</div>
+                        <p style="margin-top:8px; color:#666;">де N – кількість штрихів на 1 мм → d в мм → переведіть у метри (× 0,001)</p>
+                    </div>
+                </div>
+
+                <div class="theory-box">
+                    <h3 style="color:#1a6fa8; margin-bottom:15px;">Видимий спектр</h3>
+                    <div class="spectrum-bar"></div>
+                    <table class="wavelength-table">
+                        <thead>
+                            <tr><th>Колір</th><th>Довжина хвилі, нм</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="color:#6600cc;font-weight:bold;">Фіолетовий</td><td>380–450</td></tr>
+                            <tr><td style="color:#0000cc;font-weight:bold;">Синій</td><td>450–490</td></tr>
+                            <tr><td style="color:#00aa00;font-weight:bold;">Зелений</td><td>500–565</td></tr>
+                            <tr><td style="color:#aaaa00;font-weight:bold;">Жовтий</td><td>565–600</td></tr>
+                            <tr><td style="color:#ff8800;font-weight:bold;">Помаранчевий</td><td>600–620</td></tr>
+                            <tr><td style="color:#cc0000;font-weight:bold;">Червоний</td><td>620–760</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Відео -->
+            <div class="section">
+                <h2>🎬 Відеодемонстрація експерименту</h2>
+
+                <div class="link-box">
+                    <a href="https://www.youtube.com/watch?v=H5UJKzYkDsQ" target="_blank">
+                        ▶ Відкрити відео у новому вікні
+                    </a>
+                </div>
+
+                <iframe
+                    src="https://www.youtube.com/embed/H5UJKzYkDsQ"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                </iframe>
+
+                <div class="info-box">
+                    <strong>📌 Зверніть увагу під час перегляду:</strong>
+                    <ol class="instruction-list">
+                        <li>Як визначають кількість штрихів ґратки та обчислюють її сталу <strong>d</strong></li>
+                        <li>Як вимірюють відстань <strong>l</strong> від ґратки до екрана</li>
+                        <li>Як відраховують відстань <strong>x</strong> від центра до меж фіолетового та червоного кольорів — праворуч і ліворуч</li>
+                        <li>Як обчислюють середнє значення <strong>x</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Підготовка -->
+            <div class="section">
+                <h2>🔬 Підготовка до вимірювань</h2>
+
+                <div class="info-box">
+                    <strong>Крок 1:</strong> Визначте сталу дифракційної ґратки. Зчитайте кількість штрихів на 1 мм та обчисліть d = 1/N. Переведіть результат у метри.
+                </div>
+
+                <div class="calculation-box">
+                    <h3>Визначення сталої ґратки</h3>
+                    <textarea id="calc_period" placeholder="Запишіть визначення сталої ґратки. Наприклад:&#10;N = 100 штр./мм&#10;d = 1/100 = 0,01 мм = 0,00001 м = 1·10⁻⁵ м"></textarea>
+                </div>
+
+                <div class="info-box">
+                    <strong>Крок 2:</strong> Зберіть установку та виміряйте відстань від ґратки до екрана (<strong>l</strong>).
+                </div>
+            </div>
+
+            <!-- Таблиця -->
+            <div class="section">
+                <h2>📊 Таблиця результатів вимірювань</h2>
+
+                <div class="info-box">
+                    Дивлячись крізь дифракційну ґратку та щілину на лампу, спостерігайте спектри першого порядку. Виміряйте відстані від центра до меж фіолетового та червоного кольорів праворуч і ліворуч та занесіть до таблиці. Середнє значення та довжину хвилі обчисліть самостійно.
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Колір спектра</th>
+                            <th colspan="2">Відстань від центра до межі кольору, м</th>
+                            <th rowspan="2">Середнє значення<br>x = (x<sub>прав</sub> + x<sub>лів</sub>) / 2, м</th>
+                            <th rowspan="2">Відстань від ґратки до екрана l, м</th>
+                            <th rowspan="2">Виміряна довжина хвилі λ, нм</th>
+                            <th rowspan="2">Таблична λ<sub>табл</sub>, нм</th>
+                        </tr>
+                        <tr>
+                            <th>праворуч x<sub>прав</sub></th>
+                            <th>ліворуч x<sub>лів</sub></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="color-violet">🟣 Фіолетовий</td>
+                            <td><input type="number" id="xv_right" step="0.001" placeholder="0.000"></td>
+                            <td><input type="number" id="xv_left" step="0.001" placeholder="0.000"></td>
+                            <td><input type="number" id="xv_avg" step="0.0001" placeholder="0.0000"></td>
+                            <td rowspan="2"><input type="number" id="l_val" step="0.001" placeholder="0.000"></td>
+                            <td><input type="number" id="lambda_v" step="1" placeholder="0"></td>
+                            <td style="color:#6600cc;font-weight:bold;">380–450</td>
+                        </tr>
+                        <tr>
+                            <td class="color-red">🔴 Червоний</td>
+                            <td><input type="number" id="xr_right" step="0.001" placeholder="0.000"></td>
+                            <td><input type="number" id="xr_left" step="0.001" placeholder="0.000"></td>
+                            <td><input type="number" id="xr_avg" step="0.0001" placeholder="0.0000"></td>
+                            <td><input type="number" id="lambda_r" step="1" placeholder="0"></td>
+                            <td style="color:#cc0000;font-weight:bold;">620–760</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Опрацювання результатів -->
+            <div class="section">
+                <h2>🧮 Опрацювання результатів</h2>
+
+                <div class="calculation-box">
+                    <h3>1. Обчислення середніх значень відстаней</h3>
+                    <p style="margin-bottom:8px; color:#333;">Обчисліть x<sub>сер</sub> = (x<sub>прав</sub> + x<sub>лів</sub>) / 2 для фіолетового та червоного кольорів</p>
+                    <textarea id="calc_avg" placeholder="Запишіть обчислення тут..."></textarea>
+                </div>
+
+                <div class="calculation-box">
+                    <h3>2. Обчислення довжин хвиль за формулою λ = d · x / √(x² + l²)</h3>
+                    <textarea id="calc_lambda" placeholder="Запишіть обчислення λ для фіолетового та червоного кольорів..."></textarea>
+                </div>
+
+                <div class="calculation-box">
+                    <h3>3. Оцінка відносної похибки</h3>
+                    <p style="margin-bottom:8px; color:#333;">Порівняйте отримані значення з табличними:</p>
+                    <div class="formula-box" style="background:#fff; margin:8px 0; padding:12px;">
+                        <div class="formula">ε = |λ<sub>вим</sub> − λ<sub>табл</sub>| / λ<sub>табл</sub> × 100%</div>
+                    </div>
+                    <textarea id="calc_error" placeholder="Запишіть обчислення відносної похибки для фіолетового та червоного кольорів..."></textarea>
+                </div>
+            </div>
+
+            <!-- Аналіз -->
+            <div class="section">
+                <h2>📝 Аналіз експерименту та його результатів</h2>
+
+                <p style="margin-bottom:15px;"><strong>Сформулюйте висновок, у якому зазначте:</strong></p>
+
+                <div style="margin:10px 0;"><strong>1) Яку фізичну величину визначали та яким методом:</strong></div>
+                <textarea id="conclusion1" placeholder="Напишіть, яку фізичну величину визначали..."></textarea>
+
+                <div style="margin:15px 0 10px;"><strong>2) Який результат отримали (значення λ для фіолетового та червоного кольорів):</strong></div>
+                <textarea id="conclusion2" placeholder="Запишіть отримані результати..."></textarea>
+
+                <div style="margin:15px 0 10px;"><strong>3) Причини можливої похибки:</strong></div>
+                <textarea id="conclusion3" placeholder="Вкажіть можливі причини похибки..."></textarea>
+            </div>
+
+            <!-- Творче завдання -->
+            <div class="section">
+                <h2>⭐ Творче завдання</h2>
+
+                <div class="theory-box">
+                    <p style="margin-bottom:10px;">
+                        Визначте довжину хвилі <strong>червоного кольору за дифракційним спектром другого порядку (m = 2)</strong>. Порівняйте значення з отриманим в основному досліді. Запишіть причини розбіжності.
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula">λ = d · x / (2 · √(x² + l²))</div>
+                        <p style="margin-top:8px; color:#666;">для другого порядку дифракції (m = 2)</p>
+                    </div>
+
+                    <div style="margin:15px 0;"><strong>Вимірювання для 2-го порядку (червоний колір):</strong></div>
+                    <table class="data-table" style="margin-bottom:15px;">
+                        <thead>
+                            <tr>
+                                <th>x<sub>прав</sub>, м</th>
+                                <th>x<sub>лів</sub>, м</th>
+                                <th>Середнє x, м</th>
+                                <th>λ (2-й порядок), нм</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="number" id="xr2_right" step="0.001" placeholder="0.000"></td>
+                                <td><input type="number" id="xr2_left" step="0.001" placeholder="0.000"></td>
+                                <td><input type="number" id="xr2_avg" step="0.0001" placeholder="0.0000"></td>
+                                <td><input type="number" id="lambda_r2" step="1" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <textarea id="creative_task" placeholder="Запишіть обчислення λ для другого порядку, порівняйте з результатом першого порядку та вкажіть причини розбіжності..."></textarea>
+                </div>
+            </div>
+
+            <div class="submit_block">
+                <button id="submit_button">Надіслати результати</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js" defer></script>
+</body>
+
+</html>

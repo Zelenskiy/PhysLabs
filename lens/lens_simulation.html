@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Моделювання побудови зображення у лінзі</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: #2a3550;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --green: #4ade80;
+    --orange: #fb923c;
+    --text: #e2e8f0;
+    --text-dim: #64748b;
+    --ray-real: rgba(56, 189, 248, 0.7);
+    --ray-virtual: rgba(148, 163, 184, 0.45);
+    --obj-color: #f472b6;
+    --img-color: #4ade80;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── LAYOUT ─── */
+  .app { display: flex; flex-direction: column; height: 100vh; }
+
+  .top-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+  .top-bar h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--accent);
+  }
+  .top-bar .badge {
+    font-size: 11px;
+    background: rgba(56,189,248,.15);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight:500;
+  }
+
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* ─── CANVAS AREA ─── */
+  .canvas-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg);
+  }
+  canvas {
+    display: block;
+    cursor: crosshair;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 280px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .panel {
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .panel-body { padding: 14px; }
+
+  /* slider */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .slider-row label {
+    font-size: 12px;
+    color: var(--text-dim);
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .slider-row input[type=range] {
+    flex:1;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(56,189,248,.4);
+  }
+  .slider-row .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    width: 38px;
+    text-align: right;
+  }
+
+  /* toggle row */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+  }
+  .toggle-row label { font-size: 13px; color: var(--text); }
+  .toggle {
+    position: relative; width: 36px; height: 20px;
+  }
+  .toggle input { opacity:0; width:0; height:0; }
+  .toggle .slider {
+    position: absolute; inset:0;
+    background: var(--border);
+    border-radius: 20px;
+    transition: .25s;
+    cursor: pointer;
+  }
+  .toggle .slider:before {
+    content:'';
+    position: absolute;
+    height:14px; width:14px; left:3px; bottom:3px;
+    background:#fff;
+    border-radius:50%;
+    transition:.25s;
+  }
+  .toggle input:checked + .slider { background: var(--accent); }
+  .toggle input:checked + .slider:before { transform: translateX(16px); }
+
+  /* info box */
+  .info-box {
+    background: rgba(56,189,248,.07);
+    border: 1px solid rgba(56,189,248,.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .info-box strong { color: var(--accent); }
+
+  /* data row */
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: 13px;
+  }
+  .data-row:last-child { border-bottom:none; }
+  .data-row .lbl { color: var(--text-dim); }
+  .data-row .v { font-family:'JetBrains Mono',monospace; font-size:12px; }
+
+  .color-dot {
+    display: inline-block;
+    width: 8px; height:8px;
+    border-radius:50%;
+    margin-right: 5px;
+  }
+
+  /* ─── BOTTOM STATUS ─── */
+  .status-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: rgba(17,24,39,.85);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 20px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .status-bar span { display:flex; align-items:center; gap:5px; }
+  .status-bar .dot { width:6px; height:6px; border-radius:50%; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .main { flex-direction: column; }
+    .sidebar { width:100%; flex-direction: row; flex-wrap:wrap; gap:10px; padding:12px; overflow-x:auto; }
+    .panel { min-width:180px; flex:1; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <h1>Моделювання побудови зображення у лінзі</h1>
+    <span class="badge">Інтерактивна симуляція</span>
+  </div>
+
+  <div class="main">
+    <!-- CANVAS -->
+    <div class="canvas-wrap">
+      <canvas id="canvas"></canvas>
+      <div class="status-bar">
+        <span><span class="dot" style="background:var(--obj-color)"></span> Об'єкт — тяните мышью</span>
+        <span><span class="dot" style="background:var(--accent)"></span> Промені</span>
+        <span><span class="dot" style="background:var(--img-color)"></span> Зображення</span>
+        <span id="statusMsg" style="margin-left:auto; color:var(--accent)"></span>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- Controls -->
+      <div class="panel">
+        <div class="panel-head">Параметри</div>
+        <div class="panel-body">
+          <div class="slider-row">
+            <label>Фокус F</label>
+            <input type="range" id="slF" min="30" max="160" value="80">
+            <span class="val" id="valF">80</span>
+          </div>
+          <div class="slider-row">
+            <label>Висота об'єкта</label>
+            <input type="range" id="slH" min="20" max="90" value="50">
+            <span class="val" id="valH">50</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toggles -->
+      <div class="panel">
+        <div class="panel-head">Відображення</div>
+        <div class="panel-body">
+          <div class="toggle-row">
+            <label>Промені</label>
+            <label class="toggle"><input type="checkbox" id="chkRays" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <label>Фокальні точки</label>
+            <label class="toggle"><input type="checkbox" id="chkFoci" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <label>Оптична вісь</label>
+            <label class="toggle"><input type="checkbox" id="chkAxis" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <label>Позначення</label>
+            <label class="toggle"><input type="checkbox" id="chkLabels" checked><span class="slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <label>Вирівнювальні лінії</label>
+            <label class="toggle"><input type="checkbox" id="chkGuides" checked><span class="slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data -->
+      <div class="panel">
+        <div class="panel-head">Результати</div>
+        <div class="panel-body" id="dataPanel">
+          <div class="data-row"><span class="lbl">d (предмет → лінза)</span><span class="v" id="dVal">—</span></div>
+          <div class="data-row"><span class="lbl">f (лінза → зображення)</span><span class="v" id="fVal">—</span></div>
+          <div class="data-row"><span class="lbl">F (фокус)</span><span class="v" id="FVal">—</span></div>
+          <div class="data-row"><span class="lbl">Збільшення Г</span><span class="v" id="gVal">—</span></div>
+          <div class="data-row"><span class="lbl">Тип зображення</span><span class="v" id="typeVal">—</span></div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="info-box">
+        <strong>Як працює симуляція:</strong><br><br>
+        Тяните об'єкт (розовий стовпець) ліворуч/праворуч та вгору/вниз.
+        Система автоматично будує <strong>3 характеристні промені</strong> та знаходить зображення за формулою тонкої лінзи:<br><br>
+        <strong>1/F = 1/d + 1/f</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  LENS SIMULATION — Ray Tracing
+// ═══════════════════════════════════════════════════════
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// ─── State ───
+let W, H, lensX;
+const state = {
+  F: 80,          // focal length (px)
+  objH: 50,       // object height
+  objX: -150,     // object X relative to lens (negative = left)
+  objY: 0,        // top of object Y offset from axis (drag vertically)
+};
+
+// Drag
+let dragging = false;
+let dragOffX = 0, dragOffY = 0;
+
+// ─── RESIZE ───
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+  lensX = W * 0.5;
+  // default objX so object appears at a sensible spot
+  state.objX = -Math.round(W * 0.25);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ─── HELPERS ───
+function axisY() { return H * 0.5; }
+
+// Object screen coords (tip)
+function objTipX() { return lensX + state.objX; }
+function objTipY() { return axisY() - state.objH - state.objY; }
+function objBaseY() { return axisY() - state.objY; }
+
+// Compute image via thin lens formula
+// d > 0 means object is left of lens
+function computeImage() {
+  const d = -state.objX; // positive distance
+  const F = state.F;
+
+  // 1/f = 1/F - 1/d  →  f = F*d/(d-F)
+  let f;
+  if (Math.abs(d - F) < 0.5) {
+    f = Infinity; // at focus → image at infinity
+  } else {
+    f = (F * d) / (d - F);
+  }
+
+  // magnification  m = -f/d  (negative = inverted)
+  const m = -f / d;
+  const imgH = state.objH * m;    // signed height
+  const imgX = f;                 // positive = right of lens, negative = left (virtual)
+
+  return { d, f, F, m, imgH, imgX, virtual: f < 0 };
+}
+
+// ─── DRAWING ───
+function draw() {
+  const ay = axisY();
+  const img = computeImage();
+  const showRays   = document.getElementById('chkRays').checked;
+  const showFoci   = document.getElementById('chkFoci').checked;
+  const showAxis   = document.getElementById('chkAxis').checked;
+  const showLabels = document.getElementById('chkLabels').checked;
+  const showGuides = document.getElementById('chkGuides').checked;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // ── subtle grid ──
+  ctx.strokeStyle = 'rgba(42,53,80,.25)';
+  ctx.lineWidth = 1;
+  const gridStep = 80;
+  for (let x = lensX % gridStep; x < W; x += gridStep) {
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+  }
+  for (let y = ay % gridStep; y < H; y += gridStep) {
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+  }
+
+  // ── optical axis ──
+  if (showAxis) {
+    ctx.save();
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = 'rgba(100,116,139,.35)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, ay); ctx.lineTo(W, ay); ctx.stroke();
+    ctx.restore();
+  }
+
+  // ── focal points ──
+  if (showFoci) {
+    const focs = [lensX - state.F, lensX + state.F];
+    focs.forEach((fx, i) => {
+      ctx.beginPath();
+      ctx.arc(fx, ay, 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(251,146,60,.7)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(251,146,60,.9)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      if (showLabels) {
+        ctx.fillStyle = 'rgba(251,146,60,.85)';
+        ctx.font = '600 12px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(i === 0 ? 'F₁' : 'F₂', fx, ay + 18);
+      }
+    });
+    // 2F marks
+    const twofs = [lensX - state.F * 2, lensX + state.F * 2];
+    twofs.forEach((fx, i) => {
+      ctx.beginPath();
+      ctx.arc(fx, ay, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(251,146,60,.35)';
+      ctx.fill();
+      if (showLabels) {
+        ctx.fillStyle = 'rgba(251,146,60,.55)';
+        ctx.font = '500 11px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(i === 0 ? '2F₁' : '2F₂', fx, ay + 18);
+      }
+    });
+  }
+
+  // ── LENS (double-arrow) ──
+  const lensTop = ay - H * 0.38;
+  const lensBot = ay + H * 0.38;
+  // shaft
+  ctx.strokeStyle = 'rgba(129,140,248,.9)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(lensX, lensTop); ctx.lineTo(lensX, lensBot); ctx.stroke();
+  // arrows
+  const aw = 10, ah = 16;
+  ctx.fillStyle = 'rgba(129,140,248,.9)';
+  // top arrow ▲
+  ctx.beginPath();
+  ctx.moveTo(lensX, lensTop);
+  ctx.lineTo(lensX - aw, lensTop + ah);
+  ctx.lineTo(lensX + aw, lensTop + ah);
+  ctx.closePath(); ctx.fill();
+  // bottom arrow ▼
+  ctx.beginPath();
+  ctx.moveTo(lensX, lensBot);
+  ctx.lineTo(lensX - aw, lensBot - ah);
+  ctx.lineTo(lensX + aw, lensBot - ah);
+  ctx.closePath(); ctx.fill();
+
+  if (showLabels) {
+    ctx.fillStyle = 'rgba(129,140,248,.8)';
+    ctx.font = '600 13px JetBrains Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Лінза', lensX, lensTop - 10);
+  }
+
+  // ─ object coords ─
+  const oX  = objTipX();
+  const oTY = objTipY();     // tip (top)
+  const oBY = objBaseY();    // base (on axis)
+
+  // ── RAYS ──
+  if (showRays && img.imgX !== Infinity && isFinite(img.f)) {
+    const imgScreenX = lensX + img.imgX;
+    const imgTipY = ay - (state.objH + state.objY) * img.m; // note: m is signed
+
+    // Helper: draw a segment
+    function line(x1,y1,x2,y2, col, dashed) {
+      ctx.save();
+      ctx.strokeStyle = col;
+      ctx.lineWidth = 1.8;
+      if (dashed) ctx.setLineDash([5,4]); else ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      ctx.restore();
+    }
+
+    const realC  = 'rgba(56,189,248,.75)';
+    const virtC  = 'rgba(148,163,184,.4)';
+    const isVirt = img.virtual;
+
+    // ───────────────────────────────────────────
+    // RAY 1: parallel to axis → through F₂ (or away from F₂ if virtual)
+    // ───────────────────────────────────────────
+    // Object tip → lens at same Y
+    line(oX, oTY, lensX, oTY, realC, false);
+    if (isVirt) {
+      // real segment: lens → extend backward for virtual
+      line(lensX, oTY, imgScreenX, imgTipY, virtC, true);
+      // also draw real extension past lens to show direction
+      // extend line from lens in the "real" direction (away from image)
+      const extX = lensX + (lensX - imgScreenX) * 0.6;
+      const extY = oTY + (oTY - imgTipY) * 0.6;
+      line(lensX, oTY, extX, extY, realC, false);
+    } else {
+      line(lensX, oTY, imgScreenX, imgTipY, realC, false);
+    }
+
+    // ───────────────────────────────────────────
+    // RAY 2: through center of lens (undeviated)
+    // ───────────────────────────────────────────
+    line(oX, oTY, lensX, ay, realC, false);
+    if (isVirt) {
+      line(lensX, ay, imgScreenX, imgTipY, virtC, true);
+      const extX2 = lensX + (lensX - imgScreenX) * 0.6;
+      const extY2 = ay + (ay - imgTipY) * 0.6;
+      line(lensX, ay, extX2, extY2, realC, false);
+    } else {
+      line(lensX, ay, imgScreenX, imgTipY, realC, false);
+    }
+
+    // ───────────────────────────────────────────
+    // RAY 3: through F₁ → parallel after lens (or virtual extension)
+    // ───────────────────────────────────────────
+    const f1X = lensX - state.F;
+    if (isVirt) {
+      // virtual: ray aimed AS IF coming from F1 (behind lens from obj side)
+      // direction from F1 to obj tip, continue to lens
+      line(oX, oTY, lensX, oTY + (oTY - (ay)) * (state.F) / (-state.objX - state.F), realC, false);
+      // after lens goes parallel — but for virtual we trace backward
+      // Actually for virtual (d < F), ray 3: extend from tip toward F1, hits lens, then goes parallel
+      // We draw: obj → lens intersection, then parallel to axis
+      const slopeX = lensX - oX;           // always positive (obj left of lens)
+      const slopeY = (ay - oTY);           // from tip to axis (F1 is on axis at f1X)
+      // parametric: at x = lensX → t = slopeX / (f1X - oX) ... simpler:
+      // line from oTY through F1 (f1X, ay): slope = (ay - oTY)/(f1X - oX)
+      const sl = (ay - oTY) / (f1X - oX);
+      const yAtLens = oTY + sl * (lensX - oX);
+      line(oX, oTY, lensX, yAtLens, realC, false);
+      // after lens: parallel to axis
+      const extPx = lensX + 180;
+      line(lensX, yAtLens, extPx, yAtLens, realC, false);
+      // virtual back-trace from image
+      line(lensX, yAtLens, imgScreenX, imgTipY, virtC, true);
+    } else {
+      // real: obj tip → F1 on axis → lens
+      // line from tip toward F1; at lens x find Y
+      const sl = (ay - oTY) / (f1X - oX);
+      const yAtLens = oTY + sl * (lensX - oX);
+      line(oX, oTY, lensX, yAtLens, realC, false);
+      // after lens: parallel (same Y as intersection)
+      line(lensX, yAtLens, imgScreenX, imgTipY, realC, false);
+    }
+
+    // ── Guide lines (distance markers) ──
+    if (showGuides) {
+      const markerY = ay + H * 0.34;
+      const tickH = 8;
+      ctx.strokeStyle = 'rgba(100,116,139,.4)';
+      ctx.lineWidth = 1;
+
+      // d
+      ctx.beginPath(); ctx.moveTo(oX, ay+4); ctx.lineTo(oX, markerY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(lensX, ay+4); ctx.lineTo(lensX, markerY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(oX, markerY); ctx.lineTo(lensX, markerY); ctx.stroke();
+      // ticks
+      ctx.beginPath(); ctx.moveTo(oX, markerY-tickH); ctx.lineTo(oX, markerY+tickH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(lensX, markerY-tickH); ctx.lineTo(lensX, markerY+tickH); ctx.stroke();
+
+      if (showLabels) {
+        ctx.fillStyle = 'rgba(244,114,182,.75)';
+        ctx.font = '600 13px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('d', (oX + lensX)/2, markerY - 6);
+      }
+
+      // f (image distance)
+      if (isFinite(imgScreenX) && !isNaN(imgScreenX)) {
+        const markerY2 = ay + H * 0.40;
+        ctx.strokeStyle = 'rgba(74,222,128,.4)';
+        ctx.beginPath(); ctx.moveTo(lensX, ay+4); ctx.lineTo(lensX, markerY2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(imgScreenX, ay+4); ctx.lineTo(imgScreenX, markerY2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(lensX, markerY2); ctx.lineTo(imgScreenX, markerY2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(lensX, markerY2-tickH); ctx.lineTo(lensX, markerY2+tickH); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(imgScreenX, markerY2-tickH); ctx.lineTo(imgScreenX, markerY2+tickH); ctx.stroke();
+        if (showLabels) {
+          ctx.fillStyle = 'rgba(74,222,128,.75)';
+          ctx.font = '600 13px JetBrains Mono, monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(isVirt ? '|f|' : 'f', (lensX + imgScreenX)/2, markerY2 - 6);
+        }
+      }
+    }
+
+    // ── IMAGE ──
+    if (isFinite(imgScreenX) && !isNaN(imgScreenX) && Math.abs(img.f) < W * 2) {
+      const imgBaseY = ay - state.objY * img.m;
+      // shadow
+      ctx.save();
+      ctx.globalAlpha = 0.15;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(imgScreenX - 3, Math.min(imgTipY, imgBaseY)+2, 6, Math.abs(imgTipY - imgBaseY));
+      ctx.restore();
+
+      // body
+      ctx.fillStyle = isVirt ? 'rgba(74,222,128,.4)' : 'rgba(74,222,128,.85)';
+      ctx.fillRect(imgScreenX - 2.5, Math.min(imgTipY, imgBaseY), 5, Math.abs(imgTipY - imgBaseY));
+
+      // arrowhead
+      const dir = imgTipY < imgBaseY ? -1 : 1; // which way tip points
+      ctx.fillStyle = isVirt ? 'rgba(74,222,128,.45)' : 'rgba(74,222,128,.9)';
+      ctx.beginPath();
+      ctx.moveTo(imgScreenX, imgTipY);
+      ctx.lineTo(imgScreenX - 7, imgTipY + dir * 12);
+      ctx.lineTo(imgScreenX + 7, imgTipY + dir * 12);
+      ctx.closePath();
+      ctx.fill();
+
+      if (isVirt) {
+        // dashed outline
+        ctx.save();
+        ctx.setLineDash([3,3]);
+        ctx.strokeStyle = 'rgba(74,222,128,.5)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(imgScreenX - 3, Math.min(imgTipY, imgBaseY), 6, Math.abs(imgTipY - imgBaseY));
+        ctx.restore();
+      }
+
+      if (showLabels) {
+        ctx.fillStyle = isVirt ? 'rgba(74,222,128,.6)' : 'rgba(74,222,128,.85)';
+        ctx.font = '500 11px Inter, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(isVirt ? "A'(уявн.)" : "A'", imgScreenX + 8, imgTipY + 4);
+      }
+    }
+  }
+
+  // ── OBJECT ──
+  // shadow
+  ctx.save();
+  ctx.globalAlpha = 0.2;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(oX - 2, oTY + 3, 5, oBY - oTY);
+  ctx.restore();
+
+  // body
+  ctx.fillStyle = 'rgba(244,114,182,.9)';
+  ctx.fillRect(oX - 2.5, oTY, 5, oBY - oTY);
+
+  // arrowhead (top)
+  ctx.fillStyle = 'rgba(244,114,182,1)';
+  ctx.beginPath();
+  ctx.moveTo(oX, oTY);
+  ctx.lineTo(oX - 8, oTY + 13);
+  ctx.lineTo(oX + 8, oTY + 13);
+  ctx.closePath();
+  ctx.fill();
+
+  // label
+  if (showLabels) {
+    ctx.fillStyle = 'rgba(244,114,182,.85)';
+    ctx.font = '500 11px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('A', oX - 8, oTY + 4);
+  }
+
+  // ── Update sidebar data ──
+  updateData(img);
+}
+
+// ─── UPDATE DATA PANEL ───
+function updateData(img) {
+  const px = (v) => v.toFixed(1);
+  document.getElementById('dVal').textContent = px(img.d) + ' px';
+  if (isFinite(img.f)) {
+    document.getElementById('fVal').textContent = px(Math.abs(img.f)) + (img.virtual ? ' (уявн.)' : '') + ' px';
+  } else {
+    document.getElementById('fVal').textContent = '∞';
+  }
+  document.getElementById('FVal').textContent = px(img.F) + ' px';
+
+  if (isFinite(img.m)) {
+    document.getElementById('gVal').textContent = px(Math.abs(img.m)) + '×' + (img.m < 0 ? ' (обернене)' : ' (пряме)');
+  } else {
+    document.getElementById('gVal').textContent = '∞';
+  }
+
+  // Type
+  let type = '';
+  if (!isFinite(img.f)) { type = 'Зображення на ∞'; }
+  else if (img.virtual) { type = 'Уявне, пряме, збільшене'; }
+  else if (Math.abs(img.m - 1) < 0.05) { type = 'Дійсне, обернене, натуральне'; }
+  else if (Math.abs(img.m) > 1) { type = 'Дійсне, обернене, збільшене'; }
+  else { type = 'Дійсне, обернене, зменшене'; }
+  document.getElementById('typeVal').textContent = type;
+}
+
+// ─── SLIDERS ───
+document.getElementById('slF').addEventListener('input', function() {
+  state.F = +this.value;
+  document.getElementById('valF').textContent = this.value;
+  draw();
+});
+document.getElementById('slH').addEventListener('input', function() {
+  state.objH = +this.value;
+  document.getElementById('valH').textContent = this.value;
+  draw();
+});
+
+// ─── DRAG ───
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const scaleX = W / r.width;
+  const scaleY = H / r.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return { x: (clientX - r.left) * scaleX, y: (clientY - r.top) * scaleY };
+}
+
+function hitTest(pos) {
+  // check if near object
+  const oX = objTipX();
+  const oTY = objTipY();
+  const oBY = objBaseY();
+  const dx = Math.abs(pos.x - oX);
+  const dy = pos.y - oTY;
+  if (dx < 18 && dy >= -5 && pos.y <= oBY + 5) return true;
+  return false;
+}
+
+function onDown(e) {
+  e.preventDefault();
+  const pos = getPos(e);
+  if (hitTest(pos)) {
+    dragging = true;
+    dragOffX = pos.x - objTipX();
+    dragOffY = pos.y - objTipY();
+    canvas.style.cursor = 'grabbing';
+  }
+}
+
+function onMove(e) {
+  if (!dragging) return;
+  e.preventDefault();
+  const pos = getPos(e);
+  // new objX: pos.x - dragOffX = lensX + objX  → objX = pos.x - dragOffX - lensX
+  let newObjX = pos.x - dragOffX - lensX;
+  // clamp: object must stay left of lens with some margin
+  if (newObjX > -15) newObjX = -15;
+  if (newObjX < -W * 0.7) newObjX = -W * 0.7;
+  state.objX = newObjX;
+
+  // vertical: objY = axisY() - (pos.y - dragOffY) - objH  ...
+  // objTipY = axisY - objH - objY  → objY = axisY - objH - objTipY
+  // desired objTipY = pos.y - dragOffY
+  const desiredTipY = pos.y - dragOffY;
+  state.objY = axisY() - state.objH - desiredTipY;
+  // clamp vertical
+  if (state.objY > H * 0.3) state.objY = H * 0.3;
+  if (state.objY < -H * 0.3) state.objY = -H * 0.3;
+
+  draw();
+}
+
+function onUp(e) {
+  dragging = false;
+  canvas.style.cursor = 'crosshair';
+}
+
+canvas.addEventListener('mousedown', onDown);
+canvas.addEventListener('mousemove', onMove);
+canvas.addEventListener('mouseup', onUp);
+canvas.addEventListener('mouseleave', onUp);
+canvas.addEventListener('touchstart', onDown, {passive:false});
+canvas.addEventListener('touchmove', onMove, {passive:false});
+canvas.addEventListener('touchend', onUp);
+
+// ─── INIT ───
+draw();
+// redraw on checkbox change
+['chkRays','chkFoci','chkAxis','chkLabels','chkGuides'].forEach(id => {
+  document.getElementById(id).addEventListener('change', draw);
+});
+
+// cursor hint
+canvas.addEventListener('mousemove', function(e) {
+  if (!dragging) {
+    const pos = getPos(e);
+    canvas.style.cursor = hitTest(pos) ? 'grab' : 'crosshair';
+  }
+});
+</script>
+</body>
+</html>

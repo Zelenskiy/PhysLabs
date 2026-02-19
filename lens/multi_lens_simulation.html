@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Многолінзова оптична симуляція</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg:#08091a;--surf:#0e1122;--surf2:#141828;--border:#1e2440;
+  --accent:#38bdf8;--accent-dim:rgba(56,189,248,.15);
+  --conv:#38bdf8;--div:#f472b6;--obj:#facc15;
+  --text:#cbd5e1;--dim:#4a5568;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100%;}
+
+/* ─ TOP BAR ─ */
+.topbar{
+  display:flex;align-items:center;gap:14px;
+  padding:9px 18px;background:var(--surf);border-bottom:1px solid var(--border);
+  flex-shrink:0;height:46px;
+}
+.topbar h1{font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--accent);white-space:nowrap;}
+.topbar .sep{width:1px;height:20px;background:var(--border);}
+.preset-btn{
+  padding:4px 11px;border-radius:5px;border:1px solid var(--border);
+  background:var(--surf2);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:10.5px;
+  cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent);}
+.preset-btn.active{border-color:var(--accent);background:var(--accent-dim);color:var(--accent);}
+.topbar .spacer{flex:1;}
+.add-btn{
+  padding:4px 13px;border-radius:5px;border:1px solid var(--conv);
+  background:rgba(56,189,248,.1);color:var(--conv);font-family:'Share Tech Mono',monospace;font-size:10.5px;
+  cursor:pointer;transition:.2s;
+}
+.add-btn:hover{background:rgba(56,189,248,.2);}
+
+/* ─ MAIN ─ */
+.main{display:flex;flex:1;overflow:hidden;}
+.canvas-area{flex:1;position:relative;display:flex;flex-direction:column;}
+canvas{display:block;flex:1;cursor:crosshair;}
+
+/* ─ SIDEBAR ─ */
+.sidebar{
+  width:232px;background:var(--surf);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;
+}
+.panel{border-bottom:1px solid var(--border);}
+.panel-head{
+  padding:8px 13px;font-size:9.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:1px;color:var(--dim);background:var(--surf);
+}
+.panel-body{padding:10px 13px;}
+
+/* lens card */
+.lens-card{
+  background:var(--surf2);border-radius:6px;border:1px solid var(--border);
+  margin-bottom:7px;padding:9px 10px;
+}
+.lens-card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.lens-card .name{font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;}
+.lens-card .del{
+  width:17px;height:17px;border-radius:3px;border:1px solid var(--border);
+  background:transparent;color:var(--dim);cursor:pointer;font-size:10px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.lens-card .del:hover{border-color:#f472b6;color:#f472b6;}
+
+/* type toggle */
+.type-toggle{display:flex;gap:3px;margin-bottom:7px;}
+.type-toggle button{
+  flex:1;padding:3px 0;border-radius:3px;border:1px solid var(--border);
+  background:transparent;color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:9.5px;
+  cursor:pointer;transition:.15s;
+}
+.type-toggle button.active-conv{border-color:var(--conv);color:var(--conv);background:rgba(56,189,248,.1);}
+.type-toggle button.active-div{border-color:var(--div);color:var(--div);background:rgba(244,114,184,.1);}
+
+/* slider */
+.s-row{display:flex;align-items:center;gap:7px;}
+.s-row label{font-size:9.5px;color:var(--dim);width:22px;flex-shrink:0;}
+.s-row input[type=range]{
+  flex:1;-webkit-appearance:none;height:3px;border-radius:2px;
+  background:var(--border);outline:none;
+}
+.s-row input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:11px;height:11px;border-radius:50%;
+  background:var(--accent);cursor:pointer;box-shadow:0 0 4px rgba(56,189,248,.4);
+}
+.s-row .sv{font-family:'Share Tech Mono',monospace;font-size:9.5px;color:var(--accent);width:30px;text-align:right;flex-shrink:0;}
+
+/* info */
+.info-panel .row{
+  display:flex;justify-content:space-between;padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);font-size:10.5px;
+}
+.info-panel .row:last-child{border-bottom:none;}
+.info-panel .lbl{color:var(--dim);}
+.info-panel .v{font-family:'Share Tech Mono',monospace;font-size:10px;}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px;padding:9px 13px;}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--dim);}
+.leg-dot{width:7px;height:7px;border-radius:2px;}
+
+/* ─ BOTTOM HINT ─ */
+.hint-bar{
+  position:absolute;bottom:0;left:0;right:0;height:22px;
+  background:rgba(14,17,34,.9);backdrop-filter:blur(4px);border-top:1px solid var(--border);
+  display:flex;align-items:center;padding:0 14px;gap:16px;font-size:9.5px;color:var(--dim);
+  font-family:'Share Tech Mono',monospace;
+}
+.hint-bar span{display:flex;align-items:center;gap:4px;}
+.hint-bar .hd{width:5px;height:5px;border-radius:50%;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>МНОГОЛІНЗОВА ОПТИЧНА СИМУЛЯЦІЯ</h1>
+  <div class="sep"></div>
+  <button class="preset-btn" id="btnSingle">Одна лінза</button>
+  <button class="preset-btn" id="btnMicro">Мікроскоп</button>
+  <button class="preset-btn" id="btnTele">Телескоп</button>
+  <button class="preset-btn" id="btnGalileo">Галілей. тел.</button>
+  <div class="spacer"></div>
+  <button class="add-btn" id="btnAdd">+ Додати лінзу</button>
+</div>
+
+<div class="main">
+  <div class="canvas-area">
+    <canvas id="c"></canvas>
+    <div class="hint-bar">
+      <span><span class="hd" style="background:var(--obj)"></span>Об'єкт — тяните</span>
+      <span><span class="hd" style="background:var(--conv)"></span>Збиральна — тяните вздовж осі</span>
+      <span><span class="hd" style="background:var(--div)"></span>Розсіяна лінза</span>
+      <span><span class="hd" style="background:#fb923c"></span>Проміжкові зображення</span>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="panel">
+      <div class="panel-head">Лінзи</div>
+      <div class="panel-body" id="lensListEl"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">Результати</div>
+      <div class="panel-body info-panel" id="infoPanel"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">Легенда промінів</div>
+      <div class="legend" id="legendEl"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  MULTI-LENS OPTICAL SIMULATION — Paraxial Ray Tracing
+// ═══════════════════════════════════════════════════════════════
+
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+let W, H;
+const RAY_COLORS = ['#38bdf8','#a78bfa','#34d399'];
+
+let lenses = [];
+let nextId  = 1;
+let obj = { x:0, y:0 };
+const OBJ_H = 42;
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); draw(); });
+function axisY() { return H * 0.5; }
+
+// ═══ PRESETS ═══
+function clearPresets() { document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active')); }
+
+function setPreset(name) {
+  clearPresets();
+  const m = { single:'btnSingle', micro:'btnMicro', tele:'btnTele', galileo:'btnGalileo' };
+  if(m[name]) document.getElementById(m[name]).classList.add('active');
+
+  switch(name) {
+    case 'single':
+      lenses=[{id:nextId++,x:W*.48,F:90}];
+      obj={x:W*.16,y:0};
+      break;
+    case 'micro':
+      lenses=[
+        {id:nextId++,x:W*.34,F:55},
+        {id:nextId++,x:W*.58,F:45}
+      ];
+      obj={x:W*.26,y:0};
+      break;
+    case 'tele':
+      lenses=[
+        {id:nextId++,x:W*.28,F:150},
+        {id:nextId++,x:W*.70,F:42}
+      ];
+      obj={x:W*.05,y:0};
+      break;
+    case 'galileo':
+      lenses=[
+        {id:nextId++,x:W*.28,F:150},
+        {id:nextId++,x:W*.60,F:-38}
+      ];
+      obj={x:W*.05,y:0};
+      break;
+  }
+  rebuildSidebar(); draw();
+}
+
+document.getElementById('btnSingle').addEventListener('click',()=>setPreset('single'));
+document.getElementById('btnMicro').addEventListener('click',()=>setPreset('micro'));
+document.getElementById('btnTele').addEventListener('click',()=>setPreset('tele'));
+document.getElementById('btnGalileo').addEventListener('click',()=>setPreset('galileo'));
+document.getElementById('btnAdd').addEventListener('click',()=>{
+  clearPresets();
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+  let nx = sorted.length ? sorted[sorted.length-1].x + 120 : W*.5;
+  nx = Math.min(nx, W-80);
+  lenses.push({id:nextId++,x:nx,F:80});
+  rebuildSidebar(); draw();
+});
+
+// ═══ SIDEBAR ═══
+function rebuildSidebar() {
+  const el=document.getElementById('lensListEl');
+  el.innerHTML='';
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+  sorted.forEach((lens,i)=>{
+    const isConv=lens.F>0;
+    const color=isConv?'var(--conv)':'var(--div)';
+    const card=document.createElement('div');
+    card.className='lens-card';
+    card.innerHTML=`
+      <div class="top">
+        <span class="name" style="color:${color}">Лінза ${i+1} <span style="color:var(--dim);font-weight:400">(F=${lens.F})</span></span>
+        <button class="del" data-id="${lens.id}">✕</button>
+      </div>
+      <div class="type-toggle">
+        <button class="${isConv?'active-conv':''}" data-id="${lens.id}" data-type="conv">Збиральна</button>
+        <button class="${!isConv?'active-div':''}" data-id="${lens.id}" data-type="div">Розсіяна</button>
+      </div>
+      <div class="s-row">
+        <label>|F|</label>
+        <input type="range" min="18" max="220" value="${Math.abs(lens.F)}" data-id="${lens.id}" class="f-slider">
+        <span class="sv">${Math.abs(lens.F)}</span>
+      </div>`;
+    el.appendChild(card);
+  });
+
+  el.querySelectorAll('.del').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      lenses=lenses.filter(l=>l.id!==+btn.dataset.id);
+      rebuildSidebar(); draw();
+    });
+  });
+  el.querySelectorAll('.type-toggle button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const lens=lenses.find(l=>l.id===+btn.dataset.id);
+      if(!lens) return;
+      lens.F = btn.dataset.type==='conv' ? Math.abs(lens.F) : -Math.abs(lens.F);
+      rebuildSidebar(); draw();
+    });
+  });
+  el.querySelectorAll('.f-slider').forEach(sl=>{
+    sl.addEventListener('input',()=>{
+      const lens=lenses.find(l=>l.id===+sl.dataset.id);
+      if(!lens) return;
+      lens.F=(lens.F>0?1:-1)*(+sl.value);
+      rebuildSidebar(); draw();
+    });
+  });
+
+  // Legend — colored by ray index
+  const legEl=document.getElementById('legendEl');
+  legEl.innerHTML='';
+  RAY_COLORS.forEach((c,i)=>{
+    const labels=['Паралельний','Через центр','Через F₁'];
+    const d=document.createElement('div');
+    d.className='leg-item';
+    d.innerHTML=`<span class="leg-dot" style="background:${c}"></span>${labels[i]||''}`;
+    legEl.appendChild(d);
+  });
+  // add intermediate marker legend if >1 lens
+  if(lenses.length>1){
+    const d=document.createElement('div');
+    d.className='leg-item';
+    d.innerHTML=`<span class="leg-dot" style="background:#fb923c;border-radius:50%"></span>Проміжкове зобр.`;
+    legEl.appendChild(d);
+  }
+}
+
+// ═══ RAY TRACING ENGINE ═══
+/*
+  Paraxial thin-lens rule for ANY ray hitting lens at height h:
+      m_out = m_in − h / F
+  where h = y_hit − axisY, m = dy/dx (slope), F signed (>0 converging, <0 diverging).
+
+  We walk the ray left-to-right through sorted lenses, recording state at each boundary.
+*/
+
+function traceRayFull(startX, startY, slopeIn) {
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+  const segments=[]; // {x1,y1,x2,y2}
+  const states=[];   // state AFTER each lens: {x,y,slope} or null if skipped
+  let cx=startX, cy=startY, cs=slopeIn;
+  const ay=axisY();
+
+  for(let i=0;i<sorted.length;i++){
+    const lens=sorted[i];
+    if(lens.x<=cx+1){ states.push(null); continue; }
+    const hitY=cy+cs*(lens.x-cx);
+    segments.push({x1:cx,y1:cy,x2:lens.x,y2:hitY});
+    const h=hitY-ay;
+    cs=cs-h/lens.F;
+    cx=lens.x; cy=hitY;
+    states.push({x:cx,y:cy,slope:cs});
+  }
+  // final open segment (to be clipped by renderer)
+  segments.push({x1:cx,y1:cy,x2:cx+W*2,y2:cy+cs*W*2});
+  return {segments, states, finalX:cx, finalY:cy, finalSlope:cs};
+}
+
+function intersect(x1,y1,s1,x2,y2,s2){
+  const d=s1-s2;
+  if(Math.abs(d)<1e-12) return null;
+  const X=(y2-y1-s2*x2+s1*x1)/d;
+  const Y=y1+s1*(X-x1);
+  return {x:X,y:Y};
+}
+
+// ═══ DRAWING ═══
+function draw(){
+  const ay=axisY();
+  ctx.clearRect(0,0,W,H);
+
+  // ── grid ──
+  ctx.strokeStyle='rgba(30,36,64,.35)';
+  ctx.lineWidth=1;
+  const gs=64;
+  for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // ── axis ──
+  ctx.save();
+  ctx.setLineDash([7,5]);
+  ctx.strokeStyle='rgba(74,85,104,.28)';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,ay);ctx.lineTo(W,ay);ctx.stroke();
+  ctx.restore();
+
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+
+  // ── focal dots ──
+  sorted.forEach(lens=>{
+    const isConv=lens.F>0;
+    // F1 = lens.x - F,  F2 = lens.x + F  (works for both signs)
+    [{fx:lens.x-lens.F,label:'F₁'},{fx:lens.x+lens.F,label:'F₂'}].forEach(({fx,label})=>{
+      if(fx<-60||fx>W+60) return;
+      ctx.beginPath(); ctx.arc(fx,ay,3,0,Math.PI*2);
+      ctx.fillStyle=isConv?'rgba(56,189,248,.4)':'rgba(244,114,184,.4)';
+      ctx.fill();
+    });
+  });
+
+  // ── LENSES ──
+  sorted.forEach((lens,idx)=>{
+    const isConv=lens.F>0;
+    const color=isConv?'#38bdf8':'#f472b6';
+    const lTop=ay-H*.35, lBot=ay+H*.35;
+
+    // glow
+    ctx.save();
+    ctx.shadowColor=color; ctx.shadowBlur=14;
+    ctx.strokeStyle=color; ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.moveTo(lens.x,lTop);ctx.lineTo(lens.x,lBot);ctx.stroke();
+    ctx.restore();
+
+    // shaft
+    ctx.strokeStyle=color; ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(lens.x,lTop);ctx.lineTo(lens.x,lBot);ctx.stroke();
+
+    // arrowheads
+    ctx.fillStyle=color;
+    if(isConv){
+      // ▲ top
+      ctx.beginPath();ctx.moveTo(lens.x,lTop);ctx.lineTo(lens.x-8,lTop+14);ctx.lineTo(lens.x+8,lTop+14);ctx.closePath();ctx.fill();
+      // ▼ bot
+      ctx.beginPath();ctx.moveTo(lens.x,lBot);ctx.lineTo(lens.x-8,lBot-14);ctx.lineTo(lens.x+8,lBot-14);ctx.closePath();ctx.fill();
+    } else {
+      // ▽ top (inverted)
+      ctx.beginPath();ctx.moveTo(lens.x,lTop+14);ctx.lineTo(lens.x-8,lTop);ctx.lineTo(lens.x+8,lTop);ctx.closePath();ctx.fill();
+      // △ bot (inverted)
+      ctx.beginPath();ctx.moveTo(lens.x,lBot-14);ctx.lineTo(lens.x-8,lBot);ctx.lineTo(lens.x+8,lBot);ctx.closePath();ctx.fill();
+    }
+
+    // label
+    ctx.fillStyle=color;
+    ctx.font='600 10.5px "Share Tech Mono",monospace';
+    ctx.textAlign='center';
+    ctx.fillText(`L${idx+1}  F=${lens.F}`,lens.x,lTop-7);
+  });
+
+  // ── OBJECT ──
+  const oX=obj.x;
+  const oTipY=ay-OBJ_H-obj.y;
+  const oBaseY=ay-obj.y;
+
+  ctx.save();ctx.globalAlpha=.13;ctx.fillStyle='#000';
+  ctx.fillRect(oX-1.5,oTipY+3,4,oBaseY-oTipY);ctx.restore();
+  ctx.fillStyle='#facc15';
+  ctx.fillRect(oX-2,oTipY,4,oBaseY-oTipY);
+  ctx.fillStyle='#fde047';
+  ctx.beginPath();ctx.moveTo(oX,oTipY);ctx.lineTo(oX-7,oTipY+11);ctx.lineTo(oX+7,oTipY+11);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#facc15';
+  ctx.font='600 10.5px "Share Tech Mono",monospace';
+  ctx.textAlign='right';
+  ctx.fillText('A',oX-8,oTipY+3);
+
+  // ═══ RAY TRACING ═══
+  if(sorted.length===0){updateInfo();return;}
+
+  const firstLens=sorted[0];
+  const lastLens=sorted[sorted.length-1];
+  const tipX=oX, tipY=oTipY;
+
+  // 3 characteristic rays from TIP
+  const s0=0; // parallel
+  const s1=(ay-tipY)/(firstLens.x-tipX); // through center of L1
+  const f1x=firstLens.x-firstLens.F;     // front focal point of L1
+  const s2=(ay-tipY)/(f1x-tipX);         // through F1 of L1
+
+  const tipRays=[
+    traceRayFull(tipX,tipY,s0),
+    traceRayFull(tipX,tipY,s1),
+    traceRayFull(tipX,tipY,s2)
+  ];
+
+  // 2 rays from BASE (for computing image base Y)
+  const baseRays=[
+    traceRayFull(oX,oBaseY,0),
+    traceRayFull(oX,oBaseY,(ay-oBaseY)/(firstLens.x-oX))
+  ];
+
+  // ── Find FINAL image (intersection of tip rays after last lens) ──
+  const pairs=[[0,1],[0,2],[1,2]];
+  const imgCandidates=[];
+  pairs.forEach(([a,b])=>{
+    const ra=tipRays[a],rb=tipRays[b];
+    const p=intersect(ra.finalX,ra.finalY,ra.finalSlope,rb.finalX,rb.finalY,rb.finalSlope);
+    if(p&&isFinite(p.x)&&isFinite(p.y)&&Math.abs(p.x)<W*4&&Math.abs(p.y)<H*4) imgCandidates.push(p);
+  });
+  let imgPoint=null;
+  if(imgCandidates.length){
+    let sx=0,sy=0;
+    imgCandidates.forEach(p=>{sx+=p.x;sy+=p.y;});
+    imgPoint={x:sx/imgCandidates.length, y:sy/imgCandidates.length};
+  }
+  const isVirtualFinal=imgPoint&&imgPoint.x<lastLens.x+3;
+
+  // ── DRAW TIP RAYS ──
+  tipRays.forEach((ray,ri)=>{
+    const color=RAY_COLORS[ri];
+    ctx.strokeStyle=color;
+    ctx.lineWidth=1.6;
+    ctx.globalAlpha=.62;
+    ctx.setLineDash([]);
+
+    ray.segments.forEach((seg,si)=>{
+      const isLast=(si===ray.segments.length-1);
+      let x2=seg.x2, y2=seg.y2;
+
+      if(isLast){
+        if(isVirtualFinal){
+          // Real extension forward from last lens
+          const fwdX=Math.min(lastLens.x+150, W+30);
+          const fwdY=seg.y1+ray.finalSlope*(fwdX-seg.x1);
+          ctx.beginPath();ctx.moveTo(seg.x1,seg.y1);ctx.lineTo(fwdX,fwdY);ctx.stroke();
+          // Dashed back-trace to virtual image
+          if(imgPoint){
+            ctx.setLineDash([4,4]);
+            ctx.globalAlpha=.3;
+            ctx.beginPath();ctx.moveTo(seg.x1,seg.y1);ctx.lineTo(imgPoint.x,imgPoint.y);ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.globalAlpha=.62;
+          }
+          return;
+        }
+        // Real image or diverging: clip to canvas
+        if(x2>W+30){
+          y2=seg.y1+ray.finalSlope*(W+30-seg.x1);
+          x2=W+30;
+        }
+      }
+      ctx.beginPath();ctx.moveTo(seg.x1,seg.y1);ctx.lineTo(x2,y2);ctx.stroke();
+    });
+  });
+  ctx.globalAlpha=1;
+  ctx.setLineDash([]);
+
+  // ── DRAW BASE RAYS (very faint, for visual completeness) ──
+  baseRays.forEach(ray=>{
+    ctx.strokeStyle='rgba(180,180,180,.1)';
+    ctx.lineWidth=0.8;
+    ray.segments.forEach((seg,si)=>{
+      const isLast=(si===ray.segments.length-1);
+      let x2=seg.x2,y2=seg.y2;
+      if(isLast){
+        if(x2>W+30){y2=seg.y1+ray.finalSlope*(W+30-seg.x1);x2=W+30;}
+      }
+      ctx.beginPath();ctx.moveTo(seg.x1,seg.y1);ctx.lineTo(x2,y2);ctx.stroke();
+    });
+  });
+
+  // ── INTERMEDIATE IMAGES (between consecutive lenses) ──
+  if(sorted.length>1){
+    for(let li=0;li<sorted.length-1;li++){
+      // Get states of tip rays AFTER lens[li]
+      const st0=tipRays[0].states[li];
+      const st1=tipRays[1].states[li];
+      if(!st0||!st1) continue;
+      const inter=intersect(st0.x,st0.y,st0.slope,st1.x,st1.y,st1.slope);
+      if(!inter||!isFinite(inter.x)||!isFinite(inter.y)) continue;
+
+      const curLensX=sorted[li].x;
+      const nextLensX=sorted[li+1].x;
+      // Show if between lenses (real intermediate) or behind current lens (virtual intermediate)
+      const isBetween=inter.x>curLensX+8 && inter.x<nextLensX-8;
+      const isVirtInter=inter.x<curLensX-3 && inter.x>curLensX-250;
+      if(!isBetween && !isVirtInter) continue;
+
+      const ix=inter.x, iy=inter.y;
+      const alpha=isVirtInter?.28:.5;
+
+      // diamond marker
+      ctx.save();
+      ctx.globalAlpha=alpha;
+      ctx.fillStyle='#fb923c';
+      ctx.beginPath();
+      ctx.moveTo(ix,iy-5);ctx.lineTo(ix+5,iy);ctx.lineTo(ix,iy+5);ctx.lineTo(ix-5,iy);
+      ctx.closePath();ctx.fill();
+      ctx.restore();
+
+      // label
+      ctx.fillStyle=`rgba(251,146,60,${alpha+.15})`;
+      ctx.font='500 9px "Share Tech Mono",monospace';
+      ctx.textAlign='left';
+      ctx.fillText(`A'${li+1}`,ix+8,iy+3);
+
+      // If virtual intermediate, draw dashed line from lens to marker
+      if(isVirtInter){
+        ctx.save();
+        ctx.setLineDash([3,3]);
+        ctx.strokeStyle=`rgba(251,146,60,${alpha})`;
+        ctx.lineWidth=0.8;
+        ctx.beginPath();ctx.moveTo(curLensX,iy);ctx.lineTo(ix,iy);ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+
+  // ── FINAL IMAGE ──
+  if(imgPoint && imgPoint.x>-W*.5 && imgPoint.x<W*1.5 && Math.abs(imgPoint.y)<H*2){
+    // Base image Y
+    const br0=baseRays[0],br1=baseRays[1];
+    const baseImg=intersect(br0.finalX,br0.finalY,br0.finalSlope,br1.finalX,br1.finalY,br1.finalSlope);
+    const imgBY=(baseImg&&isFinite(baseImg.y))?baseImg.y:ay;
+    const imgTipY=imgPoint.y;
+    const ix=imgPoint.x;
+    const h=Math.abs(imgTipY-imgBY);
+
+    if(h>1){ // only draw if there's actual height
+      const imgColor=isVirtualFinal?'rgba(74,222,128,.36)':'rgba(74,222,128,.88)';
+      const arrowColor=isVirtualFinal?'rgba(74,222,128,.4)':'rgba(74,222,128,.95)';
+
+      // shadow
+      ctx.save();ctx.globalAlpha=.1;ctx.fillStyle='#000';
+      ctx.fillRect(ix-1.5,Math.min(imgTipY,imgBY)+2,4,h);ctx.restore();
+
+      // body
+      ctx.fillStyle=imgColor;
+      ctx.fillRect(ix-2.5,Math.min(imgTipY,imgBY),5,h);
+
+      // arrowhead
+      const dir=imgTipY<imgBY?-1:1;
+      ctx.fillStyle=arrowColor;
+      ctx.beginPath();
+      ctx.moveTo(ix,imgTipY);ctx.lineTo(ix-7,imgTipY+dir*11);ctx.lineTo(ix+7,imgTipY+dir*11);
+      ctx.closePath();ctx.fill();
+
+      // virtual outline
+      if(isVirtualFinal){
+        ctx.save();ctx.setLineDash([3,3]);
+        ctx.strokeStyle='rgba(74,222,128,.36)';ctx.lineWidth=1.2;
+        ctx.strokeRect(ix-3,Math.min(imgTipY,imgBY),6,h);
+        ctx.restore();
+      }
+
+      // label
+      ctx.fillStyle=isVirtualFinal?'rgba(74,222,128,.55)':'rgba(74,222,128,.88)';
+      ctx.font='600 10.5px "Share Tech Mono",monospace';
+      ctx.textAlign='left';
+      ctx.fillText(isVirtualFinal?"A' (уявн.)":"A'",ix+9,imgTipY+3);
+
+      updateInfoWithImage(imgPoint,isVirtualFinal,baseImg);
+      return;
+    }
+  }
+  updateInfo();
+}
+
+// ═══ INFO PANEL ═══
+function updateInfo(){
+  document.getElementById('infoPanel').innerHTML=
+    '<div class="row"><span class="lbl">Зображення</span><span class="v" style="color:var(--dim)">не утворюється / на ∞</span></div>';
+}
+
+function updateInfoWithImage(imgPt,isVirtual,baseImg){
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+  const firstLens=sorted[0], lastLens=sorted[sorted.length-1];
+  const ay=axisY();
+
+  const d=firstLens.x-obj.x;
+  const fDist=imgPt.x-lastLens.x;
+  // magnification from tip & base
+  const tipDelta=imgPt.y-ay;
+  const objDelta=obj.y; // obj.y is offset from axis
+  const baseDelta=baseImg?(baseImg.y-ay):0;
+  const magnification=baseImg? (baseImg.y-imgPt.y)/OBJ_H : 0;
+  const absMag=Math.abs(magnification);
+
+  let type='';
+  if(isVirtual) type='Уявне, пряме';
+  else type='Дійсне, обернене';
+  if(absMag>1.05) type+=', збільшене';
+  else if(absMag<0.95) type+=', зменшене';
+  else type+=', натуральне';
+
+  document.getElementById('infoPanel').innerHTML=`
+    <div class="row"><span class="lbl">d (предмет → L1)</span><span class="v">${d.toFixed(0)} px</span></div>
+    <div class="row"><span class="lbl">f (Lн → зобр.)</span><span class="v">${Math.abs(fDist).toFixed(0)} px${isVirtual?' (уявн.)':''}</span></div>
+    <div class="row"><span class="lbl">Збільшення |Г|</span><span class="v">${absMag.toFixed(2)}×</span></div>
+    <div class="row"><span class="lbl">Тип зображення</span><span class="v" style="color:#4ade80">${type}</span></div>
+    <div class="row"><span class="lbl">Кількість лінз</span><span class="v">${lenses.length}</span></div>`;
+}
+
+// ═══ DRAG ═══
+let drag=null;
+
+function getPos(e){
+  const r=canvas.getBoundingClientRect();
+  const sx=W/r.width,sy=H/r.height;
+  const cx=e.touches?e.touches[0].clientX:e.clientX;
+  const cy=e.touches?e.touches[0].clientY:e.clientY;
+  return {x:(cx-r.left)*sx, y:(cy-r.top)*sy};
+}
+
+function hitObj(p){
+  const oTY=axisY()-OBJ_H-obj.y, oBY=axisY()-obj.y;
+  return Math.abs(p.x-obj.x)<15 && p.y>=oTY-6 && p.y<=oBY+6;
+}
+function hitLens(p){
+  const ay=axisY();
+  for(const lens of lenses){
+    if(Math.abs(p.x-lens.x)<16 && p.y>ay-H*.38 && p.y<ay+H*.38) return lens;
+  }
+  return null;
+}
+
+function onDown(e){
+  e.preventDefault();
+  const p=getPos(e);
+  if(hitObj(p)){
+    drag={type:'obj',offX:p.x-obj.x,offY:p.y-(axisY()-OBJ_H-obj.y)};
+    canvas.style.cursor='grabbing'; return;
+  }
+  const lens=hitLens(p);
+  if(lens){
+    drag={type:'lens',id:lens.id,offX:p.x-lens.x};
+    canvas.style.cursor='grabbing';
+  }
+}
+
+function onMove(e){
+  if(!drag) return;
+  e.preventDefault();
+  const p=getPos(e);
+  const sorted=[...lenses].sort((a,b)=>a.x-b.x);
+
+  if(drag.type==='obj'){
+    obj.x=p.x-drag.offX;
+    obj.y=axisY()-OBJ_H-(p.y-drag.offY);
+    obj.x=Math.max(8,Math.min(W-8,obj.x));
+    obj.y=Math.max(-H*.28,Math.min(H*.28,obj.y));
+    // keep left of first lens
+    if(sorted.length && obj.x>sorted[0].x-22) obj.x=sorted[0].x-22;
+  } else if(drag.type==='lens'){
+    const lens=lenses.find(l=>l.id===drag.id);
+    if(!lens) return;
+    lens.x=p.x-drag.offX;
+    lens.x=Math.max(70,Math.min(W-70,lens.x));
+
+    // Re-sort and enforce minimum spacing (50px)
+    const s=[...lenses].sort((a,b)=>a.x-b.x);
+    for(let i=1;i<s.length;i++){
+      if(s[i].x-s[i-1].x<50){
+        if(s[i].id===lens.id) s[i].x=s[i-1].x+50;
+        else s[i-1].x=s[i].x-50;
+      }
+    }
+    // keep object left of first sorted lens
+    const firstX=s[0].x;
+    if(obj.x>firstX-22) obj.x=firstX-22;
+
+    rebuildSidebar();
+  }
+  draw();
+}
+
+function onUp(){drag=null;canvas.style.cursor='crosshair';}
+
+canvas.addEventListener('mousedown',onDown);
+canvas.addEventListener('mousemove',onMove);
+canvas.addEventListener('mouseup',onUp);
+canvas.addEventListener('mouseleave',onUp);
+canvas.addEventListener('touchstart',onDown,{passive:false});
+canvas.addEventListener('touchmove',onMove,{passive:false});
+canvas.addEventListener('touchend',onUp);
+
+canvas.addEventListener('mousemove',function(e){
+  if(drag) return;
+  const p=getPos(e);
+  canvas.style.cursor=(hitObj(p)||hitLens(p))?'grab':'crosshair';
+});
+
+// ─── INIT ───
+resize();
+setPreset('single');
+</script>
+</body>
+</html>
