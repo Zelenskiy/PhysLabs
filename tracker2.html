@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Експериментальна робота №9 — Радіус треку частинки</title>
+<script src="./js/script.js" defer></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -478,11 +479,11 @@
       <div class="student-grid">
         <div class="field full">
           <label>Прізвище та ім'я</label>
-          <input type="text" id="student_name" placeholder="Іваненко Іван Іванович">
+          <input type="text" id="name" placeholder="Уведіть прізвище та ім'я">
         </div>
         <div class="field">
           <label>Клас</label>
-          <input type="text" id="student_group" placeholder="11-А">
+          <input type="text" id="klas" placeholder="Уведіть клас">
         </div>
         <div class="field">
           <label>Дата</label>
@@ -666,8 +667,8 @@
 
   <input type="hidden" id="sheetName" value="Експериментальна робота №9">
 
-  <div class="full-width submit-wrap">
-    <button class="btn-submit" id="submit_button" onclick="handleSubmit()">📤 Надіслати результати</button>
+  <div class="submit_block full-width submit-wrap">
+    <button class="btn-submit" id="submit_button">📤 Надіслати результати</button>
   </div>
 
 </div><!-- /app -->
