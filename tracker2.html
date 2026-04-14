@@ -1,1235 +1,1472 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Експериментальна робота №9 — Радіус треку частинки</title>
-<script src="./js/script.js" defer></script>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --ink:    #1a1a2e;
-    --deep:   #16213e;
-    --mid:    #0f3460;
-    --accent: #e94560;
-    --gold:   #f5a623;
-    --teal:   #00b4d8;
-    --green:  #06d6a0;
-    --light:  #eef2ff;
-    --card:   #ffffff;
-    --border: #d0d7f5;
-  }
-
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-
-  body {
-    font-family: 'Libre Baskerville', Georgia, serif;
-    background: var(--deep);
-    min-height: 100vh;
-    color: var(--ink);
-  }
-
-  /* ── HEADER ── */
-  .header {
-    background: var(--ink);
-    color: #fff;
-    padding: 22px 28px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-bottom: 3px solid var(--accent);
-  }
-  .header .eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72em;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--teal);
-  }
-  .header h1 {
-    font-size: 1.45em;
-    font-weight: 700;
-    line-height: 1.25;
-  }
-  .header p {
-    font-size: 0.85em;
-    opacity: .7;
-    font-style: italic;
-    margin-top: 2px;
-  }
-
-  /* ── MAIN LAYOUT ── */
-  .app {
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 18px 14px 40px;
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 16px;
-  }
-
-  @media (max-width: 860px) {
-    .app { grid-template-columns: 1fr; }
-  }
-
-  /* ── CARD ── */
-  .card {
-    background: var(--card);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.25);
-    overflow: hidden;
-  }
-
-  .card-head {
-    background: var(--mid);
-    color: #fff;
-    padding: 10px 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .82em;
-    letter-spacing: .08em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-head .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--teal);
-    flex-shrink: 0;
-  }
-
-  /* ── CANVAS WRAPPER ── */
-  #canvas-wrap {
-    position: relative;
-    background: #111;
-    cursor: crosshair;
-    overflow: hidden;
-    touch-action: none;
-  }
-  #c1 {
-    display: block;
-    width: 100%;
-    image-rendering: pixelated;
-  }
-
-  /* overlay mode badge */
-  #mode-badge {
-    position: absolute;
-    top: 8px; left: 8px;
-    background: rgba(0,0,0,.65);
-    color: #fff;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .78em;
-    padding: 4px 10px;
-    border-radius: 20px;
-    pointer-events: none;
-    border: 1px solid rgba(255,255,255,.2);
-    transition: all .2s;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  /* ── STUDENT FIELDS ── */
-  .student-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 14px;
-  }
-  .student-grid .full { grid-column: 1/-1; }
-
-  .field label {
-    display: block;
-    font-size: .75em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: var(--mid);
-    margin-bottom: 4px;
-  }
-  .field input, .field textarea {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: .9em;
-    color: var(--ink);
-    background: var(--light);
-    transition: border-color .2s;
-  }
-  .field input:focus, .field textarea:focus {
-    outline: none;
-    border-color: var(--mid);
-    background: #fff;
-  }
-  .field textarea { resize: vertical; min-height: 60px; }
-
-  /* ── CONTROLS PANEL ── */
-  .controls-inner { padding: 12px 14px; display: flex; flex-direction: column; gap: 14px; }
-
-  .ctrl-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .72em;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  /* zoom buttons */
-  .zoom-row {
-    display: flex;
-    gap: 6px;
-  }
-  .btn {
-    cursor: pointer;
-    border: none;
-    border-radius: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .88em;
-    font-weight: 600;
-    padding: 9px 14px;
-    transition: all .18s;
-    flex: 1;
-  }
-  .btn:active { transform: scale(.95); }
-  .btn-zoom { background: var(--mid); color: #fff; }
-  .btn-zoom:hover { background: var(--deep); }
-  .btn-drag { background: var(--gold); color: var(--ink); }
-  .btn-drag:hover { filter: brightness(1.08); }
-  .btn-drag.active-mode { background: var(--accent); color: #fff; }
-  .btn-reset-view { background: #e0e4f0; color: var(--ink); }
-  .btn-reset-view:hover { background: var(--border); }
-
-  /* image selector */
-  .img-row {
-    display: flex;
-    gap: 6px;
-  }
-  .btn-img {
-    flex: 1;
-    background: #e0e4f0;
-    color: var(--ink);
-    border: 2px solid transparent;
-  }
-  .btn-img.active { background: var(--teal); color: #fff; border-color: var(--mid); }
-  .btn-img:hover:not(.active) { background: var(--border); }
-
-  /* calibration */
-  .calib-row {
-    display: flex;
-    gap: 6px;
-    align-items: flex-end;
-  }
-  .btn-calib {
-    width: 40px; height: 36px;
-    font-weight: 700;
-    font-size: .9em;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: all .18s;
-    font-family: 'IBM Plex Mono', monospace;
-    flex-shrink: 0;
-  }
-  .btn-calib.c1 { background: rgba(233,69,96,.15); color: var(--accent); border: 2px solid var(--accent); }
-  .btn-calib.c2 { background: rgba(233,69,96,.15); color: var(--accent); border: 2px solid var(--accent); }
-  .btn-calib.active-mode { background: var(--accent); color: #fff; }
-  .btn-calib:active { transform: scale(.92); }
-
-  .calib-input-wrap { flex: 1; }
-  .calib-input-wrap label { font-size: .72em; color: #888; display: block; margin-bottom: 3px; }
-  .calib-input-wrap input {
-    width: 100%;
-    padding: 7px 9px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .9em;
-    text-align: center;
-    background: var(--light);
-  }
-  .calib-input-wrap input:focus { outline: none; border-color: var(--mid); }
-
-  /* track markers */
-  .markers-row {
-    display: flex;
-    gap: 6px;
-  }
-  .btn-mark {
-    flex: 1;
-    height: 36px;
-    font-weight: 700;
-    font-size: .85em;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: all .18s;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .btn-mark:active { transform: scale(.92); }
-  .btn-mark.m1 { background: rgba(233,69,96,.15); color: var(--accent); border: 2px solid var(--accent); }
-  .btn-mark.m2 { background: rgba(6,214,160,.15); color: #059d75; border: 2px solid var(--green); }
-  .btn-mark.m3 { background: rgba(0,180,216,.15); color: #0077a8; border: 2px solid var(--teal); }
-  .btn-mark.active-mode { filter: brightness(1.1); }
-  .btn-mark.m1.active-mode { background: var(--accent); color: #fff; }
-  .btn-mark.m2.active-mode { background: var(--green); color: #fff; }
-  .btn-mark.m3.active-mode { background: var(--teal); color: #fff; }
-
-  /* result */
-  .result-box {
-    background: var(--ink);
-    color: #fff;
-    border-radius: 8px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .result-box .rl { font-family: 'IBM Plex Mono', monospace; font-size: .7em; color: var(--teal); text-transform: uppercase; letter-spacing: .12em; }
-  .result-box .rv {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.6em;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: .04em;
-  }
-
-  /* draw/clear */
-  .draw-row { display: flex; gap: 8px; }
-  .btn-draw { background: linear-gradient(135deg, var(--mid) 0%, var(--teal) 100%); color: #fff; flex: 2; }
-  .btn-clear { background: #f0f0f0; color: #555; flex: 1; }
-  .btn-draw:hover { filter: brightness(1.1); }
-  .btn-clear:hover { background: #e0e0e0; }
-
-  /* ── BOTTOM SECTIONS ── */
-  .full-width { grid-column: 1/-1; }
-
-  .section {
-    background: var(--card);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.2);
-    padding: 20px 22px;
-    border-left: 4px solid var(--mid);
-  }
-  .section h2 {
-    font-size: 1.05em;
-    color: var(--mid);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section p {
-    font-size: .88em;
-    color: #444;
-    margin-bottom: 10px;
-    line-height: 1.6;
-  }
-  .section textarea {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    font-family: 'Libre Baskerville', serif;
-    font-size: .88em;
-    resize: vertical;
-    min-height: 80px;
-    background: var(--light);
-  }
-  .section textarea:focus { outline: none; border-color: var(--mid); background: #fff; }
-
-  /* table */
-  .meas-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: .85em;
-    margin-top: 10px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 6px rgba(0,0,0,.08);
-  }
-  .meas-table th {
-    background: var(--mid);
-    color: #fff;
-    padding: 9px 10px;
-    text-align: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .8em;
-    font-weight: 600;
-  }
-  .meas-table td {
-    padding: 7px 8px;
-    border: 1px solid #dde3f5;
-    text-align: center;
-  }
-  .meas-table tr:nth-child(even) td { background: #f7f9ff; }
-  .meas-table td:first-child { font-weight: 700; color: var(--mid); font-family: 'IBM Plex Mono', monospace; }
-  .meas-table input[type=number], .meas-table input[type=text] {
-    width: 100%;
-    padding: 5px 6px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    text-align: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .88em;
-    background: #fff;
-  }
-  .meas-table input:focus { outline: none; border-color: var(--mid); }
-
-  /* copy from canvas btn */
-  .btn-copy-R {
-    background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%);
-    color: #fff;
-    font-weight: 700;
-    padding: 9px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .82em;
-    margin-top: 10px;
-    transition: all .2s;
-  }
-  .btn-copy-R:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
-  /* submit */
-  .submit-wrap { text-align: center; margin-top: 24px; }
-  .btn-submit {
-    background: linear-gradient(135deg, var(--accent) 0%, #c1121f 100%);
-    color: #fff;
-    font-size: 1.05em;
-    font-weight: 700;
-    padding: 14px 50px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    letter-spacing: .06em;
-    box-shadow: 0 4px 16px rgba(233,69,96,.4);
-    transition: all .2s;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(233,69,96,.5); }
-
-  /* track select mobile tabs */
-  .track-tabs {
-    display: flex;
-    gap: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 2px solid var(--mid);
-  }
-  .track-tab {
-    flex: 1;
-    padding: 8px 4px;
-    background: #e0e4f0;
-    color: var(--ink);
-    border: none;
-    cursor: pointer;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .78em;
-    font-weight: 600;
-    letter-spacing: .05em;
-    transition: all .18s;
-  }
-  .track-tab.active { background: var(--mid); color: #fff; }
-  .track-tab:hover:not(.active) { background: var(--border); }
-
-  /* hint text */
-  .hint {
-    font-size: .76em;
-    color: #888;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .app { padding: 10px 8px 30px; gap: 10px; }
-    .header { padding: 14px 14px 12px; }
-    .header h1 { font-size: 1.15em; }
-    .student-grid { grid-template-columns: 1fr; }
-    .student-grid .full { grid-column: 1; }
-  }
-</style>
-</head>
-<body>
-
-<header class="header">
-  <span class="eyebrow">Фізичний практикум · Ядерна фізика</span>
-  <h1>Експериментальна робота №9</h1>
-  <p>Визначення радіуса кривизни треку зарядженої частинки у бульбашковій камері</p>
-</header>
-
-<div class="app" id="app">
-
-  <!-- ═══════════ LEFT: CANVAS ═══════════ -->
-  <div>
-    <!-- Student info -->
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-head"><span class="dot"></span>Відомості про студента</div>
-      <div class="student-grid">
-        <div class="field full">
-          <label>Прізвище та ім'я</label>
-          <input type="text" id="name" placeholder="Уведіть прізвище та ім'я">
-        </div>
-        <div class="field">
-          <label>Клас</label>
-          <input type="text" id="klas" placeholder="Уведіть клас">
-        </div>
-        <div class="field">
-          <label>Дата</label>
-          <input type="date" id="thedate">
-        </div>
-      </div>
-    </div>
-
-    <!-- Canvas card -->
-    <div class="card">
-      <div class="card-head">
-        <span class="dot"></span>
-        Фотознімок бульбашкової камери
-        <span id="img-name-badge" style="margin-left:auto;font-size:.7em;opacity:.6;"></span>
-      </div>
-      <div id="canvas-wrap">
-        <canvas id="c1"></canvas>
-        <div id="mode-badge">Режим: перегляд</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════ RIGHT: SIDEBAR ═══════════ -->
-  <div class="sidebar">
-
-    <!-- image selector -->
-    <div class="card">
-      <div class="card-head"><span class="dot"></span>Зображення</div>
-      <div class="controls-inner">
-        <span class="ctrl-label">Вибір фото</span>
-        <div class="img-row">
-          <button class="btn btn-img active" id="img_track" onclick="selectImage('track')">track.png</button>
-          <button class="btn btn-img" id="img_trek" onclick="selectImage('trek')">trek.jpg</button>
-        </div>
-        <span class="hint">Або завантажте власний файл:</span>
-        <input type="file" id="file_upload" accept="image/*" style="font-size:.82em;margin-top:4px;">
-      </div>
-    </div>
-
-    <!-- zoom & drag -->
-    <div class="card">
-      <div class="card-head"><span class="dot"></span>Навігація</div>
-      <div class="controls-inner">
-        <span class="ctrl-label">Масштаб і переміщення</span>
-        <div class="zoom-row">
-          <button class="btn btn-zoom" id="btn_zoom_up" title="Збільшити">＋</button>
-          <button class="btn btn-zoom" id="btn_zoom_down" title="Зменшити">－</button>
-          <button class="btn btn-reset-view" id="btn_zoom_default" title="Скинути">↺</button>
-          <button class="btn btn-drag" id="btn_drag" title="Режим переміщення">✥</button>
-        </div>
-        <span class="hint">Підтримується жест pinch-to-zoom та прокрутка.</span>
-      </div>
-    </div>
-
-    <!-- calibration -->
-    <div class="card">
-      <div class="card-head"><span class="dot"></span>Калібрування масштабу</div>
-      <div class="controls-inner">
-        <span class="ctrl-label">Встановіть маркери К1 та К2 на відомий відрізок</span>
-        <div class="calib-row">
-          <button class="btn-calib c1" id="k1">К1</button>
-          <button class="btn-calib c2" id="k2">К2</button>
-          <div class="calib-input-wrap">
-            <label>Довжина відрізка, м</label>
-            <input id="calibr_edit" type="number" step="0.001" min="0" value="0.010" placeholder="0.010">
-          </div>
-        </div>
-        <span class="hint">Натисніть К1, клікніть перший кінець відрізка — маркер з'явиться та перейде до К2 автоматично.</span>
-      </div>
-    </div>
-
-    <!-- track markers -->
-    <div class="card">
-      <div class="card-head"><span class="dot"></span>Маркери треку</div>
-      <div class="controls-inner">
-        <span class="ctrl-label">Виберіть трек та встановіть 3 точки</span>
-        <div class="track-tabs" style="margin-bottom:8px;">
-          <button class="track-tab active" onclick="setActiveTrack(1)" id="tt1">Трек I</button>
-          <button class="track-tab" onclick="setActiveTrack(2)" id="tt2">Трек II</button>
-          <button class="track-tab" onclick="setActiveTrack(3)" id="tt3">Трек III</button>
-          <button class="track-tab" onclick="setActiveTrack(4)" id="tt4">Трек IV</button>
-        </div>
-        <div class="markers-row">
-          <button class="btn-mark m1" id="o1">M1</button>
-          <button class="btn-mark m2" id="o2">M2</button>
-          <button class="btn-mark m3" id="o3">M3</button>
-        </div>
-        <span class="hint">Клікніть на трек — маркер з'явиться автоматично і перейде до наступного. Маркери можна перетягувати.</span>
-      </div>
-    </div>
-
-    <!-- result -->
-    <div class="card">
-      <div class="card-head"><span class="dot"></span>Результат</div>
-      <div class="controls-inner">
-        <div class="result-box">
-          <span class="rl">Радіус кривизни R</span>
-          <span class="rv" id="lbl2">— м</span>
-        </div>
-        <div class="draw-row" style="margin-top:8px;">
-          <button class="btn btn-draw" id="btn_draw">▶ Обчислити</button>
-          <button class="btn btn-clear" id="btn_clear">✕ Очист.</button>
-        </div>
-        <button class="btn-copy-R" id="btn_copy_R">⬇ Записати в таблицю</button>
-      </div>
-    </div>
-
-  </div><!-- /sidebar -->
-
-  <!-- ═══════════ BOTTOM: DATA TABLE ═══════════ -->
-  <div class="full-width section">
-    <h2>📋 Таблиця вимірювань</h2>
-    <p>Внесіть результати вимірювань для кожного треку. Значення R можна скопіювати кнопкою «Записати в таблицю».</p>
-    <div style="overflow-x:auto;">
-      <table class="meas-table" id="data_table">
-        <thead>
-          <tr>
-            <th>Трек</th>
-            <th>R, м (вимір. 1)</th>
-            <th>R, м (вимір. 2)</th>
-            <th>R, м (вимір. 3)</th>
-            <th>R̄ середнє, м</th>
-            <th>ΔR, м</th>
-            <th>Частинка (припущення)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>I</td>
-            <td><input type="number" step="0.0001" id="r1_1" onchange="calcAvg(1)"></td>
-            <td><input type="number" step="0.0001" id="r1_2" onchange="calcAvg(1)"></td>
-            <td><input type="number" step="0.0001" id="r1_3" onchange="calcAvg(1)"></td>
-            <td><input type="number" step="0.0001" id="r1_avg" readonly style="background:#f0f7f4;font-weight:700;"></td>
-            <td><input type="number" step="0.0001" id="r1_err" readonly style="background:#fff8e1;"></td>
-            <td><input type="text" id="r1_part" placeholder="напр. протон"></td>
-          </tr>
-          <tr>
-            <td>II</td>
-            <td><input type="number" step="0.0001" id="r2_1" onchange="calcAvg(2)"></td>
-            <td><input type="number" step="0.0001" id="r2_2" onchange="calcAvg(2)"></td>
-            <td><input type="number" step="0.0001" id="r2_3" onchange="calcAvg(2)"></td>
-            <td><input type="number" step="0.0001" id="r2_avg" readonly style="background:#f0f7f4;font-weight:700;"></td>
-            <td><input type="number" step="0.0001" id="r2_err" readonly style="background:#fff8e1;"></td>
-            <td><input type="text" id="r2_part" placeholder="напр. електрон"></td>
-          </tr>
-          <tr>
-            <td>III</td>
-            <td><input type="number" step="0.0001" id="r3_1" onchange="calcAvg(3)"></td>
-            <td><input type="number" step="0.0001" id="r3_2" onchange="calcAvg(3)"></td>
-            <td><input type="number" step="0.0001" id="r3_3" onchange="calcAvg(3)"></td>
-            <td><input type="number" step="0.0001" id="r3_avg" readonly style="background:#f0f7f4;font-weight:700;"></td>
-            <td><input type="number" step="0.0001" id="r3_err" readonly style="background:#fff8e1;"></td>
-            <td><input type="text" id="r3_part" placeholder="напр. α-частинка"></td>
-          </tr>
-          <tr>
-            <td>IV</td>
-            <td><input type="number" step="0.0001" id="r4_1" onchange="calcAvg(4)"></td>
-            <td><input type="number" step="0.0001" id="r4_2" onchange="calcAvg(4)"></td>
-            <td><input type="number" step="0.0001" id="r4_3" onchange="calcAvg(4)"></td>
-            <td><input type="number" step="0.0001" id="r4_avg" readonly style="background:#f0f7f4;font-weight:700;"></td>
-            <td><input type="number" step="0.0001" id="r4_err" readonly style="background:#fff8e1;"></td>
-            <td><input type="text" id="r4_part" placeholder="напр. мюон"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══════════ ANALYSIS ═══════════ -->
-  <div class="full-width section" style="border-color:var(--teal)">
-    <h2>🔬 Аналіз та висновки</h2>
-    <p>Поясніть, як пов'язані радіус треку, імпульс частинки і магнітне поле камери. Що можна сказати про тип та енергію частинок за отриманими значеннями R?</p>
-    <textarea id="analysis" placeholder="Напишіть ваш аналіз тут..."></textarea>
-  </div>
-
-  <div class="full-width section" style="border-color:var(--gold)">
-    <h2>⭐ Творче завдання</h2>
-    <p>Поясніть, чому треки деяких частинок є спіраллю, що закручується. Як визначити знак заряду частинки за напрямком вигину треку в магнітному полі?</p>
-    <textarea id="creative" placeholder="Ваша відповідь..."></textarea>
-  </div>
-
-  <input type="hidden" id="sheetName" value="Експериментальна робота №9">
-
-  <div class="submit_block full-width submit-wrap">
-    <button class="btn-submit" id="submit_button">📤 Надіслати результати</button>
-  </div>
-
-</div><!-- /app -->
-
-<script>
-// ═════════════════════════════════════════════════════
-//  STATE
-// ═════════════════════════════════════════════════════
-const canvas = document.getElementById('c1');
-const ctx    = canvas.getContext('2d');
-
-let currentImage = 'track';
-let activeTrack  = 1;
-
-// scale table: index → multiplier
-const SCALES = {};
-for (let i = 0; i <= 19; i++) SCALES[i] = 0.2 + i * 0.2;
-
-let mash = 4;   // current zoom index
-let x0   = 0;   // pan offset X (in image coords)
-let y0   = 0;   // pan offset Y (in image coords)
-
-// marker coords stored in image-space (pre-scale)
-let markers = {
-  1: { k1:{x:10,y:-1e6,color:'#e94560'},  k2:{x:60,y:-1e6,color:'#e94560'},
-       m1:{x:10,y:-1e6,color:'#e94560'},  m2:{x:50,y:-1e6,color:'#06d6a0'},  m3:{x:100,y:-1e6,color:'#00b4d8'} },
-  2: { k1:{x:10,y:-1e6,color:'#e94560'},  k2:{x:60,y:-1e6,color:'#e94560'},
-       m1:{x:10,y:-1e6,color:'#e94560'},  m2:{x:50,y:-1e6,color:'#06d6a0'},  m3:{x:100,y:-1e6,color:'#00b4d8'} },
-  3: { k1:{x:10,y:-1e6,color:'#e94560'},  k2:{x:60,y:-1e6,color:'#e94560'},
-       m1:{x:10,y:-1e6,color:'#e94560'},  m2:{x:50,y:-1e6,color:'#06d6a0'},  m3:{x:100,y:-1e6,color:'#00b4d8'} },
-  4: { k1:{x:10,y:-1e6,color:'#e94560'},  k2:{x:60,y:-1e6,color:'#e94560'},
-       m1:{x:10,y:-1e6,color:'#e94560'},  m2:{x:50,y:-1e6,color:'#06d6a0'},  m3:{x:100,y:-1e6,color:'#00b4d8'} },
-};
-
-let mode      = 0;  // 0=markers, 1=calibration, 2=drag
-let mark_btn  = 0;  // 1,2,3
-let kalibr_btn= 0;  // 1,2
-let lastR     = null;
-
-let base_image = new Image();
-let cW = 500, cH = 688;
-
-// ── helpers ──────────────────────────────────────────
-const sc = () => SCALES[mash];
-function toScreen(v, off) { return sc() * (v + off); }
-function toImage(s, off)  { return s / sc() - off; }
-function cur() { return markers[activeTrack]; }
-
-function modeBadge(txt) {
-  document.getElementById('mode-badge').textContent = 'Режим: ' + txt;
-}
-
-// ── draw ─────────────────────────────────────────────
-function redraw() {
-  ctx.clearRect(0, 0, cW, cH);
-  if (base_image.complete && base_image.naturalWidth) {
-    ctx.drawImage(base_image,
-      toScreen(0, x0), toScreen(0, y0),
-      base_image.naturalWidth  * sc(),
-      base_image.naturalHeight * sc()
-    );
-  }
-  draw_markers();
-}
-
-function draw_markers() {
-  const m = cur();
-  drawMarker(m.m1, 'square', 10, m.m1.color, 'M1');
-  drawMarker(m.m2, 'square', 10, m.m2.color, 'M2');
-  drawMarker(m.m3, 'square', 10, m.m3.color, 'M3');
-  drawMarker(m.k1, 'circle', 6, '#f5a623', 'K1');
-  drawMarker(m.k2, 'circle', 6, '#f5a623', 'K2');
-  // line between k1 and k2
-  if (m.k1.y > -1e5 && m.k2.y > -1e5) {
-    ctx.beginPath();
-    ctx.moveTo(toScreen(m.k1.x, x0), toScreen(m.k1.y, y0));
-    ctx.lineTo(toScreen(m.k2.x, x0), toScreen(m.k2.y, y0));
-    ctx.strokeStyle = '#f5a62388';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([5,4]);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-}
-
-function drawMarker(m, shape, sz, color, label) {
-  if (m.y < -1e5) return;
-  const sx = toScreen(m.x, x0);
-  const sy = toScreen(m.y, y0);
-
-  // Shadow for visibility
-  ctx.save();
-  ctx.shadowColor = 'rgba(0,0,0,0.7)';
-  ctx.shadowBlur = 6;
-
-  ctx.beginPath();
-  if (shape === 'square') {
-    ctx.rect(sx - sz/2, sy - sz/2, sz, sz);
-  } else {
-    ctx.arc(sx, sy, sz, 0, Math.PI*2);
-  }
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2.5;
-  ctx.stroke();
-  ctx.fillStyle = color + '55';
-  ctx.fill();
-
-  // Crosshair inside
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(sx - sz/2 + 1, sy);
-  ctx.lineTo(sx + sz/2 - 1, sy);
-  ctx.moveTo(sx, sy - sz/2 + 1);
-  ctx.lineTo(sx, sy + sz/2 - 1);
-  ctx.stroke();
-
-  ctx.restore();
-
-  // Label with background for readability
-  const fontSize = Math.max(10, Math.min(14, sz * 1.1));
-  ctx.font = `bold ${fontSize}px IBM Plex Mono, monospace`;
-  const tw = ctx.measureText(label).width;
-  const lx = sx + sz/2 + 3;
-  const ly = sy - sz/2 - 2;
-  ctx.fillStyle = 'rgba(0,0,0,0.55)';
-  ctx.fillRect(lx - 2, ly - fontSize + 2, tw + 4, fontSize + 2);
-  ctx.fillStyle = color;
-  ctx.fillText(label, lx, ly);
-}
-
-function draw_chords() {
-  const m = cur();
-  if (m.m1.y < -1e5 || m.m2.y < -1e5 || m.m3.y < -1e5) return;
-
-  let ma = (m.m2.y - m.m1.y) / (m.m2.x - m.m1.x);
-  let mb = (m.m3.y - m.m2.y) / (m.m3.x - m.m2.x);
-  if (Math.abs(mb - ma) < 1e-10) return;
-  let xc0 = (ma*mb*(m.m1.y - m.m3.y) + mb*(m.m1.x + m.m2.x) - ma*(m.m2.x + m.m3.x)) / (2*(mb - ma));
-  let yc0 = -1/ma * (xc0 - (m.m1.x + m.m2.x)/2) + (m.m1.y + m.m2.y)/2;
-  let r   = Math.sqrt((m.m1.x-xc0)**2 + (m.m1.y-yc0)**2);
-
-  // calibration
-  let calib_m = parseFloat(document.getElementById('calibr_edit').value) || 0.01;
-  let calib_px = Math.sqrt((m.k1.x-m.k2.x)**2 + (m.k1.y-m.k2.y)**2);
-  let R = (calib_px > 0.1) ? r * calib_m / calib_px : null;
-  lastR = R;
-  document.getElementById('lbl2').textContent = R ? R.toFixed(4) + ' м' : '— м';
-
-  // chord 1
-  const x12 = (m.m1.x + m.m2.x)/2, y12 = (m.m1.y + m.m2.y)/2;
-  const x23 = (m.m2.x + m.m3.x)/2, y23 = (m.m2.y + m.m3.y)/2;
-
-  ctx.lineWidth = 2.5; ctx.setLineDash([]);
-  ctx.strokeStyle = '#e94560';
-  ctx.beginPath();
-  ctx.moveTo(toScreen(m.m1.x,x0), toScreen(m.m1.y,y0));
-  ctx.lineTo(toScreen(m.m2.x,x0), toScreen(m.m2.y,y0));
-  ctx.stroke();
-  ctx.strokeStyle = '#e9456066';
-  ctx.beginPath();
-  ctx.moveTo(toScreen(x12,x0), toScreen(y12,y0));
-  ctx.lineTo(toScreen(xc0,x0), toScreen(yc0,y0));
-  ctx.stroke();
-
-  ctx.strokeStyle = '#00b4d8';
-  ctx.beginPath();
-  ctx.moveTo(toScreen(m.m2.x,x0), toScreen(m.m2.y,y0));
-  ctx.lineTo(toScreen(m.m3.x,x0), toScreen(m.m3.y,y0));
-  ctx.stroke();
-  ctx.strokeStyle = '#00b4d866';
-  ctx.beginPath();
-  ctx.moveTo(toScreen(x23,x0), toScreen(y23,y0));
-  ctx.lineTo(toScreen(xc0,x0), toScreen(yc0,y0));
-  ctx.stroke();
-
-  // arc
-  ctx.strokeStyle = '#06d6a0';
-  ctx.lineWidth = 2;
-  ctx.setLineDash([6,3]);
-  ctx.beginPath();
-  ctx.arc(toScreen(xc0,x0), toScreen(yc0,y0), r*sc(), 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // center dot
-  ctx.beginPath();
-  ctx.arc(toScreen(xc0,x0), toScreen(yc0,y0), 4, 0, Math.PI*2);
-  ctx.fillStyle = '#06d6a0';
-  ctx.fill();
-}
-
-// ── image loading ─────────────────────────────────────
-function selectImage(name) {
-  currentImage = name;
-  document.getElementById('img_track').classList.toggle('active', name==='track');
-  document.getElementById('img_trek').classList.toggle('active', name==='trek');
-  document.getElementById('img-name-badge').textContent = name==='track'?'track.png':'trek.jpg';
-  loadImage(name==='track'?'./track.png':'./trek.jpg');
-}
-
-function loadImage(src) {
-  base_image = new Image();
-  base_image.onload = () => {
-    fitImage();
-    redraw();
-  };
-  base_image.onerror = () => {
-    // draw placeholder
-    ctx.fillStyle = '#1a1a2e';
-    ctx.fillRect(0,0,cW,cH);
-    ctx.fillStyle = '#555';
-    ctx.font = '16px IBM Plex Mono';
-    ctx.textAlign = 'center';
-    ctx.fillText('Зображення не знайдено.', cW/2, cH/2 - 10);
-    ctx.fillText('Завантажте файл нижче.', cW/2, cH/2 + 14);
-    ctx.textAlign = 'left';
-  };
-  base_image.src = src;
-}
-
-function fitImage() {
-  if (!base_image.naturalWidth) return;
-  const wrap = document.getElementById('canvas-wrap');
-  const wW = wrap.clientWidth || 500;
-  // canvas internal size stays at image natural size
-  cW = base_image.naturalWidth;
-  cH = base_image.naturalHeight;
-  canvas.width  = cW;
-  canvas.height = cH;
-  // pick zoom so image fits width
-  const targetW = wW - 8;
-  let best = 0;
-  for (let i = 19; i >= 0; i--) {
-    if (cW * SCALES[i] <= targetW) { best = i; break; }
-  }
-  mash = best;
-  x0 = 0; y0 = 0;
-}
-
-function sizeCanvas() {
-  const wrap = document.getElementById('canvas-wrap');
-  if (!base_image.naturalWidth) {
-    // default
-    cW = 500; cH = 688;
-    canvas.width = cW; canvas.height = cH;
-    wrap.style.height = cH + 'px';
-    return;
-  }
-  wrap.style.height = Math.round(cH * sc()) + 'px';
-  canvas.style.width  = Math.round(cW * sc()) + 'px';
-  canvas.style.height = Math.round(cH * sc()) + 'px';
-}
-
-// ── pointer helpers ───────────────────────────────────
-function getOffset(event) {
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = cW / rect.width;
-  const scaleY = cH / rect.height;
-  let cx, cy;
-  if (event.touches) {
-    cx = (event.touches[0].clientX - rect.left) * scaleX;
-    cy = (event.touches[0].clientY - rect.top)  * scaleY;
-  } else {
-    cx = (event.clientX - rect.left) * scaleX;
-    cy = (event.clientY - rect.top)  * scaleY;
-  }
-  return { x: cx, y: cy };
-}
-
-let dragStart = null;
-let pinchStartDist = null;
-let pinchStartMash = null;
-
-// ── mouse events ──────────────────────────────────────
-canvas.addEventListener('mousedown', onPointerDown);
-canvas.addEventListener('touchstart', onPointerDown, { passive: false });
-
-function onPointerDown(e) {
-  e.preventDefault();
-  const { x, y } = getOffset(e);
-  const m = cur();
-
-  // check if near a marker for dragging
-  const hit = hitTestMarker(x, y, m);
-  if (hit) {
-    if (hit.startsWith('k')) {
-      mode = 1; kalibr_btn = hit==='k1'?1:2;
-      resetBtnHighlights();
-      document.getElementById(hit).classList.add('active-mode');
-    } else {
-      mode = 0; mark_btn = parseInt(hit[1]);
-      resetBtnHighlights();
-      document.getElementById('o'+mark_btn).classList.add('active-mode');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Експериментальна робота №9 — Радіус треку частинки</title>
+  <script src="./js/script.js" defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-  }
 
-  dragStart = { x, y, x0, y0 };
-  let hasMoved = false;
-
-  const onMove = (ev) => {
-    ev.preventDefault();
-    const p = getOffset(ev);
-    const dx = p.x - dragStart.x, dy = p.y - dragStart.y;
-    if (Math.hypot(dx, dy) > 3) hasMoved = true;
-
-    if (mode === 0 && mark_btn > 0) {
-      const key = 'm'+mark_btn;
-      m[key].x = toImage(p.x, x0);
-      m[key].y = toImage(p.y, y0);
-      redraw();
-    } else if (mode === 1 && kalibr_btn > 0) {
-      const key = 'k'+kalibr_btn;
-      m[key].x = toImage(p.x, x0);
-      m[key].y = toImage(p.y, y0);
-      redraw();
-    } else if (mode === 2) {
-      x0 = dragStart.x0 + (p.x - dragStart.x) / sc();
-      y0 = dragStart.y0 + (p.y - dragStart.y) / sc();
-      redraw();
+    :root {
+      --ink: #1a1a2e;
+      --deep: #16213e;
+      --mid: #0f3460;
+      --accent: #e94560;
+      --gold: #f5a623;
+      --teal: #00b4d8;
+      --green: #06d6a0;
+      --light: #eef2ff;
+      --card: #ffffff;
+      --border: #d0d7f5;
     }
-  };
-  const onUp = (ev) => {
-    canvas.removeEventListener('mousemove', onMove);
-    canvas.removeEventListener('touchmove', onMove);
-    canvas.removeEventListener('mouseup', onUp);
-    canvas.removeEventListener('touchend', onUp);
 
-    // Place marker on click (no drag) if not hitting an existing marker
-    if (!hasMoved && !hit) {
-      const p = getOffset(ev.changedTouches ? { clientX: ev.changedTouches[0].clientX, clientY: ev.changedTouches[0].clientY } : ev);
-      if (mode === 0 && mark_btn > 0) {
-        const key = 'm'+mark_btn;
-        m[key].x = toImage(p.x, x0);
-        m[key].y = toImage(p.y, y0);
-        // auto-advance to next marker
-        if (mark_btn < 3) {
-          mark_btn++;
-          resetBtnHighlights();
-          document.getElementById('o'+mark_btn).classList.add('active-mode');
-          modeBadge('маркер M'+mark_btn);
-        }
-        redraw();
-      } else if (mode === 1 && kalibr_btn > 0) {
-        const key = 'k'+kalibr_btn;
-        m[key].x = toImage(p.x, x0);
-        m[key].y = toImage(p.y, y0);
-        // auto-advance to k2
-        if (kalibr_btn === 1) {
-          kalibr_btn = 2;
-          resetBtnHighlights();
-          document.getElementById('k2').classList.add('active-mode');
-          modeBadge('калібр. K2');
-        }
-        redraw();
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+    body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      background: var(--deep);
+      min-height: 100vh;
+      color: var(--ink);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--ink);
+      color: #fff;
+      padding: 22px 28px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    .header .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72em;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .header h1 {
+      font-size: 1.45em;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .header p {
+      font-size: 0.85em;
+      opacity: .7;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .app {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 16px;
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        grid-template-columns: 1fr;
       }
     }
 
-    dragStart = null;
-    hasMoved = false;
-  };
-  canvas.addEventListener('mousemove', onMove);
-  canvas.addEventListener('touchmove', onMove, { passive: false });
-  canvas.addEventListener('mouseup', onUp);
-  canvas.addEventListener('touchend', onUp);
-}
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+      overflow: hidden;
+    }
 
-// pinch zoom
-canvas.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 2) {
-    pinchStartDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    pinchStartMash = mash;
-  }
-}, { passive: true });
+    .card-head {
+      background: var(--mid);
+      color: #fff;
+      padding: 10px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .82em;
+      letter-spacing: .08em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-canvas.addEventListener('touchmove', (e) => {
-  if (e.touches.length === 2 && pinchStartDist) {
-    const d = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    const ratio = d / pinchStartDist;
-    let newMash = Math.round(pinchStartMash + (ratio - 1) * 8);
-    newMash = Math.max(0, Math.min(19, newMash));
-    if (newMash !== mash) { mash = newMash; redraw(); }
-  }
-}, { passive: true });
+    .card-head .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+
+    /* ── CANVAS WRAPPER ── */
+    #canvas-wrap {
+      position: relative;
+      background: #111;
+      cursor: crosshair;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    #c1 {
+      display: block;
+      width: 100%;
+      image-rendering: pixelated;
+    }
+
+    /* overlay mode badge */
+    #mode-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, .65);
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .78em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, .2);
+      transition: all .2s;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── STUDENT FIELDS ── */
+    .student-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .student-grid .full {
+      grid-column: 1/-1;
+    }
+
+    .field label {
+      display: block;
+      font-size: .75em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--mid);
+      margin-bottom: 4px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: .9em;
+      color: var(--ink);
+      background: var(--light);
+      transition: border-color .2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--mid);
+      background: #fff;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    /* ── CONTROLS PANEL ── */
+    .controls-inner {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ctrl-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .72em;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* zoom buttons */
+    .zoom-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .88em;
+      font-weight: 600;
+      padding: 9px 14px;
+      transition: all .18s;
+      flex: 1;
+    }
+
+    .btn:active {
+      transform: scale(.95);
+    }
+
+    .btn-zoom {
+      background: var(--mid);
+      color: #fff;
+    }
+
+    .btn-zoom:hover {
+      background: var(--deep);
+    }
+
+    .btn-drag {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .btn-drag:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-drag.active-mode {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-reset-view {
+      background: #e0e4f0;
+      color: var(--ink);
+    }
+
+    .btn-reset-view:hover {
+      background: var(--border);
+    }
+
+    /* image selector */
+    .img-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-img {
+      flex: 1;
+      background: #e0e4f0;
+      color: var(--ink);
+      border: 2px solid transparent;
+    }
+
+    .btn-img.active {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--mid);
+    }
+
+    .btn-img:hover:not(.active) {
+      background: var(--border);
+    }
+
+    /* calibration */
+    .calib-row {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+    }
+
+    .btn-calib {
+      width: 40px;
+      height: 36px;
+      font-weight: 700;
+      font-size: .9em;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all .18s;
+      font-family: 'IBM Plex Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    .btn-calib.c1 {
+      background: rgba(233, 69, 96, .15);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-calib.c2 {
+      background: rgba(233, 69, 96, .15);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-calib.active-mode {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-calib:active {
+      transform: scale(.92);
+    }
+
+    .calib-input-wrap {
+      flex: 1;
+    }
+
+    .calib-input-wrap label {
+      font-size: .72em;
+      color: #888;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .calib-input-wrap input {
+      width: 100%;
+      padding: 7px 9px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .9em;
+      text-align: center;
+      background: var(--light);
+    }
+
+    .calib-input-wrap input:focus {
+      outline: none;
+      border-color: var(--mid);
+    }
+
+    /* track markers */
+    .markers-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-mark {
+      flex: 1;
+      height: 36px;
+      font-weight: 700;
+      font-size: .85em;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all .18s;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .btn-mark:active {
+      transform: scale(.92);
+    }
+
+    .btn-mark.m1 {
+      background: rgba(233, 69, 96, .15);
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-mark.m2 {
+      background: rgba(6, 214, 160, .15);
+      color: #059d75;
+      border: 2px solid var(--green);
+    }
+
+    .btn-mark.m3 {
+      background: rgba(0, 180, 216, .15);
+      color: #0077a8;
+      border: 2px solid var(--teal);
+    }
+
+    .btn-mark.active-mode {
+      filter: brightness(1.1);
+    }
+
+    .btn-mark.m1.active-mode {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-mark.m2.active-mode {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .btn-mark.m3.active-mode {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    /* result */
+    .result-box {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .result-box .rl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .7em;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .result-box .rv {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.6em;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: .04em;
+    }
+
+    /* draw/clear */
+    .draw-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-draw {
+      background: linear-gradient(135deg, var(--mid) 0%, var(--teal) 100%);
+      color: #fff;
+      flex: 2;
+    }
+
+    .btn-clear {
+      background: #f0f0f0;
+      color: #555;
+      flex: 1;
+    }
+
+    .btn-draw:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-clear:hover {
+      background: #e0e0e0;
+    }
+
+    /* ── BOTTOM SECTIONS ── */
+    .full-width {
+      grid-column: 1/-1;
+    }
+
+    .section {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .2);
+      padding: 20px 22px;
+      border-left: 4px solid var(--mid);
+    }
+
+    .section h2 {
+      font-size: 1.05em;
+      color: var(--mid);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section p {
+      font-size: .88em;
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .section textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: .88em;
+      resize: vertical;
+      min-height: 80px;
+      background: var(--light);
+    }
+
+    .section textarea:focus {
+      outline: none;
+      border-color: var(--mid);
+      background: #fff;
+    }
+
+    /* table */
+    .meas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85em;
+      margin-top: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, .08);
+    }
+
+    .meas-table th {
+      background: var(--mid);
+      color: #fff;
+      padding: 9px 10px;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .8em;
+      font-weight: 600;
+    }
+
+    .meas-table td {
+      padding: 7px 8px;
+      border: 1px solid #dde3f5;
+      text-align: center;
+    }
+
+    .meas-table tr:nth-child(even) td {
+      background: #f7f9ff;
+    }
+
+    .meas-table td:first-child {
+      font-weight: 700;
+      color: var(--mid);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .meas-table input[type=number],
+    .meas-table input[type=text] {
+      width: 100%;
+      padding: 5px 6px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .88em;
+      background: #fff;
+    }
+
+    .meas-table input:focus {
+      outline: none;
+      border-color: var(--mid);
+    }
+
+    /* copy from canvas btn */
+    .btn-copy-R {
+      background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%);
+      color: #fff;
+      font-weight: 700;
+      padding: 9px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .82em;
+      margin-top: 10px;
+      transition: all .2s;
+    }
+
+    .btn-copy-R:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    /* submit */
+    .submit-wrap {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--accent) 0%, #c1121f 100%);
+      color: #fff;
+      font-size: 1.05em;
+      font-weight: 700;
+      padding: 14px 50px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      letter-spacing: .06em;
+      box-shadow: 0 4px 16px rgba(233, 69, 96, .4);
+      transition: all .2s;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(233, 69, 96, .5);
+    }
+
+    /* track select mobile tabs */
+    .track-tabs {
+      display: flex;
+      gap: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid var(--mid);
+    }
+
+    .track-tab {
+      flex: 1;
+      padding: 8px 4px;
+      background: #e0e4f0;
+      color: var(--ink);
+      border: none;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: .78em;
+      font-weight: 600;
+      letter-spacing: .05em;
+      transition: all .18s;
+    }
+
+    .track-tab.active {
+      background: var(--mid);
+      color: #fff;
+    }
+
+    .track-tab:hover:not(.active) {
+      background: var(--border);
+    }
+
+    /* hint text */
+    .hint {
+      font-size: .76em;
+      color: #888;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .app {
+        padding: 10px 8px 30px;
+        gap: 10px;
+      }
+
+      .header {
+        padding: 14px 14px 12px;
+      }
+
+      .header h1 {
+        font-size: 1.15em;
+      }
+
+      .student-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .student-grid .full {
+        grid-column: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <span class="eyebrow">Фізичний практикум · Ядерна фізика</span>
+    <h1>Експериментальна робота №9</h1>
+    <p>Визначення радіуса кривизни треку зарядженої частинки у бульбашковій камері</p>
+  </header>
+
+  <div class="app" id="app">
+
+    <!-- ═══════════ LEFT: CANVAS ═══════════ -->
+    <div>
+      <!-- Student info -->
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head"><span class="dot"></span>Відомості про студента</div>
+        <div class="student-grid">
+          <div class="field full">
+            <label>Прізвище та ім'я</label>
+            <input type="text" id="name" placeholder="Уведіть прізвище та ім'я">
+          </div>
+          <div class="field">
+            <label>Клас</label>
+            <input type="text" id="klas" placeholder="Уведіть клас">
+          </div>
+          <div class="field">
+            <label>Дата</label>
+            <input type="date" id="thedate">
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas card -->
+      <div class="card">
+        <div class="card-head">
+          <span class="dot"></span>
+          Фотознімок бульбашкової камери
+          <span id="img-name-badge" style="margin-left:auto;font-size:.7em;opacity:.6;"></span>
+        </div>
+        <div id="canvas-wrap">
+          <canvas id="c1"></canvas>
+          <div id="mode-badge">Режим: перегляд</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ RIGHT: SIDEBAR ═══════════ -->
+    <div class="sidebar">
+
+      <!-- image selector -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Зображення</div>
+        <div class="controls-inner">
+          <span class="ctrl-label">Вибір фото</span>
+          <div class="img-row">
+            <button class="btn btn-img active" id="img_track" onclick="selectImage('track')">track.png</button>
+            <button class="btn btn-img" id="img_trek" onclick="selectImage('trek')">trek.jpg</button>
+          </div>
+          <span class="hint">Або завантажте власний файл:</span>
+          <input type="file" id="file_upload" accept="image/*" style="font-size:.82em;margin-top:4px;">
+        </div>
+      </div>
+
+      <!-- zoom & drag -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Навігація</div>
+        <div class="controls-inner">
+          <span class="ctrl-label">Масштаб і переміщення</span>
+          <div class="zoom-row">
+            <button class="btn btn-zoom" id="btn_zoom_up" title="Збільшити">＋</button>
+            <button class="btn btn-zoom" id="btn_zoom_down" title="Зменшити">－</button>
+            <button class="btn btn-reset-view" id="btn_zoom_default" title="Скинути">↺</button>
+            <button class="btn btn-drag" id="btn_drag" title="Режим переміщення">✥</button>
+          </div>
+          <span class="hint">Підтримується жест pinch-to-zoom та прокрутка.</span>
+        </div>
+      </div>
+
+      <!-- calibration -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Калібрування масштабу</div>
+        <div class="controls-inner">
+          <span class="ctrl-label">Встановіть маркери К1 та К2 на відомий відрізок</span>
+          <div class="calib-row">
+            <button class="btn-calib c1" id="k1">К1</button>
+            <button class="btn-calib c2" id="k2">К2</button>
+            <div class="calib-input-wrap">
+              <label>Довжина відрізка, м</label>
+              <input id="calibr_edit" type="number" step="0.001" min="0" value="0.010" placeholder="0.010">
+            </div>
+          </div>
+          <span class="hint">Натисніть К1, клікніть перший кінець відрізка — маркер з'явиться та перейде до К2
+            автоматично.</span>
+        </div>
+      </div>
+
+      <!-- track markers -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Маркери треку</div>
+        <div class="controls-inner">
+          <span class="ctrl-label">Виберіть трек та встановіть 3 точки</span>
+          <div class="track-tabs" style="margin-bottom:8px;">
+            <button class="track-tab active" onclick="setActiveTrack(1)" id="tt1">Трек I</button>
+            <button class="track-tab" onclick="setActiveTrack(2)" id="tt2">Трек II</button>
+            <button class="track-tab" onclick="setActiveTrack(3)" id="tt3" hidden>Трек III</button>
+            <button class="track-tab" onclick="setActiveTrack(4)" id="tt4" hidden>Трек IV</button>
+          </div>
+          <div class="markers-row">
+            <button class="btn-mark m1" id="o1">M1</button>
+            <button class="btn-mark m2" id="o2">M2</button>
+            <button class="btn-mark m3" id="o3">M3</button>
+          </div>
+          <span class="hint">Клікніть на трек — маркер з'явиться автоматично і перейде до наступного. Маркери можна
+            перетягувати.</span>
+        </div>
+      </div>
+
+      <!-- result -->
+      <div class="card">
+        <div class="card-head"><span class="dot"></span>Результат</div>
+        <div class="controls-inner">
+          <div class="result-box">
+            <span class="rl">Радіус кривизни R</span>
+            <span class="rv" id="lbl2">— м</span>
+          </div>
+          <div class="draw-row" style="margin-top:8px;">
+            <button class="btn btn-draw" id="btn_draw">▶ Обчислити</button>
+            <button class="btn btn-clear" id="btn_clear">✕ Очист.</button>
+          </div>
+          <button class="btn-copy-R" id="btn_copy_R">⬇ Записати в таблицю</button>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+    <!-- ═══════════ BOTTOM: DATA TABLE ═══════════ -->
+    <div class="full-width section">
+      <h2>📋 Таблиця вимірювань</h2>
+      <p>Внесіть результати вимірювань для кожного треку. Значення R можна скопіювати кнопкою «Записати в таблицю».</p>
+      <div style="overflow-x:auto;">
+        <table class="meas-table" id="data_table">
+          <thead>
+            <tr>
+              <th>Трек</th>
+              <th>R, м (вимір. 1)</th>
+              <th>R, м (вимір. 2)</th>
+              <th>R, м (вимір. 3)</th>
+              <th>R̄ середнє, м</th>
+              <th>ΔR, м</th>
+              <th>Питомий заряд, Кл/кг</th>
+              <th>Частинка (припущення)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>I</td>
+              <td><input type="number" step="0.0001" id="r1_1" onchange="calcAvg(1)"></td>
+              <td><input type="number" step="0.0001" id="r1_2" onchange="calcAvg(1)"></td>
+              <td><input type="number" step="0.0001" id="r1_3" onchange="calcAvg(1)"></td>
+              <td><input type="number" step="0.0001" id="r1_avg" readonly style="background:#f0f7f4;font-weight:700;">
+              </td>
+              <td><input type="number" step="0.0001" id="r1_err" readonly style="background:#fff8e1;"></td>
+              <td><input type="text" step="0.0001" id="r1_charge" value="9,578*10^7" readonly
+                  style="background:#fff8e1;"></td>
+              <td><input type="text" id="r1_part" value="протон" readonly></td>
+            </tr>
+            <tr>
+              <td>II</td>
+              <td><input type="number" step="0.0001" id="r2_1" onchange="calcAvg(2)"></td>
+              <td><input type="number" step="0.0001" id="r2_2" onchange="calcAvg(2)"></td>
+              <td><input type="number" step="0.0001" id="r2_3" onchange="calcAvg(2)"></td>
+              <td><input type="number" step="0.0001" id="r2_avg" readonly style="background:#f0f7f4;font-weight:700;">
+              </td>
+              <td><input type="number" step="0.0001" id="r2_err" readonly style="background:#fff8e1;"></td>
+              <td><input type="text" id="r2_charge"></td>
+              <td><input type="text" id="r2_part" placeholder="уведіть назву частинки"></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="full-width section" style="border-color:var(--teal)">
+      <h2>Обчисліть питомий заряд частинки II.</h2>
+      <p>Поясніть, як пов'язані радіус треку, імпульс частинки і магнітне поле камери. Що можна сказати про тип та
+        енергію частинок за отриманими значеннями R?</p>
+      <textarea id="calculation" placeholder="Напишіть обчислення тут..."></textarea>
+    </div>
+
+    <!-- ═══════════ ANALYSIS ═══════════ -->
+    <div class="full-width section" style="border-color:var(--teal)">
+      <h2>🔬 Аналіз та висновки</h2>
+      <p>Поясніть, як пов'язані радіус треку, імпульс частинки і магнітне поле камери. Що можна сказати про тип та
+        енергію частинок за отриманими значеннями R?</p>
+      <textarea id="analysis" placeholder="Напишіть ваш аналіз тут..."></textarea>
+    </div>
+
+    <div class="full-width section" style="border-color:var(--gold)">
+      <h2>⭐ Творче завдання</h2>
+      <p>Поясніть, чому треки деяких частинок є спіраллю, що закручується. Як визначити знак заряду частинки за
+        напрямком вигину треку в магнітному полі?</p>
+      <textarea id="creative" placeholder="Ваша відповідь..."></textarea>
+    </div>
+
+    <input type="hidden" id="sheetName" value="Експериментальна робота №9">
+
+    <div class="submit_block full-width submit-wrap">
+      <button class="btn-submit" id="submit_button">📤 Надіслати результати</button>
+    </div>
+
+  </div><!-- /app -->
+
+  <script>
+    // ═════════════════════════════════════════════════════
+    //  STATE
+    // ═════════════════════════════════════════════════════
+    const canvas = document.getElementById('c1');
+    const ctx = canvas.getContext('2d');
+
+    let currentImage = 'track';
+    let activeTrack = 1;
+
+    // scale table: index → multiplier
+    const SCALES = {};
+    for (let i = 0; i <= 19; i++) SCALES[i] = 0.2 + i * 0.2;
+
+    let mash = 4;   // current zoom index
+    let x0 = 0;   // pan offset X (in image coords)
+    let y0 = 0;   // pan offset Y (in image coords)
+
+    // marker coords stored in image-space (pre-scale)
+    let markers = {
+      1: {
+        k1: { x: 10, y: -1e6, color: '#e94560' }, k2: { x: 60, y: -1e6, color: '#e94560' },
+        m1: { x: 10, y: -1e6, color: '#e94560' }, m2: { x: 50, y: -1e6, color: '#06d6a0' }, m3: { x: 100, y: -1e6, color: '#00b4d8' }
+      },
+      2: {
+        k1: { x: 10, y: -1e6, color: '#e94560' }, k2: { x: 60, y: -1e6, color: '#e94560' },
+        m1: { x: 10, y: -1e6, color: '#e94560' }, m2: { x: 50, y: -1e6, color: '#06d6a0' }, m3: { x: 100, y: -1e6, color: '#00b4d8' }
+      },
+      3: {
+        k1: { x: 10, y: -1e6, color: '#e94560' }, k2: { x: 60, y: -1e6, color: '#e94560' },
+        m1: { x: 10, y: -1e6, color: '#e94560' }, m2: { x: 50, y: -1e6, color: '#06d6a0' }, m3: { x: 100, y: -1e6, color: '#00b4d8' }
+      },
+      4: {
+        k1: { x: 10, y: -1e6, color: '#e94560' }, k2: { x: 60, y: -1e6, color: '#e94560' },
+        m1: { x: 10, y: -1e6, color: '#e94560' }, m2: { x: 50, y: -1e6, color: '#06d6a0' }, m3: { x: 100, y: -1e6, color: '#00b4d8' }
+      },
+    };
+
+    let mode = 0;  // 0=markers, 1=calibration, 2=drag
+    let mark_btn = 0;  // 1,2,3
+    let kalibr_btn = 0;  // 1,2
+    let lastR = null;
+
+    let base_image = new Image();
+    let cW = 500, cH = 688;
+
+    // ── helpers ──────────────────────────────────────────
+    const sc = () => SCALES[mash];
+    function toScreen(v, off) { return sc() * (v + off); }
+    function toImage(s, off) { return s / sc() - off; }
+    function cur() { return markers[activeTrack]; }
+
+    function modeBadge(txt) {
+      document.getElementById('mode-badge').textContent = 'Режим: ' + txt;
+    }
+
+    // ── draw ─────────────────────────────────────────────
+    function redraw() {
+      ctx.clearRect(0, 0, cW, cH);
+      if (base_image.complete && base_image.naturalWidth) {
+        ctx.drawImage(base_image,
+          toScreen(0, x0), toScreen(0, y0),
+          base_image.naturalWidth * sc(),
+          base_image.naturalHeight * sc()
+        );
+      }
+      draw_markers();
+    }
+
+    function draw_markers() {
+      const m = cur();
+      drawMarker(m.m1, 'square', 10, m.m1.color, 'M1');
+      drawMarker(m.m2, 'square', 10, m.m2.color, 'M2');
+      drawMarker(m.m3, 'square', 10, m.m3.color, 'M3');
+      drawMarker(m.k1, 'circle', 6, '#f5a623', 'K1');
+      drawMarker(m.k2, 'circle', 6, '#f5a623', 'K2');
+      // line between k1 and k2
+      if (m.k1.y > -1e5 && m.k2.y > -1e5) {
+        ctx.beginPath();
+        ctx.moveTo(toScreen(m.k1.x, x0), toScreen(m.k1.y, y0));
+        ctx.lineTo(toScreen(m.k2.x, x0), toScreen(m.k2.y, y0));
+        ctx.strokeStyle = '#f5a62388';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    function drawMarker(m, shape, sz, color, label) {
+      if (m.y < -1e5) return;
+      const sx = toScreen(m.x, x0);
+      const sy = toScreen(m.y, y0);
+
+      // Shadow for visibility
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.7)';
+      ctx.shadowBlur = 6;
+
+      ctx.beginPath();
+      if (shape === 'square') {
+        ctx.rect(sx - sz / 2, sy - sz / 2, sz, sz);
+      } else {
+        ctx.arc(sx, sy, sz, 0, Math.PI * 2);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.fillStyle = color + '55';
+      ctx.fill();
+
+      // Crosshair inside
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(sx - sz / 2 + 1, sy);
+      ctx.lineTo(sx + sz / 2 - 1, sy);
+      ctx.moveTo(sx, sy - sz / 2 + 1);
+      ctx.lineTo(sx, sy + sz / 2 - 1);
+      ctx.stroke();
+
+      ctx.restore();
+
+      // Label with background for readability
+      const fontSize = Math.max(10, Math.min(14, sz * 1.1));
+      ctx.font = `bold ${fontSize}px IBM Plex Mono, monospace`;
+      const tw = ctx.measureText(label).width;
+      const lx = sx + sz / 2 + 3;
+      const ly = sy - sz / 2 - 2;
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fillRect(lx - 2, ly - fontSize + 2, tw + 4, fontSize + 2);
+      ctx.fillStyle = color;
+      ctx.fillText(label, lx, ly);
+    }
+
+    function draw_chords() {
+      const m = cur();
+      if (m.m1.y < -1e5 || m.m2.y < -1e5 || m.m3.y < -1e5) return;
+
+      let ma = (m.m2.y - m.m1.y) / (m.m2.x - m.m1.x);
+      let mb = (m.m3.y - m.m2.y) / (m.m3.x - m.m2.x);
+      if (Math.abs(mb - ma) < 1e-10) return;
+      let xc0 = (ma * mb * (m.m1.y - m.m3.y) + mb * (m.m1.x + m.m2.x) - ma * (m.m2.x + m.m3.x)) / (2 * (mb - ma));
+      let yc0 = -1 / ma * (xc0 - (m.m1.x + m.m2.x) / 2) + (m.m1.y + m.m2.y) / 2;
+      let r = Math.sqrt((m.m1.x - xc0) ** 2 + (m.m1.y - yc0) ** 2);
+
+      // calibration
+      let calib_m = parseFloat(document.getElementById('calibr_edit').value) || 0.01;
+      let calib_px = Math.sqrt((m.k1.x - m.k2.x) ** 2 + (m.k1.y - m.k2.y) ** 2);
+      let R = (calib_px > 0.1) ? r * calib_m / calib_px : null;
+      lastR = R;
+      document.getElementById('lbl2').textContent = R ? R.toFixed(4) + ' м' : '— м';
+
+      // chord 1
+      const x12 = (m.m1.x + m.m2.x) / 2, y12 = (m.m1.y + m.m2.y) / 2;
+      const x23 = (m.m2.x + m.m3.x) / 2, y23 = (m.m2.y + m.m3.y) / 2;
+
+      ctx.lineWidth = 2.5; ctx.setLineDash([]);
+      ctx.strokeStyle = '#e94560';
+      ctx.beginPath();
+      ctx.moveTo(toScreen(m.m1.x, x0), toScreen(m.m1.y, y0));
+      ctx.lineTo(toScreen(m.m2.x, x0), toScreen(m.m2.y, y0));
+      ctx.stroke();
+      ctx.strokeStyle = '#e9456066';
+      ctx.beginPath();
+      ctx.moveTo(toScreen(x12, x0), toScreen(y12, y0));
+      ctx.lineTo(toScreen(xc0, x0), toScreen(yc0, y0));
+      ctx.stroke();
+
+      ctx.strokeStyle = '#00b4d8';
+      ctx.beginPath();
+      ctx.moveTo(toScreen(m.m2.x, x0), toScreen(m.m2.y, y0));
+      ctx.lineTo(toScreen(m.m3.x, x0), toScreen(m.m3.y, y0));
+      ctx.stroke();
+      ctx.strokeStyle = '#00b4d866';
+      ctx.beginPath();
+      ctx.moveTo(toScreen(x23, x0), toScreen(y23, y0));
+      ctx.lineTo(toScreen(xc0, x0), toScreen(yc0, y0));
+      ctx.stroke();
+
+      // arc
+      ctx.strokeStyle = '#06d6a0';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 3]);
+      ctx.beginPath();
+      ctx.arc(toScreen(xc0, x0), toScreen(yc0, y0), r * sc(), 0, 2 * Math.PI);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // center dot
+      ctx.beginPath();
+      ctx.arc(toScreen(xc0, x0), toScreen(yc0, y0), 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#06d6a0';
+      ctx.fill();
+    }
+
+    // ── image loading ─────────────────────────────────────
+    function selectImage(name) {
+      currentImage = name;
+      document.getElementById('img_track').classList.toggle('active', name === 'track');
+      document.getElementById('img_trek').classList.toggle('active', name === 'trek');
+      document.getElementById('img-name-badge').textContent = name === 'track' ? 'track.png' : 'trek.jpg';
+      loadImage(name === 'track' ? './track.png' : './trek.jpg');
+    }
+
+    function loadImage(src) {
+      base_image = new Image();
+      base_image.onload = () => {
+        fitImage();
+        redraw();
+      };
+      base_image.onerror = () => {
+        // draw placeholder
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(0, 0, cW, cH);
+        ctx.fillStyle = '#555';
+        ctx.font = '16px IBM Plex Mono';
+        ctx.textAlign = 'center';
+        ctx.fillText('Зображення не знайдено.', cW / 2, cH / 2 - 10);
+        ctx.fillText('Завантажте файл нижче.', cW / 2, cH / 2 + 14);
+        ctx.textAlign = 'left';
+      };
+      base_image.src = src;
+    }
+
+    function fitImage() {
+      if (!base_image.naturalWidth) return;
+      const wrap = document.getElementById('canvas-wrap');
+      const wW = wrap.clientWidth || 500;
+      // canvas internal size stays at image natural size
+      cW = base_image.naturalWidth;
+      cH = base_image.naturalHeight;
+      canvas.width = cW;
+      canvas.height = cH;
+      // pick zoom so image fits width
+      const targetW = wW - 8;
+      let best = 0;
+      for (let i = 19; i >= 0; i--) {
+        if (cW * SCALES[i] <= targetW) { best = i; break; }
+      }
+      mash = best;
+      x0 = 0; y0 = 0;
+    }
+
+    function sizeCanvas() {
+      const wrap = document.getElementById('canvas-wrap');
+      if (!base_image.naturalWidth) {
+        // default
+        cW = 500; cH = 688;
+        canvas.width = cW; canvas.height = cH;
+        wrap.style.height = cH + 'px';
+        return;
+      }
+      wrap.style.height = Math.round(cH * sc()) + 'px';
+      canvas.style.width = Math.round(cW * sc()) + 'px';
+      canvas.style.height = Math.round(cH * sc()) + 'px';
+    }
+
+    // ── pointer helpers ───────────────────────────────────
+    function getOffset(event) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = cW / rect.width;
+      const scaleY = cH / rect.height;
+      let cx, cy;
+      if (event.touches) {
+        cx = (event.touches[0].clientX - rect.left) * scaleX;
+        cy = (event.touches[0].clientY - rect.top) * scaleY;
+      } else {
+        cx = (event.clientX - rect.left) * scaleX;
+        cy = (event.clientY - rect.top) * scaleY;
+      }
+      return { x: cx, y: cy };
+    }
+
+    let dragStart = null;
+    let pinchStartDist = null;
+    let pinchStartMash = null;
+
+    // ── mouse events ──────────────────────────────────────
+    canvas.addEventListener('mousedown', onPointerDown);
+    canvas.addEventListener('touchstart', onPointerDown, { passive: false });
+
+    function onPointerDown(e) {
+      e.preventDefault();
+      const { x, y } = getOffset(e);
+      const m = cur();
+
+      // check if near a marker for dragging
+      const hit = hitTestMarker(x, y, m);
+      if (hit) {
+        if (hit.startsWith('k')) {
+          mode = 1; kalibr_btn = hit === 'k1' ? 1 : 2;
+          resetBtnHighlights();
+          document.getElementById(hit).classList.add('active-mode');
+        } else {
+          mode = 0; mark_btn = parseInt(hit[1]);
+          resetBtnHighlights();
+          document.getElementById('o' + mark_btn).classList.add('active-mode');
+        }
+      }
+
+      dragStart = { x, y, x0, y0 };
+      let hasMoved = false;
+
+      const onMove = (ev) => {
+        ev.preventDefault();
+        const p = getOffset(ev);
+        const dx = p.x - dragStart.x, dy = p.y - dragStart.y;
+        if (Math.hypot(dx, dy) > 3) hasMoved = true;
+
+        if (mode === 0 && mark_btn > 0) {
+          const key = 'm' + mark_btn;
+          m[key].x = toImage(p.x, x0);
+          m[key].y = toImage(p.y, y0);
+          redraw();
+        } else if (mode === 1 && kalibr_btn > 0) {
+          const key = 'k' + kalibr_btn;
+          m[key].x = toImage(p.x, x0);
+          m[key].y = toImage(p.y, y0);
+          redraw();
+        } else if (mode === 2) {
+          x0 = dragStart.x0 + (p.x - dragStart.x) / sc();
+          y0 = dragStart.y0 + (p.y - dragStart.y) / sc();
+          redraw();
+        }
+      };
+      const onUp = (ev) => {
+        canvas.removeEventListener('mousemove', onMove);
+        canvas.removeEventListener('touchmove', onMove);
+        canvas.removeEventListener('mouseup', onUp);
+        canvas.removeEventListener('touchend', onUp);
+
+        // Place marker on click (no drag) if not hitting an existing marker
+        if (!hasMoved && !hit) {
+          const p = getOffset(ev.changedTouches ? { clientX: ev.changedTouches[0].clientX, clientY: ev.changedTouches[0].clientY } : ev);
+          if (mode === 0 && mark_btn > 0) {
+            const key = 'm' + mark_btn;
+            m[key].x = toImage(p.x, x0);
+            m[key].y = toImage(p.y, y0);
+            // auto-advance to next marker
+            if (mark_btn < 3) {
+              mark_btn++;
+              resetBtnHighlights();
+              document.getElementById('o' + mark_btn).classList.add('active-mode');
+              modeBadge('маркер M' + mark_btn);
+            }
+            redraw();
+          } else if (mode === 1 && kalibr_btn > 0) {
+            const key = 'k' + kalibr_btn;
+            m[key].x = toImage(p.x, x0);
+            m[key].y = toImage(p.y, y0);
+            // auto-advance to k2
+            if (kalibr_btn === 1) {
+              kalibr_btn = 2;
+              resetBtnHighlights();
+              document.getElementById('k2').classList.add('active-mode');
+              modeBadge('калібр. K2');
+            }
+            redraw();
+          }
+        }
+
+        dragStart = null;
+        hasMoved = false;
+      };
+      canvas.addEventListener('mousemove', onMove);
+      canvas.addEventListener('touchmove', onMove, { passive: false });
+      canvas.addEventListener('mouseup', onUp);
+      canvas.addEventListener('touchend', onUp);
+    }
+
+    // pinch zoom
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        pinchStartDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        pinchStartMash = mash;
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && pinchStartDist) {
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const ratio = d / pinchStartDist;
+        let newMash = Math.round(pinchStartMash + (ratio - 1) * 8);
+        newMash = Math.max(0, Math.min(19, newMash));
+        if (newMash !== mash) { mash = newMash; redraw(); }
+      }
+    }, { passive: true });
 
 
 
-function hitTestMarker(x, y, m) {
-  const keys = ['m1','m2','m3','k1','k2'];
-  for (const k of keys) {
-    if (m[k].y < -1e5) continue;
-    const sx = toScreen(m[k].x, x0), sy = toScreen(m[k].y, y0);
-    if (Math.hypot(x-sx, y-sy) < 14) return k;
-  }
-  return null;
-}
+    function hitTestMarker(x, y, m) {
+      const keys = ['m1', 'm2', 'm3', 'k1', 'k2'];
+      for (const k of keys) {
+        if (m[k].y < -1e5) continue;
+        const sx = toScreen(m[k].x, x0), sy = toScreen(m[k].y, y0);
+        if (Math.hypot(x - sx, y - sy) < 14) return k;
+      }
+      return null;
+    }
 
-// ── button handlers ───────────────────────────────────
-function resetBtnHighlights() {
-  ['o1','o2','o3','k1','k2','btn_drag'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active-mode');
-  });
-}
+    // ── button handlers ───────────────────────────────────
+    function resetBtnHighlights() {
+      ['o1', 'o2', 'o3', 'k1', 'k2', 'btn_drag'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active-mode');
+      });
+    }
 
-document.getElementById('o1').onclick = () => { mode=0; mark_btn=1; resetBtnHighlights(); document.getElementById('o1').classList.add('active-mode'); modeBadge('маркер M1'); };
-document.getElementById('o2').onclick = () => { mode=0; mark_btn=2; resetBtnHighlights(); document.getElementById('o2').classList.add('active-mode'); modeBadge('маркер M2'); };
-document.getElementById('o3').onclick = () => { mode=0; mark_btn=3; resetBtnHighlights(); document.getElementById('o3').classList.add('active-mode'); modeBadge('маркер M3'); };
-document.getElementById('k1').onclick  = () => { mode=1; kalibr_btn=1; resetBtnHighlights(); document.getElementById('k1').classList.add('active-mode'); modeBadge('калібр. K1'); };
-document.getElementById('k2').onclick  = () => { mode=1; kalibr_btn=2; resetBtnHighlights(); document.getElementById('k2').classList.add('active-mode'); modeBadge('калібр. K2'); };
+    document.getElementById('o1').onclick = () => { mode = 0; mark_btn = 1; resetBtnHighlights(); document.getElementById('o1').classList.add('active-mode'); modeBadge('маркер M1'); };
+    document.getElementById('o2').onclick = () => { mode = 0; mark_btn = 2; resetBtnHighlights(); document.getElementById('o2').classList.add('active-mode'); modeBadge('маркер M2'); };
+    document.getElementById('o3').onclick = () => { mode = 0; mark_btn = 3; resetBtnHighlights(); document.getElementById('o3').classList.add('active-mode'); modeBadge('маркер M3'); };
+    document.getElementById('k1').onclick = () => { mode = 1; kalibr_btn = 1; resetBtnHighlights(); document.getElementById('k1').classList.add('active-mode'); modeBadge('калібр. K1'); };
+    document.getElementById('k2').onclick = () => { mode = 1; kalibr_btn = 2; resetBtnHighlights(); document.getElementById('k2').classList.add('active-mode'); modeBadge('калібр. K2'); };
 
-document.getElementById('btn_drag').onclick = () => {
-  mode = 2; mark_btn = 0; kalibr_btn = 0;
-  resetBtnHighlights();
-  document.getElementById('btn_drag').classList.add('active-mode');
-  modeBadge('переміщення');
-};
+    document.getElementById('btn_drag').onclick = () => {
+      mode = 2; mark_btn = 0; kalibr_btn = 0;
+      resetBtnHighlights();
+      document.getElementById('btn_drag').classList.add('active-mode');
+      modeBadge('переміщення');
+    };
 
-document.getElementById('btn_zoom_up').onclick = () => { mash = Math.min(19, mash+1); redraw(); };
-document.getElementById('btn_zoom_down').onclick = () => { mash = Math.max(0, mash-1); redraw(); };
-document.getElementById('btn_zoom_default').onclick = () => { mash=4; x0=0; y0=0; redraw(); modeBadge('перегляд'); resetBtnHighlights(); mode=0; };
+    function resetZoom() { mash = 4; x0 = 0; y0 = 0; redraw(); modeBadge('перегляд'); resetBtnHighlights(); mode = 0; };
 
-document.getElementById('btn_draw').onclick = () => { redraw(); draw_chords(); };
-document.getElementById('btn_clear').onclick = () => {
-  const m = cur();
-  m.m1.y = m.m2.y = m.m3.y = -1e6;
-  m.k1.y = m.k2.y = -1e6;
-  lastR = null;
-  document.getElementById('lbl2').textContent = '— м';
-  redraw();
-};
+    document.getElementById('btn_zoom_up').onclick = () => { mash = Math.min(19, mash + 1); redraw(); };
+    document.getElementById('btn_zoom_down').onclick = () => { mash = Math.max(0, mash - 1); redraw(); };
+    document.getElementById('btn_zoom_default').onclick = () => { mash = 4; x0 = 0; y0 = 0; redraw(); modeBadge('перегляд'); resetBtnHighlights(); mode = 0; };
 
-document.getElementById('btn_copy_R').onclick = () => {
-  if (!lastR) { alert('Спочатку обчисліть R (кнопка «▶ Обчислити»).'); return; }
-  const t = activeTrack;
-  // find first empty slot
-  for (let i = 1; i <= 3; i++) {
-    const el = document.getElementById(`r${t}_${i}`);
-    if (!el.value) { el.value = lastR.toFixed(4); calcAvg(t); return; }
-  }
-  // overwrite last
-  document.getElementById(`r${t}_3`).value = lastR.toFixed(4);
-  calcAvg(t);
-};
+    document.getElementById('btn_draw').onclick = () => { redraw(); draw_chords(); };
+    document.getElementById('btn_clear').onclick = () => {
+      const m = cur();
+      m.m1.y = m.m2.y = m.m3.y = -1e6;
+      m.k1.y = m.k2.y = -1e6;
+      lastR = null;
+      document.getElementById('lbl2').textContent = '— м';
+      redraw();
+    };
 
-// ── track selector ────────────────────────────────────
-function setActiveTrack(n) {
-  activeTrack = n;
-  [1,2,3,4].forEach(i => document.getElementById('tt'+i).classList.toggle('active', i===n));
-  // reset mode
-  mode = 0; mark_btn = 0; resetBtnHighlights();
-  modeBadge('трек ' + ['I','II','III','IV'][n-1]);
-  redraw();
-}
+    document.getElementById('btn_copy_R').onclick = () => {
+      if (!lastR) { alert('Спочатку обчисліть R (кнопка «▶ Обчислити»).'); return; }
+      const t = activeTrack;
+      // find first empty slot
+      for (let i = 1; i <= 3; i++) {
+        const el = document.getElementById(`r${t}_${i}`);
+        if (!el.value) { el.value = lastR.toFixed(4); calcAvg(t); return; }
+      }
+      // overwrite last
+      document.getElementById(`r${t}_3`).value = lastR.toFixed(4);
+      calcAvg(t);
+    };
 
-// ── avg calculation ───────────────────────────────────
-function calcAvg(t) {
-  const vals = [1,2,3].map(i => parseFloat(document.getElementById(`r${t}_${i}`).value)).filter(v => !isNaN(v));
-  if (!vals.length) return;
-  const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
-  document.getElementById(`r${t}_avg`).value = avg.toFixed(4);
-  if (vals.length > 1) {
-    const err = Math.max(...vals) - Math.min(...vals);
-    document.getElementById(`r${t}_err`).value = (err/2).toFixed(4);
-  }
-}
+    // ── track selector ────────────────────────────────────
+    function setActiveTrack(n) {
+      activeTrack = n;
+      [1, 2, 3, 4].forEach(i => document.getElementById('tt' + i).classList.toggle('active', i === n));
+      // reset mode
+      mode = 0; mark_btn = 0; resetBtnHighlights();
+      modeBadge('трек ' + ['I', 'II', 'III', 'IV'][n - 1]);
+      redraw();
+    }
 
-// ── file upload ───────────────────────────────────────
-document.getElementById('file_upload').onchange = function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  document.getElementById('img-name-badge').textContent = file.name;
-  document.getElementById('img_track').classList.remove('active');
-  document.getElementById('img_trek').classList.remove('active');
-  loadImage(url);
-};
+    // ── avg calculation ───────────────────────────────────
+    function calcAvg(t) {
+      const vals = [1, 2, 3].map(i => parseFloat(document.getElementById(`r${t}_${i}`).value)).filter(v => !isNaN(v));
+      if (!vals.length) return;
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      document.getElementById(`r${t}_avg`).value = avg.toFixed(4);
+      if (vals.length > 1) {
+        const err = Math.max(...vals) - Math.min(...vals);
+        document.getElementById(`r${t}_err`).value = (err / 2).toFixed(4);
+      }
+    }
 
-// ── submit ────────────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBsMTDxEKGjDOGMW4NTHwItDvX3r6j6wCDQAcRoMXFH66aaQ-2QFcHlqVTWsGnAIE/exec';
+    // ── file upload ───────────────────────────────────────
+    document.getElementById('file_upload').onchange = function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      document.getElementById('img-name-badge').textContent = file.name;
+      document.getElementById('img_track').classList.remove('active');
+      document.getElementById('img_trek').classList.remove('active');
+      loadImage(url);
+    };
 
-function handleSubmit() {
-  const name  = document.getElementById('student_name').value.trim();
-  const group = document.getElementById('student_group').value.trim();
-  const date  = document.getElementById('thedate').value;
+    // ── submit ────────────────────────────────────────────
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBsMTDxEKGjDOGMW4NTHwItDvX3r6j6wCDQAcRoMXFH66aaQ-2QFcHlqVTWsGnAIE/exec';
 
-  if (!name || !group) {
-    alert('Будь ласка, введіть прізвище та клас.');
-    return;
-  }
+    function handleSubmit() {
+      const name = document.getElementById('student_name').value.trim();
+      const group = document.getElementById('student_group').value.trim();
+      const date = document.getElementById('thedate').value;
 
-  // Collect measurements table data
-  const tableData = {};
-  [1,2,3,4].forEach(t => {
-    [1,2,3].forEach(i => {
-      const el = document.getElementById(`r${t}_${i}`);
-      tableData[`r${t}_${i}`] = el ? el.value : '';
+      if (!name || !group) {
+        alert('Будь ласка, введіть прізвище та клас.');
+        return;
+      }
+
+      // Collect measurements table data
+      const tableData = {};
+      [1, 2, 3, 4].forEach(t => {
+        [1, 2, 3].forEach(i => {
+          const el = document.getElementById(`r${t}_${i}`);
+          tableData[`r${t}_${i}`] = el ? el.value : '';
+        });
+        ['avg', 'err'].forEach(k => {
+          const el = document.getElementById(`r${t}_${k}`);
+          tableData[`r${t}_${k}`] = el ? el.value : '';
+        });
+        const partEl = document.getElementById(`r${t}_part`);
+        tableData[`r${t}_part`] = partEl ? partEl.value : '';
+      });
+
+      const payload = {
+        sheetName: document.getElementById('sheetName').value,
+        name, group, date,
+        analysis: document.getElementById('analysis').value,
+        creative: document.getElementById('creative').value,
+        ...tableData
+      };
+
+      const btn = document.getElementById('submit_button');
+      btn.disabled = true;
+      btn.textContent = '⏳ Надсилання...';
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+        .then(r => r.text())
+        .then(resp => {
+          console.log('Server response:', resp);
+          btn.textContent = '✅ Надіслано!';
+          btn.style.background = 'linear-gradient(135deg, #06d6a0 0%, #00b4d8 100%)';
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = '📤 Надіслати результати';
+            btn.style.background = '';
+          }, 4000);
+        })
+        .catch(err => {
+          console.error('Submit error:', err);
+          alert('Помилка надсилання. Перевірте з\'єднання з інтернетом і спробуйте ще раз.');
+          btn.disabled = false;
+          btn.textContent = '📤 Надіслати результати';
+        });
+    }
+
+    // ── init ──────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('thedate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('img-name-badge').textContent = 'track.png';
+      loadImage('./track.png');
+      modeBadge('перегляд');
     });
-    ['avg','err'].forEach(k => {
-      const el = document.getElementById(`r${t}_${k}`);
-      tableData[`r${t}_${k}`] = el ? el.value : '';
+
+    window.addEventListener('resize', () => {
+      if (base_image.complete && base_image.naturalWidth) {
+        fitImage(); redraw();
+      }
     });
-    const partEl = document.getElementById(`r${t}_part`);
-    tableData[`r${t}_part`] = partEl ? partEl.value : '';
-  });
 
-  const payload = {
-    sheetName: document.getElementById('sheetName').value,
-    name, group, date,
-    analysis: document.getElementById('analysis').value,
-    creative: document.getElementById('creative').value,
-    ...tableData
-  };
+   
 
-  const btn = document.getElementById('submit_button');
-  btn.disabled = true;
-  btn.textContent = '⏳ Надсилання...';
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(payload)
-  })
-    .then(r => r.text())
-    .then(resp => {
-      console.log('Server response:', resp);
-      btn.textContent = '✅ Надіслано!';
-      btn.style.background = 'linear-gradient(135deg, #06d6a0 0%, #00b4d8 100%)';
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = '📤 Надіслати результати';
-        btn.style.background = '';
-      }, 4000);
-    })
-    .catch(err => {
-      console.error('Submit error:', err);
-      alert('Помилка надсилання. Перевірте з\'єднання з інтернетом і спробуйте ще раз.');
-      btn.disabled = false;
-      btn.textContent = '📤 Надіслати результати';
-    });
-}
-
-// ── init ──────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('thedate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('img-name-badge').textContent = 'track.png';
-  loadImage('./track.png');
-  modeBadge('перегляд');
-});
-
-window.addEventListener('resize', () => {
-  if (base_image.complete && base_image.naturalWidth) {
-    fitImage(); redraw();
-  }
-});
-</script>
+  </script>
 </body>
+
 </html>
